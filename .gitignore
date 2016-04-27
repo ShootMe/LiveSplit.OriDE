@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/bin
+/.vs/LiveSplit.OriDE/v14
+/Components/LiveSplit.OriDE.exe
+/obj
+/LiveSplit.OriDE.csproj.user
