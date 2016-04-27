@@ -21,7 +21,7 @@ namespace LiveSplit.OriDE {
 		private int state = 0;
 		private bool hasLog = false;
 		private int lastLogCheck = 0;
-		internal static string[] keys = { "CurrentSplit", "State" };
+		internal static string[] keys = { "CurrentSplit", "State", "GameState" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
 
@@ -52,6 +52,10 @@ namespace LiveSplit.OriDE {
 
 				OriSplit split = settings.Splits[currentSplit];
 				switch (split.Field) {
+					case "Start Game":
+						shouldSplit = state == 0 && isStartingGame;
+						if (isStartingGame) { state = 1; }
+						break;
 					case "In Game": shouldSplit = isInGame; break;
 					case "In Menu": shouldSplit = !isInGame; break;
 					case "Map %":
@@ -68,10 +72,6 @@ namespace LiveSplit.OriDE {
 						HitBox hitBox = new HitBox(split.Value);
 						shouldSplit = hitBox.Intersects(ori);
 						break;
-					case "Start Game":
-						shouldSplit = state == 0 && isStartingGame;
-						if (isStartingGame) { state = 1; }
-						break;
 					case "Soul Flame":
 					case "Spirit Flame":
 					case "Wall Jump":
@@ -84,8 +84,7 @@ namespace LiveSplit.OriDE {
 					case "Glide":
 					case "Climb":
 					case "Charge Jump":
-						Dictionary<string, bool> abilities = mem.GetAbilities();
-						shouldSplit = abilities[split.Field]; break;
+						shouldSplit = mem.GetAbility(split.Field); break;
 					case "Mist Lifted":
 					case "Clean Water":
 					case "Wind Restored":
@@ -93,28 +92,26 @@ namespace LiveSplit.OriDE {
 					case "Spirit Tree Reached":
 					case "Warmth Returned":
 					case "Darkness Lifted":
-						Dictionary<string, bool> events = mem.GetEvents();
-						shouldSplit = events[split.Field]; break;
+						shouldSplit = mem.GetEvent(split.Field); break;
 					case "Gumon Seal":
 					case "Sunstone":
 					case "Water Vein":
-						Dictionary<string, bool> keys = mem.GetKeys();
-						shouldSplit = keys[split.Field]; break;
+						shouldSplit = mem.GetKey(split.Field); break;
 					case "Ginso Tree Entered":
 					case "Forlorn Ruins Entered":
 					case "Mount Horu Entered":
 					case "End Game":
-						Scene[] scenes = mem.GetScenes();
-						for (int i = 0; i < scenes.Length; i++) {
+						List<Scene> scenes = mem.GetScenes();
+						for (int i = 0; i < scenes.Count; i++) {
 							Scene scene = scenes[i];
-							if (scene.state == SceneState.Loaded) {
-								switch (scene.name) {
+							if (scene.State == SceneState.Loaded) {
+								switch (scene.Name) {
 									case "ginsoEntranceIntro": shouldSplit = split.Field == "Ginso Tree Entered"; break;
 									case "forlornRuinsGetNightberry": shouldSplit = split.Field == "Forlorn Ruins Entered"; break;
 									case "mountHoruHubMid": shouldSplit = split.Field == "Mount Horu Entered"; break;
 								}
-							} else if (scene.state == SceneState.Loading) {
-								switch (scene.name) {
+							} else if (scene.State == SceneState.Loading) {
+								switch (scene.Name) {
 									case "creditsScreen": shouldSplit = split.Field == "End Game"; break;
 								}
 							}
@@ -197,6 +194,7 @@ namespace LiveSplit.OriDE {
 					switch (key) {
 						case "CurrentSplit": curr = currentSplit.ToString(); break;
 						case "State": curr = state.ToString(); break;
+						case "GameState": curr = mem.GetGameState().ToString(); break;
 						default: curr = ""; break;
 					}
 
@@ -224,8 +222,18 @@ namespace LiveSplit.OriDE {
 			GetValues();
 
 			if (settings.ShowMapDisplay) {
-				textInfo.InformationName = "Total Map: " + 0.ToString("0.00") + "%";
-				textInfo.InformationValue = "Valley".ToString();
+				List<Area> areas = mem.GetMapCompletion();
+				decimal total = 0;
+				Area currentArea = default(Area);
+				for (int i = 0; i < areas.Count; i++) {
+					Area area = areas[i];
+					total += area.Progress;
+					if (area.Current) {
+						currentArea = area;
+					}
+				}
+				textInfo.InformationName = "Total Map: " + total.ToString("0.00") + "%";
+				textInfo.InformationValue = currentArea.Name.ToString();
 				textInfo.LongestString = "Valley Of The Wind - 100.00%";
 				textInfo.Update(invalidator, lvstate, width, height, mode);
 				if (invalidator != null) {

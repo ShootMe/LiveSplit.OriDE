@@ -37,6 +37,11 @@ namespace LiveSplit.OriDE.Memory {
 			}
 			return results;
 		}
+		public bool GetEvent(string name) {
+			IntPtr start = worldEvents.Value + 0x40;
+			int ev = events[name];
+			return Program.Read<bool>(start + ev);
+		}
 		public Dictionary<string, bool> GetKeys() {
 			IntPtr start = worldEvents.Value;
 
@@ -45,6 +50,11 @@ namespace LiveSplit.OriDE.Memory {
 				results[pair.Key] = Program.Read<bool>(start + pair.Value);
 			}
 			return results;
+		}
+		public bool GetKey(string name) {
+			IntPtr start = worldEvents.Value;
+			int key = keys[name];
+			return Program.Read<bool>(start + key);
 		}
 		public Dictionary<string, bool> GetAbilities() {
 			IntPtr start = seinCharacter.Read<IntPtr>(0x00, 0x4c);
@@ -55,7 +65,12 @@ namespace LiveSplit.OriDE.Memory {
 			}
 			return results;
 		}
-		public Area[] GetMapCompletion() {
+		public bool GetAbility(string name) {
+			IntPtr start = seinCharacter.Read<IntPtr>(0x00, 0x4c);
+			int ability = abilities[name];
+			return Program.Read<bool>(start, ability * 4, 0x08); ;
+		}
+		public List<Area> GetMapCompletion() {
 			IntPtr current = gameWorld.Read<IntPtr>(0x1c);
 			Area currentArea = GetArea(current);
 			IntPtr listHead = gameWorld.Read<IntPtr>(0x18, 0x08);
@@ -66,13 +81,13 @@ namespace LiveSplit.OriDE.Memory {
 				IntPtr gameWorldAreaHead = Program.Read<IntPtr>(listHead, 0x10 + (i * 4));
 
 				Area area = GetArea(gameWorldAreaHead);
-				if (area.name.Equals(currentArea.name, StringComparison.OrdinalIgnoreCase)) {
-					area.current = true;
+				if (area.Name.Equals(currentArea.Name, StringComparison.OrdinalIgnoreCase)) {
+					area.Current = true;
 				}
 				areas.Add(area);
 			}
 
-			return areas.ToArray();
+			return areas;
 		}
 		public decimal GetTotalMapCompletion() {
 			IntPtr listHead = gameWorld.Read<IntPtr>(0x18, 0x08);
@@ -82,7 +97,7 @@ namespace LiveSplit.OriDE.Memory {
 			for (var i = 0; i < listSize; i++) {
 				IntPtr gameWorldAreaHead = Program.Read<IntPtr>(listHead, 0x10 + (i * 4));
 				Area area = GetArea(gameWorldAreaHead);
-				total += area.progress;
+				total += area.Progress;
 			}
 
 			return total;
@@ -95,12 +110,12 @@ namespace LiveSplit.OriDE.Memory {
 			}
 
 			Area area = new Area();
-			area.name = areaName;
-			area.progress = Math.Round((decimal)completionAmount * 100, 2, MidpointRounding.AwayFromZero);
-			area.current = false;
+			area.Name = areaName;
+			area.Progress = Math.Round((decimal)completionAmount * 100, 2, MidpointRounding.AwayFromZero);
+			area.Current = false;
 			return area;
 		}
-		public Scene[] GetScenes() {
+		public List<Scene> GetScenes() {
 			IntPtr activeScenesHead = scenesManager.Read<IntPtr>(0x14);
 			int listSize = Program.Read<int>(activeScenesHead, 0x0C);
 
@@ -110,13 +125,13 @@ namespace LiveSplit.OriDE.Memory {
 				IntPtr runtimeSceneHead = Program.Read<IntPtr>(sceneManagerHead, 0x0c, 0x08);
 
 				Scene scene = new Scene();
-				scene.name = Program.GetString(runtimeSceneHead);
-				scene.hasStartBeenCalled = Program.Read<bool>(sceneManagerHead, 0x10);
-				scene.state = (SceneState)Program.Read<int>(sceneManagerHead, 0x14);
+				scene.Name = Program.GetString(runtimeSceneHead);
+				scene.Started = Program.Read<bool>(sceneManagerHead, 0x10);
+				scene.State = (SceneState)Program.Read<int>(sceneManagerHead, 0x14);
 				scenes.Add(scene);
 			}
 
-			return scenes.ToArray();
+			return scenes;
 		}
 		public bool IsEnteringGame() {
 			return gameController.Read<bool>(0x6a) || gameController.Read<bool>(0x6b);
@@ -254,9 +269,9 @@ namespace LiveSplit.OriDE.Memory {
 		private static string[] versions = new string[1] { "v1.0" };
 		private static Dictionary<string, Dictionary<string, string>> funcPatterns = new Dictionary<string, Dictionary<string, string>>() {
 			{"v1.0", new Dictionary<string, string>() {
-					{"GameController",        "83EC78C745B000000000C745B400000000C745B800000000C745BC00000000C745C000000000C745AC00000000C745A8000000008B05????????83EC086A0050|-10"},
+					{"GameController",        "8B05????????83EC086A0050E88D00FEFF83C41085C074208B450883EC0C50E8????????83C41083EC0C50E8????????83C410E9????????8B4D08B8????????89088B450883EC0C50E8|-72"},
 					{"ScenesManager",         "558BEC5783EC148B7D08B8????????893883EC0C57E8????????83C4108B05????????8B40208B40308945EC85FF0F84????????83EC0C68????????E8????????83C4108BC88B45EC897910|-65"},
-					{"GameStateMachine",      "558BEC5783EC048B7D08B8????????8938E8????????83EC0868????????50E8????????83C41085C0740CC7471400000000E94D000000E8????????83EC0868????????50E8????????|-63"},
+					{"GameStateMachine",      "558BEC5783EC148B7D08B8????????8938E8????????83EC0868????????50E8????????83C41085C0741183EC0C57E8????????83C410E9????????E8????????83EC0868????????50E8????????83C41085C0740E83EC0C57|-79"},
 					{"WorldEvents",           "558BEC83EC08B8????????C60000B8????????C60000B8????????C60000B8????????C60000B8????????C60000B8????????C60000B8????????C60000B8????????C6000083EC0C6A00E8????????83C410B8????????C60000B8????????C60000B8????????C60000C9C3|-94"},
 					{"SeinCharacter",         "558BEC5783EC048B7D08B8????????8938B8????????893883EC0C68????????E8????????83C41083EC08578945F850E8????????83C4108B45F889473483EC0C57E8????????83C41083EC085057E8????????83C4108D65FC5FC9C3|-82"},
 					{"GameplayCamera",        "05480000008B08894DE88B4804894DEC8B40088945F08B05|-28"},

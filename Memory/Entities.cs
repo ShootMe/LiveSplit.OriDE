@@ -2,22 +2,22 @@
 using System.Globalization;
 namespace LiveSplit.OriDE.Memory {
 	public struct Scene {
-		public string name { get; set; }
-		public bool hasStartBeenCalled { get; set; }
-		public SceneState state { get; set; }
+		public string Name { get; set; }
+		public bool Started { get; set; }
+		public SceneState State { get; set; }
 
 		public override string ToString() {
-			return name + " - " + state.ToString();
+			return Name + " - " + State.ToString();
 		}
 	}
 
 	public struct Area {
-		public string name { get; set; }
-		public decimal progress { get; set; }
-		public bool current { get; set; }
+		public string Name { get; set; }
+		public decimal Progress { get; set; }
+		public bool Current { get; set; }
 
 		public override string ToString() {
-			return (string.IsNullOrEmpty(name) ? "N/A" : name) + " - " + progress.ToString("0.00") + "%";
+			return (string.IsNullOrEmpty(Name) ? "N/A" : Name) + " - " + Progress.ToString("0.00") + "%";
 		}
 	}
 	public enum GameState {
