@@ -21,7 +21,7 @@ namespace LiveSplit.OriDE {
 		private int state = 0;
 		private bool hasLog = false;
 		private int lastLogCheck = 0;
-		internal static string[] keys = { "CurrentSplit", "State", "SplitName", "GameState", "AbilityCells", "EnergyCells", "HealthCells", "XPLevel", "XPos", "YPos" };
+		internal static List<string> keys = new List<string>() { "CurrentSplit", "State", "SplitName", "GameState", "AbilityCells", "EnergyCells", "HealthCells", "XPLevel" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
 
@@ -31,6 +31,7 @@ namespace LiveSplit.OriDE {
 				textInfo.LongestString = "Valley Of The Wind - 100.00%";
 				mem = new OriMemory();
 				settings = new OriSettings(this);
+				mem.AddLogItems(keys);
 				foreach (string key in keys) {
 					currentValues[key] = "";
 				}
@@ -201,13 +202,21 @@ namespace LiveSplit.OriDE {
 						case "EnergyCells": curr = ((int)mem.GetCurrentENMax()).ToString(); break;
 						case "HealthCells": curr = mem.GetCurrentHPMax().ToString(); break;
 						case "XPLevel": curr = mem.GetCurrentLevel().ToString(); break;
-						case "XPos": curr = mem.GetCameraTargetPosition().X.ToString("0.0"); break;
-						case "YPos": curr = mem.GetCameraTargetPosition().Y.ToString("0.0"); break;
-						default: curr = ""; break;
+						default:
+							if (OriMemory.abilities.ContainsKey(key)) {
+								curr = mem.GetAbility(key).ToString();
+							} else if (OriMemory.events.ContainsKey(key)) {
+								curr = mem.GetEvent(key).ToString();
+							} else if (OriMemory.keys.ContainsKey(key)) {
+								curr = mem.GetKey(key).ToString();
+							} else {
+								curr = "";
+							}
+							break;
 					}
 
 					if (!prev.Equals(curr)) {
-						WriteLog(DateTime.Now.ToString(@"HH\:mm\:ss.fff") + (Model != null ? " | " + Model.CurrentState.CurrentTime.RealTime.Value.ToString("G").Substring(3, 11) : "") + ": " + key + ": ".PadRight(16 - key.Length, ' ') + prev.PadLeft(25, ' ') + " -> " + curr);
+						WriteLog(DateTime.Now.ToString(@"HH\:mm\:ss.fff") + (Model != null ? " | " + Model.CurrentState.CurrentTime.RealTime.Value.ToString("G").Substring(3, 11) : "") + ": " + key + ": ".PadRight(30 - key.Length < 0 ? 0 : 30 - key.Length, ' ') + prev.PadLeft(25, ' ') + " -> " + curr);
 
 						currentValues[key] = curr;
 					}

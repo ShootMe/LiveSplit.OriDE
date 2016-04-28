@@ -187,6 +187,17 @@ namespace LiveSplit.OriDE.Memory {
 
 			return IsHooked;
 		}
+		public void AddLogItems(List<string> items) {
+			foreach (string key in keys.Keys) {
+				items.Add(key);
+			}
+			foreach (string key in events.Keys) {
+				items.Add(key);
+			}
+			foreach (string key in abilities.Keys) {
+				items.Add(key);
+			}
+		}
 		public void Dispose() {
 			if (Program != null) { this.Program.Dispose(); }
 		}
@@ -253,19 +264,6 @@ namespace LiveSplit.OriDE.Memory {
 			{"Charge Dash",              45},
 			{"Air Dash",                 46},
 			{"Grenade Efficiency",       47}
-		};
-		public static Dictionary<string, int> skills = new Dictionary<string, int>()
-		{
-			{"Bash",                     5},
-			{"Charge Flame",             6},
-			{"Wall Jump",                7},
-			{"Stomp",                    8},
-			{"Double Jump",              9},
-			{"Charge Jump",              10},
-			{"Climb",                    13},
-			{"Glide",                    14},
-			{"Grenade",                  41},
-			{"Dash",                     42}
 		};
 	}
 	public class ProgramPointer {
