@@ -21,7 +21,7 @@ namespace LiveSplit.OriDE {
 		private int state = 0;
 		private bool hasLog = false;
 		private int lastLogCheck = 0;
-		internal static List<string> keys = new List<string>() { "CurrentSplit", "State", "SplitName", "GameState", "AbilityCells", "EnergyCells", "HealthCells", "XPLevel" };
+		internal static List<string> keys = new List<string>() { "CurrentSplit", "State", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "AbilityCells", "EnergyCells", "HealthCells", "XPLevel" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
 
@@ -156,7 +156,7 @@ namespace LiveSplit.OriDE {
 							break;
 					}
 				}
-				HandleSplit(shouldSplit);
+				HandleSplit(shouldSplit, split);
 			}
 
 			LogValues();
@@ -170,14 +170,19 @@ namespace LiveSplit.OriDE {
 		public bool CheckStartingNewGame(GameState state) {
 			return state == GameState.Prologue;
 		}
-		private void HandleSplit(bool shouldSplit, bool shouldReset = false) {
+		private void HandleSplit(bool shouldSplit, OriSplit split, bool shouldReset = false) {
 			if (currentSplit > 0 && shouldReset) {
 				Model.Reset();
 			} else if (shouldSplit) {
-				if (currentSplit == 0) {
-					Model.Start();
+				if (split.ShouldSplit) {
+					if (currentSplit == 0) {
+						Model.Start();
+					} else {
+						Model.Split();
+					}
 				} else {
-					Model.Split();
+					currentSplit++;
+					state = 0;
 				}
 			}
 		}
@@ -190,27 +195,42 @@ namespace LiveSplit.OriDE {
 
 			if (hasLog) {
 				string prev = "", curr = "";
+
+				GameState gameState = mem.GetGameState();
+				bool isInGameWorld = CheckInGameWorld(gameState);
+				bool isStartingGame = CheckStartingNewGame(gameState);
+
 				foreach (string key in keys) {
 					prev = currentValues[key];
 
 					switch (key) {
+						case "StartingGame": curr = isStartingGame.ToString(); break;
+						case "IsInGameWorld": curr = isInGameWorld.ToString(); break;
 						case "CurrentSplit": curr = currentSplit.ToString(); break;
 						case "State": curr = state.ToString(); break;
 						case "SplitName": curr = currentSplit < settings.Splits.Count ? settings.Splits[currentSplit].Field : ""; break;
 						case "GameState": curr = mem.GetGameState().ToString(); break;
-						case "AbilityCells": curr = mem.GetAbilityCells().ToString(); break;
-						case "EnergyCells": curr = ((int)mem.GetCurrentENMax()).ToString(); break;
-						case "HealthCells": curr = mem.GetCurrentHPMax().ToString(); break;
-						case "XPLevel": curr = mem.GetCurrentLevel().ToString(); break;
 						default:
-							if (OriMemory.abilities.ContainsKey(key)) {
-								curr = mem.GetAbility(key).ToString();
-							} else if (OriMemory.events.ContainsKey(key)) {
-								curr = mem.GetEvent(key).ToString();
-							} else if (OriMemory.keys.ContainsKey(key)) {
-								curr = mem.GetKey(key).ToString();
+							if (isInGameWorld) {
+								switch (key) {
+									case "AbilityCells": curr = mem.GetAbilityCells().ToString(); break;
+									case "EnergyCells": curr = ((int)mem.GetCurrentENMax()).ToString(); break;
+									case "HealthCells": curr = mem.GetCurrentHPMax().ToString(); break;
+									case "XPLevel": curr = mem.GetCurrentLevel().ToString(); break;
+									default:
+										if (OriMemory.abilities.ContainsKey(key)) {
+											curr = mem.GetAbility(key).ToString();
+										} else if (OriMemory.events.ContainsKey(key)) {
+											curr = mem.GetEvent(key).ToString();
+										} else if (OriMemory.keys.ContainsKey(key)) {
+											curr = mem.GetKey(key).ToString();
+										} else {
+											curr = "";
+										}
+										break;
+								}
 							} else {
-								curr = "";
+								curr = prev;
 							}
 							break;
 					}
@@ -277,12 +297,13 @@ namespace LiveSplit.OriDE {
 			WriteLog("---------New Game-------------------------------");
 		}
 		public void OnUndoSplit(object sender, EventArgs e) {
-			currentSplit--;
+			while (currentSplit > 0 && !settings.Splits[--currentSplit].ShouldSplit) { }
+
 			state = 0;
 			WriteLog("---------Undo Split-----------------------------");
 		}
 		public void OnSkipSplit(object sender, EventArgs e) {
-			currentSplit++;
+			while (currentSplit < settings.Splits.Count && !settings.Splits[currentSplit++].ShouldSplit) { }
 			state = 0;
 			WriteLog("---------Skip Split-----------------------------");
 		}

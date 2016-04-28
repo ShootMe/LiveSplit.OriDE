@@ -258,7 +258,7 @@ namespace LiveSplit.OriDE.Memory {
 			{"Spark Flame",              39},
 			{"Cinder Flame",             40},
 			{"Ultra Split Flame",        41},
-			{"Grenade",                  42},
+			{"Light Grenade",            42},
 			{"Dash",                     43},
 			{"Grenade Upgrade",          44},
 			{"Charge Dash",              45},
