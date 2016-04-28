@@ -21,7 +21,7 @@ namespace LiveSplit.OriDE {
 		private int state = 0;
 		private bool hasLog = false;
 		private int lastLogCheck = 0;
-		internal static string[] keys = { "CurrentSplit", "State", "GameState" };
+		internal static string[] keys = { "CurrentSplit", "State", "SplitName", "GameState", "AbilityCells", "EnergyCells", "HealthCells", "XPLevel", "XPos", "YPos" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
 
@@ -51,109 +51,110 @@ namespace LiveSplit.OriDE {
 				bool shouldSplit = false;
 
 				OriSplit split = settings.Splits[currentSplit];
-				switch (split.Field) {
-					case "Start Game":
-						shouldSplit = state == 0 && isStartingGame;
-						if (isStartingGame) { state = 1; }
-						break;
-					case "In Game": shouldSplit = isInGame; break;
-					case "In Menu": shouldSplit = !isInGame; break;
-					case "Map %":
-						decimal map = mem.GetTotalMapCompletion();
-						decimal splitMap;
-						if (decimal.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitMap)) {
-							shouldSplit = map >= splitMap;
-						}
-						break;
-					case "End of Forlorn Escape":
-					case "End of Horu Escape":
-					case "Hitbox":
-						HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
-						HitBox hitBox = new HitBox(split.Value);
-						shouldSplit = hitBox.Intersects(ori);
-						break;
-					case "Soul Flame":
-					case "Spirit Flame":
-					case "Wall Jump":
-					case "Charge Flame":
-					case "Dash":
-					case "Double Jump":
-					case "Bash":
-					case "Stomp":
-					case "Light Grenade":
-					case "Glide":
-					case "Climb":
-					case "Charge Jump":
-						shouldSplit = mem.GetAbility(split.Field); break;
-					case "Mist Lifted":
-					case "Clean Water":
-					case "Wind Restored":
-					case "Gumo Free":
-					case "Spirit Tree Reached":
-					case "Warmth Returned":
-					case "Darkness Lifted":
-						shouldSplit = mem.GetEvent(split.Field); break;
-					case "Gumon Seal":
-					case "Sunstone":
-					case "Water Vein":
-						shouldSplit = mem.GetKey(split.Field); break;
-					case "Ginso Tree Entered":
-					case "Forlorn Ruins Entered":
-					case "Mount Horu Entered":
-					case "End Game":
-						List<Scene> scenes = mem.GetScenes();
-						for (int i = 0; i < scenes.Count; i++) {
-							Scene scene = scenes[i];
-							if (scene.State == SceneState.Loaded) {
-								switch (scene.Name) {
-									case "ginsoEntranceIntro": shouldSplit = split.Field == "Ginso Tree Entered"; break;
-									case "forlornRuinsGetNightberry": shouldSplit = split.Field == "Forlorn Ruins Entered"; break;
-									case "mountHoruHubMid": shouldSplit = split.Field == "Mount Horu Entered"; break;
-								}
-							} else if (scene.State == SceneState.Loading) {
-								switch (scene.Name) {
-									case "creditsScreen": shouldSplit = split.Field == "End Game"; break;
+				if (split.Field == "Start Game") {
+					shouldSplit = isStartingGame;
+				} else if (split.Field == "In Game") {
+					shouldSplit = isInGame;
+				} else if (split.Field == "In Menu") {
+					shouldSplit = !isInGame;
+				} else if (isInGameWorld) {
+					switch (split.Field) {
+						case "Map %":
+							decimal map = mem.GetTotalMapCompletion();
+							decimal splitMap;
+							if (decimal.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitMap)) {
+								shouldSplit = map >= splitMap;
+							}
+							break;
+						case "End of Forlorn Escape":
+						case "End of Horu Escape":
+						case "Hitbox":
+							HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
+							HitBox hitBox = new HitBox(split.Value);
+							shouldSplit = hitBox.Intersects(ori);
+							break;
+						case "Soul Flame":
+						case "Spirit Flame":
+						case "Wall Jump":
+						case "Charge Flame":
+						case "Dash":
+						case "Double Jump":
+						case "Bash":
+						case "Stomp":
+						case "Light Grenade":
+						case "Glide":
+						case "Climb":
+						case "Charge Jump":
+							shouldSplit = mem.GetAbility(split.Field); break;
+						case "Mist Lifted":
+						case "Clean Water":
+						case "Wind Restored":
+						case "Gumo Free":
+						case "Spirit Tree Reached":
+						case "Warmth Returned":
+						case "Darkness Lifted":
+							shouldSplit = mem.GetEvent(split.Field); break;
+						case "Gumon Seal":
+						case "Sunstone":
+						case "Water Vein":
+							shouldSplit = mem.GetKey(split.Field); break;
+						case "Ginso Tree Entered":
+						case "Forlorn Ruins Entered":
+						case "Mount Horu Entered":
+						case "End Game":
+							List<Scene> scenes = mem.GetScenes();
+							for (int i = 0; i < scenes.Count; i++) {
+								Scene scene = scenes[i];
+								if (scene.State == SceneState.Loaded) {
+									switch (scene.Name) {
+										case "ginsoEntranceIntro": shouldSplit = split.Field == "Ginso Tree Entered"; break;
+										case "forlornRuinsGetNightberry": shouldSplit = split.Field == "Forlorn Ruins Entered"; break;
+										case "mountHoruHubMid": shouldSplit = split.Field == "Mount Horu Entered"; break;
+									}
+								} else if (scene.State == SceneState.Loading) {
+									switch (scene.Name) {
+										case "creditsScreen": shouldSplit = split.Field == "End Game"; break;
+									}
 								}
 							}
-						}
-						break;
-					case "Health Cells":
-						int maxHP = mem.GetCurrentHPMax() / 4;
-						int splitMaxHP;
-						if (int.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitMaxHP)) {
-							shouldSplit = maxHP >= splitMaxHP;
-						}
-						break;
-					case "Energy Cells":
-						float maxEN = mem.GetCurrentENMax();
-						int splitMaxEN;
-						if (int.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitMaxEN)) {
-							shouldSplit = maxEN >= splitMaxEN;
-						}
-						break;
-					case "Ability Cells":
-						int cells = mem.GetAbilityCells();
-						int splitCells;
-						if (int.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitCells)) {
-							shouldSplit = cells >= splitCells;
-						}
-						break;
-					case "Level":
-						int lvl = mem.GetCurrentLevel();
-						int splitLvl;
-						if (int.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitLvl)) {
-							shouldSplit = lvl >= splitLvl;
-						}
-						break;
-					case "Key Stones":
-						int keystones = mem.GetKeyStones();
-						int splitKeys;
-						if (int.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitKeys)) {
-							shouldSplit = keystones == splitKeys;
-						}
-						break;
+							break;
+						case "Health Cells":
+							int maxHP = mem.GetCurrentHPMax();
+							int splitMaxHP;
+							if (int.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitMaxHP)) {
+								shouldSplit = maxHP >= splitMaxHP;
+							}
+							break;
+						case "Energy Cells":
+							float maxEN = mem.GetCurrentENMax();
+							int splitMaxEN;
+							if (int.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitMaxEN)) {
+								shouldSplit = maxEN >= splitMaxEN;
+							}
+							break;
+						case "Ability Cells":
+							int cells = mem.GetAbilityCells();
+							int splitCells;
+							if (int.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitCells)) {
+								shouldSplit = cells >= splitCells;
+							}
+							break;
+						case "Level":
+							int lvl = mem.GetCurrentLevel();
+							int splitLvl;
+							if (int.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitLvl)) {
+								shouldSplit = lvl >= splitLvl;
+							}
+							break;
+						case "Key Stones":
+							int keystones = mem.GetKeyStones();
+							int splitKeys;
+							if (int.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitKeys)) {
+								shouldSplit = keystones == splitKeys;
+							}
+							break;
+					}
 				}
-
 				HandleSplit(shouldSplit);
 			}
 
@@ -194,7 +195,14 @@ namespace LiveSplit.OriDE {
 					switch (key) {
 						case "CurrentSplit": curr = currentSplit.ToString(); break;
 						case "State": curr = state.ToString(); break;
+						case "SplitName": curr = currentSplit < settings.Splits.Count ? settings.Splits[currentSplit].Field : ""; break;
 						case "GameState": curr = mem.GetGameState().ToString(); break;
+						case "AbilityCells": curr = mem.GetAbilityCells().ToString(); break;
+						case "EnergyCells": curr = ((int)mem.GetCurrentENMax()).ToString(); break;
+						case "HealthCells": curr = mem.GetCurrentHPMax().ToString(); break;
+						case "XPLevel": curr = mem.GetCurrentLevel().ToString(); break;
+						case "XPos": curr = mem.GetCameraTargetPosition().X.ToString("0.0"); break;
+						case "YPos": curr = mem.GetCameraTargetPosition().Y.ToString("0.0"); break;
 						default: curr = ""; break;
 					}
 
@@ -262,18 +270,18 @@ namespace LiveSplit.OriDE {
 		public void OnUndoSplit(object sender, EventArgs e) {
 			currentSplit--;
 			state = 0;
-			WriteLog(DateTime.Now.ToString(@"HH\:mm\:ss.fff") + " | " + Model.CurrentState.CurrentTime.RealTime.Value.ToString("G").Substring(3, 11) + ": CurrentSplit: " + currentSplit.ToString().PadLeft(24, ' '));
+			WriteLog("---------Undo Split-----------------------------");
 		}
 		public void OnSkipSplit(object sender, EventArgs e) {
 			currentSplit++;
 			state = 0;
-			WriteLog(DateTime.Now.ToString(@"HH\:mm\:ss.fff") + " | " + Model.CurrentState.CurrentTime.RealTime.Value.ToString("G").Substring(3, 11) + ": CurrentSplit: " + currentSplit.ToString().PadLeft(24, ' '));
+			WriteLog("---------Skip Split-----------------------------");
 		}
 		public void OnSplit(object sender, EventArgs e) {
 			currentSplit++;
 			state = 0;
 			Model.CurrentState.IsGameTimePaused = true;
-			WriteLog(DateTime.Now.ToString(@"HH\:mm\:ss.fff") + " | " + Model.CurrentState.CurrentTime.RealTime.Value.ToString("G").Substring(3, 11) + ": CurrentSplit: " + currentSplit.ToString().PadLeft(24, ' '));
+			WriteLog("---------Split----------------------------------");
 		}
 		private void WriteLog(string data) {
 			if (hasLog) {

@@ -71,33 +71,36 @@ namespace LiveSplit.OriDE.Memory {
 			return Program.Read<bool>(start, ability * 4, 0x08); ;
 		}
 		public List<Area> GetMapCompletion() {
-			IntPtr current = gameWorld.Read<IntPtr>(0x1c);
-			Area currentArea = GetArea(current);
-			IntPtr listHead = gameWorld.Read<IntPtr>(0x18, 0x08);
-			int listSize = gameWorld.Read<int>(0x18, 0x0c);
-
 			List<Area> areas = new List<Area>();
-			for (var i = 0; i < listSize; i++) {
-				IntPtr gameWorldAreaHead = Program.Read<IntPtr>(listHead, 0x10 + (i * 4));
+			if (gameWorld.Value != IntPtr.Zero) {
+				IntPtr current = gameWorld.Read<IntPtr>(0x1c);
+				Area currentArea = GetArea(current);
+				IntPtr listHead = gameWorld.Read<IntPtr>(0x18, 0x08);
+				int listSize = gameWorld.Read<int>(0x18, 0x0c);
 
-				Area area = GetArea(gameWorldAreaHead);
-				if (area.Name.Equals(currentArea.Name, StringComparison.OrdinalIgnoreCase)) {
-					area.Current = true;
+				for (var i = 0; i < listSize; i++) {
+					IntPtr gameWorldAreaHead = Program.Read<IntPtr>(listHead, 0x10 + (i * 4));
+
+					Area area = GetArea(gameWorldAreaHead);
+					if (area.Name.Equals(currentArea.Name, StringComparison.OrdinalIgnoreCase)) {
+						area.Current = true;
+					}
+					areas.Add(area);
 				}
-				areas.Add(area);
 			}
 
 			return areas;
 		}
 		public decimal GetTotalMapCompletion() {
-			IntPtr listHead = gameWorld.Read<IntPtr>(0x18, 0x08);
-			int listSize = gameWorld.Read<int>(0x18, 0x0c);
-
 			decimal total = 0;
-			for (var i = 0; i < listSize; i++) {
-				IntPtr gameWorldAreaHead = Program.Read<IntPtr>(listHead, 0x10 + (i * 4));
-				Area area = GetArea(gameWorldAreaHead);
-				total += area.Progress;
+			if (gameWorld.Value != IntPtr.Zero) {
+				IntPtr listHead = gameWorld.Read<IntPtr>(0x18, 0x08);
+				int listSize = gameWorld.Read<int>(0x18, 0x0c);
+				for (var i = 0; i < listSize; i++) {
+					IntPtr gameWorldAreaHead = Program.Read<IntPtr>(listHead, 0x10 + (i * 4));
+					Area area = GetArea(gameWorldAreaHead);
+					total += area.Progress;
+				}
 			}
 
 			return total;
@@ -134,7 +137,7 @@ namespace LiveSplit.OriDE.Memory {
 			return scenes;
 		}
 		public bool IsEnteringGame() {
-			return gameController.Read<bool>(0x6a) || gameController.Read<bool>(0x6b);
+			return gameController.Read<bool>(0x68) || gameController.Read<bool>(0x69);
 		}
 		public GameState GetGameState() {
 			return (GameState)gameStateMachine.Read<int>(0x14);
@@ -161,7 +164,7 @@ namespace LiveSplit.OriDE.Memory {
 			return seinCharacter.Read<float>(0x00, 0x40, 0x0c, 0x1c);
 		}
 		public int GetCurrentHPMax() {
-			return seinCharacter.Read<int>(0x00, 0x40, 0x0c, 0x20);
+			return seinCharacter.Read<int>(0x00, 0x40, 0x0c, 0x20) / 4;
 		}
 		public float GetCurrentEN() {
 			return seinCharacter.Read<float>(0x00, 0x3c, 0x20);
