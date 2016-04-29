@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 namespace LiveSplit.OriDE.Memory {
 	public partial class OriMemory {
 		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameController, gameStateMachine;
-		private float[] junkX = { 992.36f, 725.25f, 540.18f, 1513.69f, 1082.25f, 422.82f, 1494.81f, 692.56f, 1559.98f };
-		private float[] junkY = { 6039.27f, 6288.26f, 6407.79f, 6441.79f, 6484.88f, 6676.19f, 6999.13f, 7093.40f, 7325.27f };
 		public Process Program { get; set; }
 		public bool IsHooked { get; set; } = false;
 
@@ -91,6 +88,12 @@ namespace LiveSplit.OriDE.Memory {
 
 			return areas;
 		}
+		public Area GetCurrentArea() {
+			if (gameWorld.Value != IntPtr.Zero) {
+				return GetArea(gameWorld.Read<IntPtr>(0x1c));
+			}
+			return default(Area);
+		}
 		public decimal GetTotalMapCompletion() {
 			decimal total = 0;
 			if (gameWorld.Value != IntPtr.Zero) {
@@ -137,7 +140,7 @@ namespace LiveSplit.OriDE.Memory {
 			return scenes;
 		}
 		public bool IsEnteringGame() {
-			return gameController.Read<bool>(0x68) || gameController.Read<bool>(0x69);
+			return gameController.Read<bool>(0x68) || gameController.Read<bool>(0x69) || seinCharacter.Value == IntPtr.Zero || (GetCurrentLevel() == 0 && GetCurrentENMax() == 3 && GetCurrentHPMax() == 3 && GetAbility("Stomp"));
 		}
 		public GameState GetGameState() {
 			return (GameState)gameStateMachine.Read<int>(0x14);
@@ -186,6 +189,18 @@ namespace LiveSplit.OriDE.Memory {
 			}
 
 			return IsHooked;
+		}
+		public string GetPointer(string name) {
+			switch(name) {
+				case "GameWorld": return gameWorld.Value.ToString("X");
+				case "GameplayCamera": return gameplayCamera.Value.ToString("X");
+				case "WorldEvents": return worldEvents.Value.ToString("X");
+				case "SeinCharacter": return seinCharacter.Value.ToString("X");
+				case "ScenesManager": return scenesManager.Value.ToString("X");
+				case "GameController": return gameController.Value.ToString("X");
+				case "GameStateMachine": return gameStateMachine.Value.ToString("X");
+			}
+			return string.Empty;
 		}
 		public void AddLogItems(List<string> items) {
 			foreach (string key in keys.Keys) {

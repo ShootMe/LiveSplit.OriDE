@@ -21,7 +21,7 @@ namespace LiveSplit.OriDE {
 		private int state = 0;
 		private bool hasLog = false;
 		private int lastLogCheck = 0;
-		internal static List<string> keys = new List<string>() { "CurrentSplit", "State", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "AbilityCells", "EnergyCells", "HealthCells", "XPLevel" };
+		internal static List<string> keys = new List<string>() { "CurrentSplit", "State", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "HealthCells", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameController", "GameStateMachine", "WorldEvents" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
 
@@ -47,6 +47,8 @@ namespace LiveSplit.OriDE {
 			bool isInGame = CheckInGame(gameState);
 			bool isInGameWorld = CheckInGameWorld(gameState);
 			bool isStartingGame = CheckStartingNewGame(gameState);
+
+			LogValues();
 
 			if (Model != null && currentSplit < settings.Splits.Count) {
 				bool shouldSplit = false;
@@ -158,8 +160,6 @@ namespace LiveSplit.OriDE {
 				}
 				HandleSplit(shouldSplit, split);
 			}
-
-			LogValues();
 		}
 		public bool CheckInGame(GameState state) {
 			return state != GameState.Logos && state != GameState.StartScreen && state != GameState.TitleScreen;
@@ -175,7 +175,7 @@ namespace LiveSplit.OriDE {
 				Model.Reset();
 			} else if (shouldSplit) {
 				if (split.ShouldSplit) {
-					if (currentSplit == 0) {
+					if (Model.CurrentState.CurrentPhase == TimerPhase.NotRunning) {
 						Model.Start();
 					} else {
 						Model.Split();
@@ -208,8 +208,15 @@ namespace LiveSplit.OriDE {
 						case "IsInGameWorld": curr = isInGameWorld.ToString(); break;
 						case "CurrentSplit": curr = currentSplit.ToString(); break;
 						case "State": curr = state.ToString(); break;
-						case "SplitName": curr = currentSplit < settings.Splits.Count ? settings.Splits[currentSplit].Field : ""; break;
+						case "SplitName": curr = currentSplit < settings.Splits.Count ? settings.Splits[currentSplit].Field + " - " + settings.Splits[currentSplit].Value : ""; break;
 						case "GameState": curr = mem.GetGameState().ToString(); break;
+						case "GameWorld":
+						case "GameplayCamera":
+						case "WorldEvents":
+						case "SeinCharacter":
+						case "ScenesManager":
+						case "GameController":
+						case "GameStateMachine": curr = mem.GetPointer(key); break;
 						default:
 							if (isInGameWorld) {
 								switch (key) {
@@ -217,6 +224,7 @@ namespace LiveSplit.OriDE {
 									case "EnergyCells": curr = ((int)mem.GetCurrentENMax()).ToString(); break;
 									case "HealthCells": curr = mem.GetCurrentHPMax().ToString(); break;
 									case "XPLevel": curr = mem.GetCurrentLevel().ToString(); break;
+									case "CurrentArea": curr = mem.GetCurrentArea().Name; break;
 									default:
 										if (OriMemory.abilities.ContainsKey(key)) {
 											curr = mem.GetAbility(key).ToString();
@@ -236,7 +244,7 @@ namespace LiveSplit.OriDE {
 					}
 
 					if (!prev.Equals(curr)) {
-						WriteLog(DateTime.Now.ToString(@"HH\:mm\:ss.fff") + (Model != null ? " | " + Model.CurrentState.CurrentTime.RealTime.Value.ToString("G").Substring(3, 11) : "") + ": " + key + ": ".PadRight(30 - key.Length < 0 ? 0 : 30 - key.Length, ' ') + prev.PadLeft(25, ' ') + " -> " + curr);
+						WriteLog(DateTime.Now.ToString(@"HH\:mm\:ss.fff") + (Model != null ? " | " + Model.CurrentState.CurrentTime.RealTime.Value.ToString("G").Substring(3, 11) : "") + ": " + key + ": ".PadRight(30 - key.Length < 0 ? 0 : 30 - key.Length, ' ') + (prev.Length > 25 ? prev : prev.PadLeft(25, ' ')) + " -> " + curr);
 
 						currentValues[key] = curr;
 					}
@@ -269,8 +277,11 @@ namespace LiveSplit.OriDE {
 						currentArea = area;
 					}
 				}
+				if (areas.Count > 0) {
+					total /= areas.Count;
+				}
 				textInfo.InformationName = "Total Map: " + total.ToString("0.00") + "%";
-				textInfo.InformationValue = currentArea.Name.ToString();
+				textInfo.InformationValue = currentArea.Name.ToString() + " - " + currentArea.Progress.ToString("0.00") + "%";
 				textInfo.LongestString = "Valley Of The Wind - 100.00%";
 				textInfo.Update(invalidator, lvstate, width, height, mode);
 				if (invalidator != null) {
@@ -298,7 +309,6 @@ namespace LiveSplit.OriDE {
 		}
 		public void OnUndoSplit(object sender, EventArgs e) {
 			while (currentSplit > 0 && !settings.Splits[--currentSplit].ShouldSplit) { }
-
 			state = 0;
 			WriteLog("---------Undo Split-----------------------------");
 		}
