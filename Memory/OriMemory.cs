@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 namespace LiveSplit.OriDE.Memory {
 	public partial class OriMemory {
-		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameController, gameStateMachine, rainbowDash;
+		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameStateMachine, rainbowDash;
 		public Process Program { get; set; }
 		public bool IsHooked { get; set; } = false;
 
@@ -14,7 +14,6 @@ namespace LiveSplit.OriDE.Memory {
 			worldEvents = new ProgramPointer(this, "WorldEvents") { IsStatic = false };
 			seinCharacter = new ProgramPointer(this, "SeinCharacter") { IsStatic = false };
 			scenesManager = new ProgramPointer(this, "ScenesManager") { IsStatic = true };
-			gameController = new ProgramPointer(this, "GameController") { IsStatic = true };
 			gameStateMachine = new ProgramPointer(this, "GameStateMachine") { IsStatic = true };
 			rainbowDash = new ProgramPointer(this, "RainbowDash") { IsStatic = false };
 		}
@@ -146,7 +145,7 @@ namespace LiveSplit.OriDE.Memory {
 			return scenes;
 		}
 		public bool IsEnteringGame() {
-			return gameController.Read<bool>(0x68) || gameController.Read<bool>(0x69) || seinCharacter.Value == IntPtr.Zero || (GetCurrentLevel() == 0 && GetCurrentENMax() == 3 && GetCurrentHPMax() == 3 && GetAbility("Stomp"));
+			return seinCharacter.Value == IntPtr.Zero || (GetCurrentLevel() == 0 && GetCurrentENMax() == 3 && GetCurrentHPMax() == 3 && GetAbility("Stomp"));
 		}
 		public GameState GetGameState() {
 			return (GameState)gameStateMachine.Read<int>(0x14);
@@ -203,7 +202,6 @@ namespace LiveSplit.OriDE.Memory {
 				case "WorldEvents": return worldEvents.Value.ToString("X");
 				case "SeinCharacter": return seinCharacter.Value.ToString("X");
 				case "ScenesManager": return scenesManager.Value.ToString("X");
-				case "GameController": return gameController.Value.ToString("X");
 				case "GameStateMachine": return gameStateMachine.Value.ToString("X");
 				case "RainbowDash": return rainbowDash.Value.ToString("X");
 			}

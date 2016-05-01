@@ -21,7 +21,7 @@ namespace LiveSplit.OriDE {
 		private int state = 0;
 		private bool hasLog = false;
 		private int lastLogCheck = 0;
-		internal static List<string> keys = new List<string>() { "CurrentSplit", "State", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "HealthCells", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameController", "GameStateMachine", "WorldEvents", "RainbowDash" };
+		internal static List<string> keys = new List<string>() { "CurrentSplit", "State", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "HealthCells", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameStateMachine", "WorldEvents", "RainbowDash" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
 
@@ -219,7 +219,6 @@ namespace LiveSplit.OriDE {
 						case "WorldEvents":
 						case "SeinCharacter":
 						case "ScenesManager":
-						case "GameController":
 						case "RainbowDash":
 						case "GameStateMachine": curr = mem.GetPointer(key); break;
 						default:
