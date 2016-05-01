@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 namespace LiveSplit.OriDE.Memory {
 	public partial class OriMemory {
-		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameController, gameStateMachine;
+		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameController, gameStateMachine, rainbowDash;
 		public Process Program { get; set; }
 		public bool IsHooked { get; set; } = false;
 
@@ -16,8 +16,14 @@ namespace LiveSplit.OriDE.Memory {
 			scenesManager = new ProgramPointer(this, "ScenesManager") { IsStatic = true };
 			gameController = new ProgramPointer(this, "GameController") { IsStatic = true };
 			gameStateMachine = new ProgramPointer(this, "GameStateMachine") { IsStatic = true };
+			rainbowDash = new ProgramPointer(this, "RainbowDash") { IsStatic = false };
 		}
 
+		public void ActivateRainbowDash() {
+			if (rainbowDash.Value != IntPtr.Zero && !rainbowDash.Read<bool>()) {
+				rainbowDash.Write<bool>(true);
+			}
+		}
 		public PointF GetCameraTargetPosition() {
 			if (!IsHooked) { return new PointF(0, 0); }
 
@@ -191,7 +197,7 @@ namespace LiveSplit.OriDE.Memory {
 			return IsHooked;
 		}
 		public string GetPointer(string name) {
-			switch(name) {
+			switch (name) {
 				case "GameWorld": return gameWorld.Value.ToString("X");
 				case "GameplayCamera": return gameplayCamera.Value.ToString("X");
 				case "WorldEvents": return worldEvents.Value.ToString("X");
@@ -199,6 +205,7 @@ namespace LiveSplit.OriDE.Memory {
 				case "ScenesManager": return scenesManager.Value.ToString("X");
 				case "GameController": return gameController.Value.ToString("X");
 				case "GameStateMachine": return gameStateMachine.Value.ToString("X");
+				case "RainbowDash": return rainbowDash.Value.ToString("X");
 			}
 			return string.Empty;
 		}
@@ -292,6 +299,7 @@ namespace LiveSplit.OriDE.Memory {
 					{"SeinCharacter",         "558BEC5783EC048B7D08B8????????8938B8????????893883EC0C68????????E8????????83C41083EC08578945F850E8????????83C4108B45F889473483EC0C57E8????????83C41083EC085057E8????????83C4108D65FC5FC9C3|-82"},
 					{"GameplayCamera",        "05480000008B08894DE88B4804894DEC8B40088945F08B05|-28"},
 					{"GameWorld",             "558BEC53575683EC0C8B7D08B8????????89388B47|-8"},
+					{"RainbowDash",           "EC535783EC108B7D08C687????????000FB605????????85C074|-7" }
 			}},
 		};
 		private IntPtr pointer;
@@ -321,6 +329,10 @@ namespace LiveSplit.OriDE.Memory {
 		public T Read<T>(params int[] offsets) {
 			if (!Memory.IsHooked) { return default(T); }
 			return Memory.Program.Read<T>(Value, offsets);
+		}
+		public void Write<T>(T value, params int[] offsets) {
+			if (!Memory.IsHooked) { return; }
+			Memory.Program.Write<T>(Value, value, offsets);
 		}
 		public string ReadString(params int[] offsets) {
 			if (!Memory.IsHooked) { return string.Empty; }

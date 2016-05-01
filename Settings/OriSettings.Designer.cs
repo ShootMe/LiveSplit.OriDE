@@ -27,6 +27,7 @@
 			this.flowMain = new System.Windows.Forms.FlowLayoutPanel();
 			this.flowOptions = new System.Windows.Forms.FlowLayoutPanel();
 			this.chkShowMapDisplay = new System.Windows.Forms.CheckBox();
+			this.chkRainbowDash = new System.Windows.Forms.CheckBox();
 			this.flowMain.SuspendLayout();
 			this.flowOptions.SuspendLayout();
 			this.SuspendLayout();
@@ -51,7 +52,7 @@
 			this.flowMain.Location = new System.Drawing.Point(0, 0);
 			this.flowMain.Margin = new System.Windows.Forms.Padding(0);
 			this.flowMain.Name = "flowMain";
-			this.flowMain.Size = new System.Drawing.Size(161, 27);
+			this.flowMain.Size = new System.Drawing.Size(311, 27);
 			this.flowMain.TabIndex = 0;
 			this.flowMain.WrapContents = false;
 			// 
@@ -60,10 +61,11 @@
 			this.flowOptions.AutoSize = true;
 			this.flowOptions.Controls.Add(this.btnAddSplit);
 			this.flowOptions.Controls.Add(this.chkShowMapDisplay);
+			this.flowOptions.Controls.Add(this.chkRainbowDash);
 			this.flowOptions.Location = new System.Drawing.Point(0, 0);
 			this.flowOptions.Margin = new System.Windows.Forms.Padding(0);
 			this.flowOptions.Name = "flowOptions";
-			this.flowOptions.Size = new System.Drawing.Size(161, 27);
+			this.flowOptions.Size = new System.Drawing.Size(311, 27);
 			this.flowOptions.TabIndex = 0;
 			// 
 			// chkShowMapDisplay
@@ -77,6 +79,17 @@
 			this.chkShowMapDisplay.UseVisualStyleBackColor = true;
 			this.chkShowMapDisplay.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
 			// 
+			// chkRainbowDash
+			// 
+			this.chkRainbowDash.AutoSize = true;
+			this.chkRainbowDash.Location = new System.Drawing.Point(164, 3);
+			this.chkRainbowDash.Name = "chkRainbowDash";
+			this.chkRainbowDash.Size = new System.Drawing.Size(144, 17);
+			this.chkRainbowDash.TabIndex = 2;
+			this.chkRainbowDash.Text = "Rainbow Dash Activated";
+			this.chkRainbowDash.UseVisualStyleBackColor = true;
+			this.chkRainbowDash.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
+			// 
 			// OriSettings
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -87,7 +100,7 @@
 			this.Controls.Add(this.flowMain);
 			this.Margin = new System.Windows.Forms.Padding(0);
 			this.Name = "OriSettings";
-			this.Size = new System.Drawing.Size(161, 27);
+			this.Size = new System.Drawing.Size(311, 27);
 			this.Load += new System.EventHandler(this.OriSettings_Load);
 			this.flowMain.ResumeLayout(false);
 			this.flowMain.PerformLayout();
@@ -103,5 +116,6 @@
 		private System.Windows.Forms.FlowLayoutPanel flowMain;
 		private System.Windows.Forms.FlowLayoutPanel flowOptions;
 		private System.Windows.Forms.CheckBox chkShowMapDisplay;
+		private System.Windows.Forms.CheckBox chkRainbowDash;
 	}
 }

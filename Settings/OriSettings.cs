@@ -11,6 +11,7 @@ namespace LiveSplit.OriDE.Settings {
 	public partial class OriSettings : UserControl {
 		public List<OriSplit> Splits { get; private set; }
 		public bool ShowMapDisplay { get; set; }
+		public bool RainbowDash { get; set; }
 		private OriComponent component;
 		private bool isLoading;
 		public OriSettings(OriComponent comp) {
@@ -47,6 +48,7 @@ namespace LiveSplit.OriDE.Settings {
 			}
 
 			chkShowMapDisplay.Checked = ShowMapDisplay;
+			chkRainbowDash.Checked = RainbowDash;
 
 			isLoading = false;
 			this.flowMain.ResumeLayout(true);
@@ -120,6 +122,7 @@ namespace LiveSplit.OriDE.Settings {
 				}
 			}
 			ShowMapDisplay = chkShowMapDisplay.Checked;
+			RainbowDash = chkRainbowDash.Checked;
 		}
 		public XmlNode UpdateSettings(XmlDocument document) {
 			XmlElement xmlSettings = document.CreateElement("Settings");
@@ -127,6 +130,10 @@ namespace LiveSplit.OriDE.Settings {
 			XmlElement xmlMap = document.CreateElement("MapDisplay");
 			xmlMap.InnerText = chkShowMapDisplay.Checked.ToString();
 			xmlSettings.AppendChild(xmlMap);
+
+			XmlElement xmlDash = document.CreateElement("RainbowDash");
+			xmlDash.InnerText = chkRainbowDash.Checked.ToString();
+			xmlSettings.AppendChild(xmlDash);
 
 			XmlElement xmlSplits = document.CreateElement("Splits");
 			xmlSettings.AppendChild(xmlSplits);
@@ -153,6 +160,13 @@ namespace LiveSplit.OriDE.Settings {
 				ShowMapDisplay = bool.Parse(showMapNode.InnerText);
 			} else {
 				ShowMapDisplay = false;
+			}
+
+			XmlNode showRainbow = settings.SelectSingleNode("//RainbowDash");
+			if (showRainbow != null && showRainbow.InnerText != "") {
+				RainbowDash = bool.Parse(showRainbow.InnerText);
+			} else {
+				RainbowDash = false;
 			}
 
 			Splits.Clear();
