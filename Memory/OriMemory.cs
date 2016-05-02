@@ -19,7 +19,7 @@ namespace LiveSplit.OriDE.Memory {
 		}
 
 		public void ActivateRainbowDash() {
-			if (rainbowDash.Value != IntPtr.Zero && !rainbowDash.Read<bool>()) {
+			if (GetAbility("Dash") && rainbowDash.Value != IntPtr.Zero && !rainbowDash.Read<bool>()) {
 				rainbowDash.Write<bool>(true);
 			}
 		}
