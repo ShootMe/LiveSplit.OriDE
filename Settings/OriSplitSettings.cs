@@ -46,7 +46,13 @@ namespace LiveSplit.OriDE.Settings {
 			{"Energy Cells",             "Value"},
 			{"Ability Cells",            "Value"},
 			{"Level",                    "Value"},
-			{"Key Stones",               "Value"}
+			{"Key Stones",               "Value"},
+			{"Valley 100%",              "Boolean"},
+			{"Grotto 100%",              "Boolean"},
+			{"Swamp 100%",               "Boolean"},
+			{"Glades 100%",              "Boolean"},
+			{"Sorrow 100%",              "Boolean"},
+			{"Black Root 100%",          "Boolean"}
 		};
 		public OriSplitSettings() {
 			InitializeComponent();

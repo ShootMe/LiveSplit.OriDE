@@ -73,6 +73,22 @@ namespace LiveSplit.OriDE {
 								shouldSplit = map >= splitMap;
 							}
 							break;
+						case "Valley 100%":
+						case "Grotto 100%":
+						case "Swamp 100%":
+						case "Glades 100%":
+						case "Sorrow 100%":
+						case "Black Root 100%":
+							string areaName = split.Field.Substring(0, split.Field.Length - 5);
+							List<Area> areas = mem.GetMapCompletion();
+							for (int i = 0; i < areas.Count; i++) {
+								Area area = areas[i];
+								if (area.Name.IndexOf(areaName, StringComparison.OrdinalIgnoreCase) >= 0) {
+									shouldSplit = area.Progress > (decimal)99.99;
+									break;
+								}
+							}
+							break;
 						case "End of Forlorn Escape":
 						case "End of Horu Escape":
 						case "Hitbox":
