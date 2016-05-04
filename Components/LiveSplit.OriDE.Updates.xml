@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <updates>
+	<update version="1.2.0">
+		<files>
+			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
+		</files>
+		<changelog>
+			<change>
+				Trying to fix splits on load
+			</change>
+		</changelog>
+	</update>
 	<update version="1.1.9">
 		<files>
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
