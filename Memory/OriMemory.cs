@@ -145,7 +145,7 @@ namespace LiveSplit.OriDE.Memory {
 			return scenes;
 		}
 		public bool IsEnteringGame() {
-			return seinCharacter.Value == IntPtr.Zero || (GetCurrentLevel() == 0 && GetCurrentENMax() == 3 && GetCurrentHPMax() == 3 && GetAbility("Stomp"));
+			return seinCharacter.Value == IntPtr.Zero || (GetAbility("Water Breath") && !GetAbility("Rekindle"));
 		}
 		public GameState GetGameState() {
 			return (GameState)gameStateMachine.Read<int>(0x14);
