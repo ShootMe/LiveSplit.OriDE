@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 namespace LiveSplit.OriDE.Memory {
 	public partial class OriMemory {
-		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameStateMachine, rainbowDash;
+		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameStateMachine, rainbowDash, gameController;
 		public Process Program { get; set; }
 		public bool IsHooked { get; set; } = false;
 
@@ -16,6 +16,7 @@ namespace LiveSplit.OriDE.Memory {
 			scenesManager = new ProgramPointer(this, "ScenesManager") { IsStatic = true };
 			gameStateMachine = new ProgramPointer(this, "GameStateMachine") { IsStatic = true };
 			rainbowDash = new ProgramPointer(this, "RainbowDash") { IsStatic = false };
+			gameController = new ProgramPointer(this, "GameController") { IsStatic = true };
 		}
 
 		public void ActivateRainbowDash() {
@@ -145,7 +146,7 @@ namespace LiveSplit.OriDE.Memory {
 			return scenes;
 		}
 		public bool IsEnteringGame() {
-			return seinCharacter.Value == IntPtr.Zero || (GetAbility("Water Breath") && !GetAbility("Rekindle"));
+			return seinCharacter.Value == IntPtr.Zero || (GetAbility("Water Breath") && !GetAbility("Rekindle")) || gameController.Read<bool>(0x68) || gameController.Read<bool>(0x69);
 		}
 		public GameState GetGameState() {
 			return (GameState)gameStateMachine.Read<int>(0x14);
@@ -290,6 +291,7 @@ namespace LiveSplit.OriDE.Memory {
 		private static string[] versions = new string[1] { "v1.0" };
 		private static Dictionary<string, Dictionary<string, string>> funcPatterns = new Dictionary<string, Dictionary<string, string>>() {
 			{"v1.0", new Dictionary<string, string>() {
+					{"GameController",        "8B05????????83EC086A0050E88D00FEFF83C41085C074208B450883EC0C50E8????????83C41083EC0C50E8????????83C410E9|-50"},
 					{"ScenesManager",         "558BEC5783EC148B7D08B8????????893883EC0C57E8????????83C4108B05????????8B40208B40308945EC85FF0F84????????83EC0C68????????E8????????83C4108BC88B45EC897910|-65"},
 					{"GameStateMachine",      "558BEC5783EC148B7D08B8????????8938E8????????83EC0868????????50E8????????83C41085C0741183EC0C57E8????????83C410E9????????E8????????83EC0868????????50E8????????83C41085C0740E83EC0C57|-79"},
 					{"WorldEvents",           "558BEC83EC08B8????????C60000B8????????C60000B8????????C60000B8????????C60000B8????????C60000B8????????C60000B8????????C60000B8????????C6000083EC0C6A00E8????????83C410B8????????C60000B8????????C60000B8????????C60000C9C3|-94"},
