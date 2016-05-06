@@ -18,10 +18,9 @@ namespace LiveSplit.OriDE {
 		public IDictionary<string, Action> ContextMenuControls { get { return null; } }
 		private OriMemory mem;
 		private int currentSplit = 0;
-		private int state = 0;
 		private bool hasLog = false;
 		private int lastLogCheck = 0;
-		internal static List<string> keys = new List<string>() { "Pos", "CurrentSplit", "State", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "HealthCells", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameStateMachine", "WorldEvents", "RainbowDash" };
+		internal static List<string> keys = new List<string>() { "Pos", "CurrentSplit", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "CurrentEnergy", "HealthCells", "CurrentHealth", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameStateMachine", "WorldEvents", "RainbowDash" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
 
@@ -64,6 +63,10 @@ namespace LiveSplit.OriDE {
 					shouldSplit = isInGame;
 				} else if (split.Field == "In Menu") {
 					shouldSplit = !isInGame;
+				} else if (split.Field == "Hitbox" || split.Field == "End of Forlorn Escape" || split.Field == "End of Horu Escape") {
+					HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
+					HitBox hitBox = new HitBox(split.Value);
+					shouldSplit = hitBox.Intersects(ori);
 				} else if (isInGameWorld) {
 					switch (split.Field) {
 						case "Map %":
@@ -88,13 +91,6 @@ namespace LiveSplit.OriDE {
 									break;
 								}
 							}
-							break;
-						case "End of Forlorn Escape":
-						case "End of Horu Escape":
-						case "Hitbox":
-							HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
-							HitBox hitBox = new HitBox(split.Value);
-							shouldSplit = hitBox.Intersects(ori);
 							break;
 						case "Soul Flame":
 						case "Spirit Flame":
@@ -216,7 +212,6 @@ namespace LiveSplit.OriDE {
 					}
 				} else {
 					currentSplit++;
-					state = 0;
 				}
 			}
 		}
@@ -227,7 +222,7 @@ namespace LiveSplit.OriDE {
 			}
 			lastLogCheck--;
 
-			if (hasLog) {
+			if (hasLog || !Console.IsOutputRedirected) {
 				string prev = "", curr = "";
 
 				GameState gameState = mem.GetGameState();
@@ -244,7 +239,6 @@ namespace LiveSplit.OriDE {
 						case "StartingGame": curr = isStartingGame.ToString(); break;
 						case "IsInGameWorld": curr = isInGameWorld.ToString(); break;
 						case "CurrentSplit": curr = currentSplit.ToString(); break;
-						case "State": curr = state.ToString(); break;
 						case "SplitName": curr = currentSplit < settings.Splits.Count ? settings.Splits[currentSplit].Field + " - " + settings.Splits[currentSplit].Value : ""; break;
 						case "GameState": curr = mem.GetGameState().ToString(); break;
 						case "GameWorld":
@@ -259,7 +253,9 @@ namespace LiveSplit.OriDE {
 								switch (key) {
 									case "AbilityCells": curr = mem.GetAbilityCells().ToString(); break;
 									case "EnergyCells": curr = ((int)mem.GetCurrentENMax()).ToString(); break;
+									case "CurrentEnergy": curr = mem.GetCurrentEN().ToString("0.00"); break;
 									case "HealthCells": curr = mem.GetCurrentHPMax().ToString(); break;
+									case "CurrentHealth": curr = mem.GetCurrentHP().ToString(); break;
 									case "XPLevel": curr = mem.GetCurrentLevel().ToString(); break;
 									case "CurrentArea": curr = mem.GetCurrentArea().Name; break;
 									default:
@@ -329,7 +325,6 @@ namespace LiveSplit.OriDE {
 
 		public void OnReset(object sender, TimerPhase e) {
 			currentSplit = 0;
-			state = 0;
 			WriteLog("---------Reset----------------------------------");
 		}
 		public void OnResume(object sender, EventArgs e) {
@@ -340,31 +335,36 @@ namespace LiveSplit.OriDE {
 		}
 		public void OnStart(object sender, EventArgs e) {
 			currentSplit++;
-			state = 0;
 			Model.CurrentState.IsGameTimePaused = true;
 			WriteLog("---------New Game-------------------------------");
 		}
 		public void OnUndoSplit(object sender, EventArgs e) {
 			while (currentSplit > 0 && !settings.Splits[--currentSplit].ShouldSplit) { }
-			state = 0;
+			while (currentSplit > 0 && !settings.Splits[currentSplit - 1].ShouldSplit) {
+				currentSplit--;
+			}
 			WriteLog("---------Undo Split-----------------------------");
 		}
 		public void OnSkipSplit(object sender, EventArgs e) {
-			while (currentSplit < settings.Splits.Count && !settings.Splits[currentSplit++].ShouldSplit) { }
-			state = 0;
+			while (currentSplit < settings.Splits.Count && !settings.Splits[currentSplit].ShouldSplit) {
+				currentSplit++;
+			}
+			currentSplit++;
 			WriteLog("---------Skip Split-----------------------------");
 		}
 		public void OnSplit(object sender, EventArgs e) {
 			currentSplit++;
-			state = 0;
 			Model.CurrentState.IsGameTimePaused = true;
 			WriteLog("---------Split----------------------------------");
 		}
 		private void WriteLog(string data) {
-			if (hasLog) {
-				Console.WriteLine(data);
-				using (StreamWriter wr = new StreamWriter(oriLogPath, true)) {
-					wr.WriteLine(data);
+			if (hasLog || !Console.IsOutputRedirected) {
+				if (Console.IsOutputRedirected) {
+					using (StreamWriter wr = new StreamWriter(oriLogPath, true)) {
+						wr.WriteLine(data);
+					}
+				} else {
+					Console.WriteLine(data);
 				}
 			}
 		}
