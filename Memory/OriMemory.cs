@@ -27,8 +27,8 @@ namespace LiveSplit.OriDE.Memory {
 		public PointF GetCameraTargetPosition() {
 			if (!IsHooked) { return new PointF(0, 0); }
 
-			float px = gameplayCamera.Read<float>(0x10, 0x54);
-			float py = gameplayCamera.Read<float>(0x10, 0x58);
+			float px = gameplayCamera.Read<float>(0x14, 0x10);
+			float py = gameplayCamera.Read<float>(0x14, 0x14);
 			return new PointF(px, py);
 		}
 		public Dictionary<string, bool> GetEvents() {

@@ -21,7 +21,7 @@ namespace LiveSplit.OriDE {
 		private int state = 0;
 		private bool hasLog = false;
 		private int lastLogCheck = 0;
-		internal static List<string> keys = new List<string>() { "CurrentSplit", "State", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "HealthCells", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameStateMachine", "WorldEvents", "RainbowDash" };
+		internal static List<string> keys = new List<string>() { "Pos", "CurrentSplit", "State", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "HealthCells", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameStateMachine", "WorldEvents", "RainbowDash" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
 
@@ -224,6 +224,9 @@ namespace LiveSplit.OriDE {
 					prev = currentValues[key];
 
 					switch (key) {
+						//case "Pos":
+						//	PointF pos = mem.GetCameraTargetPosition();
+						//	curr = "(" + pos.X.ToString("0.0") + ", " + pos.Y.ToString("0.0") + ")"; break;
 						case "StartingGame": curr = isStartingGame.ToString(); break;
 						case "IsInGameWorld": curr = isInGameWorld.ToString(); break;
 						case "CurrentSplit": curr = currentSplit.ToString(); break;
