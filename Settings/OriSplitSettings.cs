@@ -43,7 +43,9 @@ namespace LiveSplit.OriDE.Settings {
             {"End of Horu Escape",       "Hitbox"},  // End of Escape
             {"End Game",                 "Boolean"},
 			{"Health Cells",             "Value"},
+			{"Current Health",           "Value"},
 			{"Energy Cells",             "Value"},
+			{"Current Energy",           "Value"},
 			{"Ability Cells",            "Value"},
 			{"Level",                    "Value"},
 			{"Key Stones",               "Value"},

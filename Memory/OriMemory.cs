@@ -169,8 +169,8 @@ namespace LiveSplit.OriDE.Memory {
 		public int GetExperience() {
 			return seinCharacter.Read<int>(0x00, 0x38, 0x2c);
 		}
-		public float GetCurrentHP() {
-			return seinCharacter.Read<float>(0x00, 0x40, 0x0c, 0x1c);
+		public int GetCurrentHP() {
+			return (int)seinCharacter.Read<float>(0x00, 0x40, 0x0c, 0x1c);
 		}
 		public int GetCurrentHPMax() {
 			return seinCharacter.Read<int>(0x00, 0x40, 0x0c, 0x20) / 4;

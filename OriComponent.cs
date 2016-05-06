@@ -148,11 +148,25 @@ namespace LiveSplit.OriDE {
 								shouldSplit = maxHP >= splitMaxHP;
 							}
 							break;
+						case "Current Health":
+							int curHP = mem.GetCurrentHP();
+							float splitCurHP;
+							if (float.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitCurHP)) {
+								shouldSplit = curHP == (int)(splitCurHP * 4);
+							}
+							break;
 						case "Energy Cells":
 							float maxEN = mem.GetCurrentENMax();
 							int splitMaxEN;
 							if (int.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitMaxEN)) {
 								shouldSplit = maxEN >= splitMaxEN;
+							}
+							break;
+						case "Current Energy":
+							float curEN = mem.GetCurrentEN();
+							float splitCurEN;
+							if (float.TryParse(split.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.GetCultureInfo("en-US"), out splitCurEN)) {
+								shouldSplit = Math.Abs(curEN - splitCurEN) < 0.1f;
 							}
 							break;
 						case "Ability Cells":
