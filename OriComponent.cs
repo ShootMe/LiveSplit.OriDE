@@ -23,6 +23,7 @@ namespace LiveSplit.OriDE {
 		internal static List<string> keys = new List<string>() { "Pos", "CurrentSplit", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "CurrentEnergy", "HealthCells", "CurrentHealth", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameStateMachine", "WorldEvents", "RainbowDash" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
+		private OriManager manager;
 
 		public OriComponent() {
 			try {
@@ -34,13 +35,23 @@ namespace LiveSplit.OriDE {
 				foreach (string key in keys) {
 					currentValues[key] = "";
 				}
+				manager = new OriManager();
+				manager.Memory = mem;
+				manager.Component = this;
+				manager.Show();
+				manager.Visible = false;
 			} catch (Exception ex) {
 				Console.WriteLine(ex.ToString());
 			}
 		}
 
 		public void GetValues() {
-			if (!mem.HookProcess()) { return; }
+			if (!mem.HookProcess()) {
+				if (manager.Visible) { manager.Invoke((Action)delegate () { manager.Hide(); }); }
+				return;
+			} else if (!manager.Visible) {
+				manager.Invoke((Action)delegate () { manager.Show(); });
+			}
 
 			GameState gameState = mem.GetGameState();
 			bool isInGame = CheckInGame(gameState);
@@ -418,6 +429,10 @@ namespace LiveSplit.OriDE {
 		public float PaddingLeft { get { return settings.ShowMapDisplay ? textInfo.PaddingLeft : 0; } }
 		public float PaddingBottom { get { return settings.ShowMapDisplay ? textInfo.PaddingBottom : 0; } }
 		public float PaddingRight { get { return settings.ShowMapDisplay ? textInfo.PaddingRight : 0; } }
-		public void Dispose() { }
+		public void Dispose() {
+			manager.Memory = null;
+			manager.Close();
+			manager.Dispose();
+		}
 	}
 }

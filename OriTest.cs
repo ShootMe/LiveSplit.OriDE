@@ -2,6 +2,7 @@
 using System.Threading;
 namespace LiveSplit.OriDE {
 	public class OriTest {
+		private static OriComponent comp = new OriComponent();
 		public static void Main(string[] args) {
 			try {
 				Thread t = new Thread(GetVals);
@@ -15,7 +16,6 @@ namespace LiveSplit.OriDE {
 		}
 		private static void GetVals() {
 			try {
-				OriComponent comp = new OriComponent();
 				while (true) {
 					comp.GetValues();
 

@@ -56,6 +56,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OriManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OriManager.Designer.cs">
+      <DependentUpon>OriManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="Memory\Entities.cs" />
     <Compile Include="OriComponent.cs" />
     <Compile Include="OriFactory.cs" />
@@ -85,6 +91,9 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="OriManager.resx">
+      <DependentUpon>OriManager.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Settings\OriSettings.resx">
       <DependentUpon>OriSettings.cs</DependentUpon>
     </EmbeddedResource>
