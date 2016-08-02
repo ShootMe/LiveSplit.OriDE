@@ -78,7 +78,7 @@
 			// 
 			this.lblHP.AutoSize = true;
 			this.lblHP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblHP.Location = new System.Drawing.Point(112, 69);
+			this.lblHP.Location = new System.Drawing.Point(123, 69);
 			this.lblHP.Name = "lblHP";
 			this.lblHP.Size = new System.Drawing.Size(65, 20);
 			this.lblHP.TabIndex = 8;
@@ -88,7 +88,7 @@
 			// 
 			this.lblEN.AutoSize = true;
 			this.lblEN.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblEN.Location = new System.Drawing.Point(225, 69);
+			this.lblEN.Location = new System.Drawing.Point(236, 69);
 			this.lblEN.Name = "lblEN";
 			this.lblEN.Size = new System.Drawing.Size(65, 20);
 			this.lblEN.TabIndex = 9;
@@ -98,7 +98,7 @@
 			// 
 			this.lblXP.AutoSize = true;
 			this.lblXP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblXP.Location = new System.Drawing.Point(112, 89);
+			this.lblXP.Location = new System.Drawing.Point(123, 89);
 			this.lblXP.Name = "lblXP";
 			this.lblXP.Size = new System.Drawing.Size(64, 20);
 			this.lblXP.TabIndex = 10;
@@ -119,7 +119,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
-			this.ClientSize = new System.Drawing.Size(354, 119);
+			this.ClientSize = new System.Drawing.Size(364, 119);
 			this.Controls.Add(this.lblAbility);
 			this.Controls.Add(this.lblXP);
 			this.Controls.Add(this.lblEN);

@@ -60,9 +60,9 @@ namespace LiveSplit.OriDE {
 					int level = Memory.GetCurrentLevel();
 					int xp = Memory.GetExperience();
 					lblLevel.Text = "Level: " + level.ToString();
-					lblHP.Text = "HP: " + ((double)Memory.GetCurrentHP() / 4).ToString("0.00") + " / " + Memory.GetCurrentHPMax().ToString();
-					lblEN.Text = "EN: " + Memory.GetCurrentEN().ToString("0.00") + " / " + ((int)Memory.GetCurrentENMax()).ToString();
-					lblAbility.Text = "Ability: " + Memory.GetAbilityCells().ToString();
+					lblHP.Text = "HP: " + ((double)Memory.GetCurrentHP() / 4).ToString("0.##") + " / " + Memory.GetCurrentHPMax().ToString();
+					lblEN.Text = "EN: " + Memory.GetCurrentEN().ToString("0.##") + " / " + ((int)Memory.GetCurrentENMax()).ToString();
+					lblAbility.Text = "Ability: " + Memory.GetAbilityCells().ToString() + " / 33";
 					lblXP.Text = "XP: " + xp.ToString() + " / " + GetXP(level);
 				} else {
 					lblLevel.Text = "Level: N/A";
@@ -84,12 +84,12 @@ namespace LiveSplit.OriDE {
 				case 3: return 175;
 				case 4: return 275;
 			}
-			if (level < 21) {
-				return (level - 2) * 100;
-			} else if (level < 24) {
-				return (level - 19) * 1000;
+			if (level < 20) {
+				return (level - 1) * 100;
+			} else if (level < 23) {
+				return (level - 18) * 1000;
 			} else if (level < 51) {
-				return 4000 + (level - 23) * 1500;
+				return (int)(4000 + Math.Round(((double)(level - 22) * 1500) / 7, 0, MidpointRounding.AwayFromZero));
 			}
 			return 10000;
 		}
