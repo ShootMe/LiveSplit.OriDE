@@ -137,6 +137,7 @@
 			this.Text = "Ori Manager";
 			this.TopMost = true;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OriManager_FormClosing);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OriManager_KeyDown);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

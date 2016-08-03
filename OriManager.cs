@@ -8,6 +8,7 @@ namespace LiveSplit.OriDE {
 	public partial class OriManager : Form {
 		public OriMemory Memory { get; set; }
 		public OriComponent Component { get; set; }
+		private bool useLivesplitColors = true;
 		public OriManager() {
 			InitializeComponent();
 			Visible = false;
@@ -19,19 +20,38 @@ namespace LiveSplit.OriDE {
 		private void OriManager_FormClosing(object sender, FormClosingEventArgs e) {
 			e.Cancel = Memory != null;
 		}
+		private void OriManager_KeyDown(object sender, KeyEventArgs e) {
+			if (e.Control && e.KeyCode == Keys.L) {
+				useLivesplitColors = !useLivesplitColors;
+			}
+		}
 
 		private void UpdateLoop() {
-			try {
-				while (true) {
+			while (true) {
+				try {
 					UpdateValues();
 					Thread.Sleep(33);
-				}
-			} catch { }
+				} catch { }
+			}
+		}
+		public Color ToRGB(Color c) {
+			return Color.FromArgb((255 << 24) | (c.R << 16) | (c.G << 8) | c.B);
 		}
 		public void UpdateValues() {
 			if (this.InvokeRequired) {
 				this.Invoke((Action)UpdateValues);
 			} else if (this.Visible && Memory != null && Memory.IsHooked) {
+				if (useLivesplitColors && Component != null && Component.Model != null) {
+					if (ToRGB(Component.Model.CurrentState.LayoutSettings.BackgroundColor) != this.BackColor) {
+						this.BackColor = ToRGB(Component.Model.CurrentState.LayoutSettings.BackgroundColor);
+					}
+					if (ToRGB(Component.Model.CurrentState.LayoutSettings.TextColor) != this.ForeColor) {
+						this.ForeColor = ToRGB(Component.Model.CurrentState.LayoutSettings.TextColor);
+					}
+				} else if (this.BackColor != Color.White) {
+					this.BackColor = Color.White;
+					this.ForeColor = Color.Black;
+				}
 				GameState gameState = Memory.GetGameState();
 				bool isInGameWorld = Component.CheckInGameWorld(gameState);
 				bool isStartingGame = Component.CheckStartingNewGame(gameState);
@@ -75,7 +95,6 @@ namespace LiveSplit.OriDE {
 				this.Hide();
 			}
 		}
-
 		public int GetXP(int level) {
 			switch (level) {
 				case 0: return 25;

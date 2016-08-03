@@ -325,7 +325,7 @@ namespace LiveSplit.OriDE {
 					total /= areas.Count;
 				}
 				textInfo.InformationName = "Total Map: " + total.ToString("0.00") + "%";
-				textInfo.InformationValue = currentArea.Name.ToString() + " - " + currentArea.Progress.ToString("0.00") + "%";
+				textInfo.InformationValue = currentArea.Name + " - " + currentArea.Progress.ToString("0.00") + "%";
 				textInfo.LongestString = "Valley Of The Wind - 100.00%";
 				textInfo.Update(invalidator, lvstate, width, height, mode);
 				if (invalidator != null) {
