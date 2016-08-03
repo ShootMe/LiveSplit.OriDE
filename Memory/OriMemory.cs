@@ -19,6 +19,38 @@ namespace LiveSplit.OriDE.Memory {
 			gameController = new ProgramPointer(this, "GameController") { IsStatic = true };
 		}
 
+		public void LockInput(bool lockit) {
+			seinCharacter.Write<bool>(lockit, 0x0, 0x48, 0x14, 0x28, 0x10);
+		}
+		public int SeinInputDir() {
+			bool down = seinCharacter.Read<bool>(0x0, 0x34, 0x8, 0x8);
+			bool left = seinCharacter.Read<bool>(0x0, 0x34, 0xc, 0x8);
+			bool right = seinCharacter.Read<bool>(0x0, 0x34, 0x10, 0x8);
+			bool up = seinCharacter.Read<bool>(0x0, 0x34, 0x14, 0x8);
+			return down ? 1 : up ? 2 : left ? 3 : right ? 4 : 0;
+		}
+		public void ChangeGravity(float strength, float angle) {
+			seinCharacter.Write<float>(strength, 0x0, 0x48, 0x18, 0x28, 0x8);
+			seinCharacter.Write<float>(angle, 0x0, 0x48, 0x18, 0x28, 0xc);
+		}
+		public void SetSpeed(float maxSpeed, float accGround, float accAir, float waterSpeed) {
+			seinCharacter.Write<float>(accGround, 0x0, 0x48, 0x14, 0x28, 0x8, 0x8);
+			seinCharacter.Write<float>(accGround / 2f, 0x0, 0x48, 0x14, 0x28, 0x8, 0xc);
+			seinCharacter.Write<float>(maxSpeed, 0x0, 0x48, 0x14, 0x28, 0x8, 0x10);
+
+			seinCharacter.Write<float>(accAir, 0x0, 0x48, 0x14, 0x28, 0xc, 0x8);
+			seinCharacter.Write<float>(accAir, 0x0, 0x48, 0x14, 0x28, 0xc, 0xc);
+			seinCharacter.Write<float>(maxSpeed, 0x0, 0x48, 0x14, 0x28, 0xc, 0x10);
+
+			seinCharacter.Write<float>(waterSpeed, 0x0, 0x10, 0x3c, 0x98);
+		}
+		public PointF CurrentSpeed() {
+			if (!IsHooked) { return new PointF(0, 0); }
+
+			float px = seinCharacter.Read<float>(0x0, 0x48, 0x10, 0xbc);
+			float py = seinCharacter.Read<float>(0x0, 0x48, 0x10, 0xc0);
+			return new PointF(px, py);
+		}
 		public void ActivateRainbowDash() {
 			if (GetAbility("Dash") && rainbowDash.Value != IntPtr.Zero && !rainbowDash.Read<bool>()) {
 				rainbowDash.Write<bool>(true);

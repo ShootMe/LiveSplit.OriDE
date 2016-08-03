@@ -286,7 +286,7 @@ namespace LiveSplit.OriDE {
 							}
 							break;
 					}
-
+					if (curr == null) { curr = string.Empty; }
 					if (!prev.Equals(curr)) {
 						WriteLog(DateTime.Now.ToString(@"HH\:mm\:ss.fff") + (Model != null ? " | " + Model.CurrentState.CurrentTime.RealTime.Value.ToString("G").Substring(3, 11) : "") + ": " + key + ": ".PadRight(30 - key.Length < 0 ? 0 : 30 - key.Length, ' ') + (prev.Length > 25 ? prev : prev.PadLeft(25, ' ')) + " -> " + curr);
 
