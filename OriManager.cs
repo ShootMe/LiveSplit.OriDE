@@ -59,9 +59,9 @@ namespace LiveSplit.OriDE {
 				bool isStartingGame = Component.CheckStartingNewGame(gameState);
 				PointF currentSpeed = Memory.CurrentSpeed();
 
-				if (extraFast) {
+				if (extraFast && !Memory.IsLocked()) {
 					goingFast = true;
-					Memory.SetSpeed(23.222f, 90f, 39f, 12f);
+					Memory.SetSpeed(23.222f, 90f, 39f, 12f, 70f, 70f, 9f, 60f, 1f, 5f, 16f);
 					//int inputDir = Memory.SeinInputDir();
 					//Memory.LockInput(true);
 					//if (inputDir == 1) {
@@ -75,7 +75,7 @@ namespace LiveSplit.OriDE {
 					//}
 				} else if (goingFast) {
 					goingFast = false;
-					Memory.SetSpeed(11.6667f, 60f, 26f, 6f);
+					Memory.SetSpeed(11.6667f, 60f, 26f, 6f, 56.568f, 40f, 6f, 38f, 0.5f, 3f, 8f);
 				}
 
 				List<Area> areas = Memory.GetMapCompletion();

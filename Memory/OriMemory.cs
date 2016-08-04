@@ -22,6 +22,9 @@ namespace LiveSplit.OriDE.Memory {
 		public void LockInput(bool lockit) {
 			seinCharacter.Write<bool>(lockit, 0x0, 0x48, 0x14, 0x28, 0x10);
 		}
+		public bool IsLocked() {
+			return seinCharacter.Read<bool>(0x0, 0x48, 0x14, 0x28, 0x10);
+		}
 		public int SeinInputDir() {
 			bool down = seinCharacter.Read<bool>(0x0, 0x34, 0x8, 0x8);
 			bool left = seinCharacter.Read<bool>(0x0, 0x34, 0xc, 0x8);
@@ -33,7 +36,7 @@ namespace LiveSplit.OriDE.Memory {
 			seinCharacter.Write<float>(strength, 0x0, 0x48, 0x18, 0x28, 0x8);
 			seinCharacter.Write<float>(angle, 0x0, 0x48, 0x18, 0x28, 0xc);
 		}
-		public void SetSpeed(float maxSpeed, float accGround, float accAir, float waterSpeed) {
+		public void SetSpeed(float maxSpeed, float accGround, float accAir, float waterSpeed, float bashSpeed, float stompSpeed, float wallJumpImp, float chargeJumpSpeed, float dashTime, float jumpHeight, float climbSteps) {
 			seinCharacter.Write<float>(accGround, 0x0, 0x48, 0x14, 0x28, 0x8, 0x8);
 			seinCharacter.Write<float>(accGround / 2f, 0x0, 0x48, 0x14, 0x28, 0x8, 0xc);
 			seinCharacter.Write<float>(maxSpeed, 0x0, 0x48, 0x14, 0x28, 0x8, 0x10);
@@ -43,6 +46,24 @@ namespace LiveSplit.OriDE.Memory {
 			seinCharacter.Write<float>(maxSpeed, 0x0, 0x48, 0x14, 0x28, 0xc, 0x10);
 
 			seinCharacter.Write<float>(waterSpeed, 0x0, 0x10, 0x3c, 0x98);
+
+			seinCharacter.Write<float>(bashSpeed, 0x0, 0x10, 0x50, 0x88);
+
+			seinCharacter.Write<float>(stompSpeed, 0x0, 0x10, 0x20, 0x7c);
+
+			seinCharacter.Write<float>(wallJumpImp, 0x0, 0x10, 0x10, 0x44);
+			seinCharacter.Write<float>(wallJumpImp * 2, 0x0, 0x10, 0x10, 0x48);
+
+			seinCharacter.Write<float>(chargeJumpSpeed, 0x0, 0x10, 0x18, 0x4c);
+			seinCharacter.Write<float>(chargeJumpSpeed, 0x0, 0x10, 0x1c, 0x48);
+
+			seinCharacter.Write<float>(dashTime, 0x0, 0x10, 0x80, 0x7c);
+			seinCharacter.Write<float>(dashTime, 0x0, 0x10, 0x80, 0x80);
+
+			seinCharacter.Write<float>(jumpHeight, 0x0, 0x10, 0xc, 0x68);
+
+			seinCharacter.Write<float>(climbSteps, 0x0, 0x10, 0x30, 0x5c);
+			seinCharacter.Write<float>(climbSteps, 0x0, 0x10, 0x30, 0x60);
 		}
 		public PointF CurrentSpeed() {
 			if (!IsHooked) { return new PointF(0, 0); }
