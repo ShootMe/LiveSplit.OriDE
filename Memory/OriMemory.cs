@@ -36,7 +36,7 @@ namespace LiveSplit.OriDE.Memory {
 			seinCharacter.Write<float>(strength, 0x0, 0x48, 0x18, 0x28, 0x8);
 			seinCharacter.Write<float>(angle, 0x0, 0x48, 0x18, 0x28, 0xc);
 		}
-		public void SetSpeed(float maxSpeed, float accGround, float accAir, float waterSpeed, float bashSpeed, float stompSpeed, float wallJumpImp, float chargeJumpSpeed, float wallChargeJumpSpeed, float jumpHeight, float climbSteps) {
+		public void SetSpeed(float maxSpeed, float accGround, float accAir, float waterSpeed, float bashSpeed, float stompSpeed, float wallJumpImp, float chargeJumpSpeed, float wallChargeJumpSpeed, float jumpHeight, float climbSpeed, float dashSpeed, float chargeDashSpeed) {
 			seinCharacter.Write<float>(accGround, 0x0, 0x48, 0x14, 0x28, 0x8, 0x8);
 			seinCharacter.Write<float>(accGround / 2f, 0x0, 0x48, 0x14, 0x28, 0x8, 0xc);
 			seinCharacter.Write<float>(maxSpeed, 0x0, 0x48, 0x14, 0x28, 0x8, 0x10);
@@ -73,8 +73,13 @@ namespace LiveSplit.OriDE.Memory {
 				seinCharacter.Write<float>(jumpHeight * 2f, 0x0, 0x10, 0xc, 0x58);
 			}
 
-			seinCharacter.Write<float>(climbSteps, 0x0, 0x10, 0x30, 0x5c);
-			seinCharacter.Write<float>(climbSteps, 0x0, 0x10, 0x30, 0x60);
+			seinCharacter.Write<float>(climbSpeed, 0x0, 0x10, 0x30, 0x5c);
+			seinCharacter.Write<float>(climbSpeed, 0x0, 0x10, 0x30, 0x60);
+
+			seinCharacter.Write<float>(dashSpeed, 0x0, 0x10, 0x80, 0x20, 0x8, 0x84);
+			seinCharacter.Write<float>(dashSpeed - 15f, 0x0, 0x10, 0x80, 0x20, 0x8, 0x94);
+			seinCharacter.Write<float>(chargeDashSpeed, 0x0, 0x10, 0x80, 0x24, 0x8, 0x84);
+			seinCharacter.Write<float>(chargeDashSpeed - 15f, 0x0, 0x10, 0x80, 0x24, 0x8, 0x94);
 		}
 		public PointF CurrentSpeed() {
 			if (!IsHooked) { return new PointF(0, 0); }

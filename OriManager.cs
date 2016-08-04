@@ -73,10 +73,10 @@ namespace LiveSplit.OriDE {
 
 				if (extraFast) {
 					goingFast = true;
-					Memory.SetSpeed(24f, 85f, 39f, 12f, 70f, 70f, 9f, 60f, 200f, 5f, 16f);
+					Memory.SetSpeed(24f, 85f, 39f, 12f, 70f, 70f, 9f, 60f, 200f, 5f, 16f, 90f, 180f);
 				} else if (goingFast) {
 					goingFast = false;
-					Memory.SetSpeed(11.6667f, 60f, 26f, 6f, 56.568f, 40f, 6f, 38f, 100f, 3f, 8f);
+					Memory.SetSpeed(11.6667f, 60f, 26f, 6f, 56.568f, 40f, 6f, 38f, 100f, 3f, 8f, 50f, 100f);
 				}
 
 				List<Area> areas = Memory.GetMapCompletion();
