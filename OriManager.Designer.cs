@@ -33,13 +33,14 @@
 			this.lblXP = new System.Windows.Forms.Label();
 			this.lblAbility = new System.Windows.Forms.Label();
 			this.lblSpeed = new System.Windows.Forms.Label();
+			this.lblKeys = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// lblMap
 			// 
 			this.lblMap.AutoSize = true;
 			this.lblMap.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblMap.Location = new System.Drawing.Point(12, 9);
+			this.lblMap.Location = new System.Drawing.Point(7, 9);
 			this.lblMap.Name = "lblMap";
 			this.lblMap.Size = new System.Drawing.Size(115, 20);
 			this.lblMap.TabIndex = 4;
@@ -49,7 +50,7 @@
 			// 
 			this.lblPos.AutoSize = true;
 			this.lblPos.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblPos.Location = new System.Drawing.Point(12, 49);
+			this.lblPos.Location = new System.Drawing.Point(7, 49);
 			this.lblPos.Name = "lblPos";
 			this.lblPos.Size = new System.Drawing.Size(197, 20);
 			this.lblPos.TabIndex = 5;
@@ -59,7 +60,7 @@
 			// 
 			this.lblArea.AutoSize = true;
 			this.lblArea.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblArea.Location = new System.Drawing.Point(12, 29);
+			this.lblArea.Location = new System.Drawing.Point(7, 29);
 			this.lblArea.Name = "lblArea";
 			this.lblArea.Size = new System.Drawing.Size(254, 20);
 			this.lblArea.TabIndex = 7;
@@ -69,7 +70,7 @@
 			// 
 			this.lblLevel.AutoSize = true;
 			this.lblLevel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblLevel.Location = new System.Drawing.Point(12, 89);
+			this.lblLevel.Location = new System.Drawing.Point(7, 89);
 			this.lblLevel.Name = "lblLevel";
 			this.lblLevel.Size = new System.Drawing.Size(80, 20);
 			this.lblLevel.TabIndex = 6;
@@ -79,7 +80,7 @@
 			// 
 			this.lblHP.AutoSize = true;
 			this.lblHP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblHP.Location = new System.Drawing.Point(123, 89);
+			this.lblHP.Location = new System.Drawing.Point(118, 89);
 			this.lblHP.Name = "lblHP";
 			this.lblHP.Size = new System.Drawing.Size(65, 20);
 			this.lblHP.TabIndex = 8;
@@ -89,7 +90,7 @@
 			// 
 			this.lblEN.AutoSize = true;
 			this.lblEN.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblEN.Location = new System.Drawing.Point(236, 89);
+			this.lblEN.Location = new System.Drawing.Point(250, 89);
 			this.lblEN.Name = "lblEN";
 			this.lblEN.Size = new System.Drawing.Size(65, 20);
 			this.lblEN.TabIndex = 9;
@@ -99,7 +100,7 @@
 			// 
 			this.lblXP.AutoSize = true;
 			this.lblXP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblXP.Location = new System.Drawing.Point(123, 109);
+			this.lblXP.Location = new System.Drawing.Point(118, 109);
 			this.lblXP.Name = "lblXP";
 			this.lblXP.Size = new System.Drawing.Size(64, 20);
 			this.lblXP.TabIndex = 10;
@@ -109,7 +110,7 @@
 			// 
 			this.lblAbility.AutoSize = true;
 			this.lblAbility.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblAbility.Location = new System.Drawing.Point(12, 109);
+			this.lblAbility.Location = new System.Drawing.Point(7, 109);
 			this.lblAbility.Name = "lblAbility";
 			this.lblAbility.Size = new System.Drawing.Size(84, 20);
 			this.lblAbility.TabIndex = 11;
@@ -119,11 +120,21 @@
 			// 
 			this.lblSpeed.AutoSize = true;
 			this.lblSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSpeed.Location = new System.Drawing.Point(12, 69);
+			this.lblSpeed.Location = new System.Drawing.Point(7, 69);
 			this.lblSpeed.Name = "lblSpeed";
 			this.lblSpeed.Size = new System.Drawing.Size(170, 20);
 			this.lblSpeed.TabIndex = 12;
 			this.lblSpeed.Text = "Speed: 100.00, 100.00";
+			// 
+			// lblKeys
+			// 
+			this.lblKeys.AutoSize = true;
+			this.lblKeys.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblKeys.Location = new System.Drawing.Point(250, 109);
+			this.lblKeys.Name = "lblKeys";
+			this.lblKeys.Size = new System.Drawing.Size(77, 20);
+			this.lblKeys.TabIndex = 13;
+			this.lblKeys.Text = "Keys: N/A";
 			// 
 			// OriManager
 			// 
@@ -131,6 +142,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(364, 136);
+			this.Controls.Add(this.lblKeys);
 			this.Controls.Add(this.lblSpeed);
 			this.Controls.Add(this.lblAbility);
 			this.Controls.Add(this.lblXP);
@@ -165,5 +177,6 @@
 		private System.Windows.Forms.Label lblXP;
 		private System.Windows.Forms.Label lblAbility;
 		private System.Windows.Forms.Label lblSpeed;
+		private System.Windows.Forms.Label lblKeys;
 	}
 }

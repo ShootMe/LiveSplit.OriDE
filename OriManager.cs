@@ -73,7 +73,7 @@ namespace LiveSplit.OriDE {
 
 				if (extraFast) {
 					goingFast = true;
-					Memory.SetSpeed(23.3334f, 85f, 39f, 12f, 70f, 70f, 9f, 60f, 200f, 5f, 16f);
+					Memory.SetSpeed(24f, 85f, 39f, 12f, 70f, 70f, 9f, 60f, 200f, 5f, 16f);
 				} else if (goingFast) {
 					goingFast = false;
 					Memory.SetSpeed(11.6667f, 60f, 26f, 6f, 56.568f, 40f, 6f, 38f, 100f, 3f, 8f);
@@ -98,7 +98,7 @@ namespace LiveSplit.OriDE {
 				lblArea.Text = "Area: " + (string.IsNullOrEmpty(currentArea.Name) ? "N/A" : currentArea.Name + " - " + currentArea.Progress.ToString("0.00") + "%");
 				lblMap.Text = "Total: " + total.ToString("0.00") + "%";
 				lblPos.Text = "Pos: " + pos.X.ToString("0.00") + ", " + pos.Y.ToString("0.00");
-				lblSpeed.Text = "Speed: " + currentSpeed.X.ToString("0.00") + ", " + currentSpeed.Y.ToString("0.00");
+				lblSpeed.Text = (extraFast ? "Insane Speed: " : "Speed: ") + currentSpeed.X.ToString("0.00") + ", " + currentSpeed.Y.ToString("0.00");
 
 				if (isInGameWorld) {
 					int level = Memory.GetCurrentLevel();
@@ -108,12 +108,14 @@ namespace LiveSplit.OriDE {
 					lblEN.Text = "EN: " + Memory.GetCurrentEN().ToString("0.##") + " / " + ((int)Memory.GetCurrentENMax()).ToString();
 					lblAbility.Text = "Ability: " + Memory.GetAbilityCells().ToString() + " / 33";
 					lblXP.Text = "XP: " + xp.ToString() + " / " + GetXP(level);
+					lblKeys.Text = "Keys: " + Memory.GetKeyStones();
 				} else {
 					lblLevel.Text = "Level: N/A";
 					lblHP.Text = "HP: N/A";
 					lblEN.Text = "EN: N/A";
 					lblAbility.Text = "Ability: N/A";
 					lblXP.Text = "XP: N/A";
+					lblKeys.Text = "Keys: N/A";
 				}
 			} else if (Memory == null && this.Visible) {
 				this.Hide();

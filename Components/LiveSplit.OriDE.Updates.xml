@@ -1,12 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <updates>
+	<update version="1.3.6">
+		<files>
+			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
+		</files>
+		<changelog>
+			<change>
+				Added keystones to display
+			</change>
+		</changelog>
+	</update>
 	<update version="1.3.5">
 		<files>
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
 		</files>
 		<changelog>
 			<change>
-				Fix values for fun mode
+				Fixed wall charge jump values in fun mode
 			</change>
 		</changelog>
 	</update>
@@ -16,7 +26,7 @@
 		</files>
 		<changelog>
 			<change>
-				Funner mode
+				Insane mode
 			</change>
 		</changelog>
 	</update>
