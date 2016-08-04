@@ -71,10 +71,16 @@ namespace LiveSplit.OriDE {
 				//	Memory.ChangeGravity(26f, 90f);
 				//}
 
-				if (extraFast) {
+				PointF pos = Memory.GetCameraTargetPosition();
+				HitBox ori = new HitBox(pos, 0.68f, 1.15f, true);
+				HitBox hitBox = new HitBox("145,580,20,40");
+				HitBox hitBox2 = new HitBox("170,580,130,140");
+				bool inFinal = hitBox.Intersects(ori) || hitBox2.Intersects(ori);
+
+				if (extraFast && Math.Abs(Memory.WaterSpeed() - 9f) > 0.1f && !inFinal) {
 					goingFast = true;
 					Memory.SetSpeed(24f, 85f, 39f, 12f, 70f, 70f, 9f, 60f, 200f, 5f, 16f, 90f, 180f);
-				} else if (goingFast) {
+				} else if ((!extraFast || inFinal) && goingFast) {
 					goingFast = false;
 					Memory.SetSpeed(11.6667f, 60f, 26f, 6f, 56.568f, 40f, 6f, 38f, 100f, 3f, 8f, 50f, 100f);
 				}
@@ -92,8 +98,6 @@ namespace LiveSplit.OriDE {
 				if (areas.Count > 0) {
 					total /= areas.Count;
 				}
-
-				PointF pos = Memory.GetCameraTargetPosition();
 
 				lblArea.Text = "Area: " + (string.IsNullOrEmpty(currentArea.Name) ? "N/A" : currentArea.Name + " - " + currentArea.Progress.ToString("0.00") + "%");
 				lblMap.Text = "Total: " + total.ToString("0.00") + "%";
