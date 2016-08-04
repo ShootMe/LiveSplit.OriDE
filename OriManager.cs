@@ -59,23 +59,24 @@ namespace LiveSplit.OriDE {
 				bool isStartingGame = Component.CheckStartingNewGame(gameState);
 				PointF currentSpeed = Memory.CurrentSpeed();
 
-				if (extraFast && !Memory.IsLocked()) {
+				//int inputDir = Memory.SeinInputDir();
+				//Memory.LockInput(true);
+				//if (inputDir == 1) {
+				//	Memory.ChangeGravity(26f, 0f);
+				//} else if (inputDir == 2) {
+				//	Memory.ChangeGravity(26f, 180f);
+				//} else if (inputDir == 3) {
+				//	Memory.ChangeGravity(26f, 270f);
+				//} else if (inputDir == 4) {
+				//	Memory.ChangeGravity(26f, 90f);
+				//}
+
+				if (extraFast) {
 					goingFast = true;
-					Memory.SetSpeed(23.222f, 90f, 39f, 12f, 70f, 70f, 9f, 60f, 1f, 5f, 16f);
-					//int inputDir = Memory.SeinInputDir();
-					//Memory.LockInput(true);
-					//if (inputDir == 1) {
-					//	Memory.ChangeGravity(26f, 0f);
-					//} else if (inputDir == 2) {
-					//	Memory.ChangeGravity(26f, 180f);
-					//} else if (inputDir == 3) {
-					//	Memory.ChangeGravity(26f, 270f);
-					//} else if (inputDir == 4) {
-					//	Memory.ChangeGravity(26f, 90f);
-					//}
+					Memory.SetSpeed(23.3334f, 85f, 39f, 12f, 70f, 70f, 9f, 60f, 200f, 5f, 16f);
 				} else if (goingFast) {
 					goingFast = false;
-					Memory.SetSpeed(11.6667f, 60f, 26f, 6f, 56.568f, 40f, 6f, 38f, 0.5f, 3f, 8f);
+					Memory.SetSpeed(11.6667f, 60f, 26f, 6f, 56.568f, 40f, 6f, 38f, 100f, 3f, 8f);
 				}
 
 				List<Area> areas = Memory.GetMapCompletion();

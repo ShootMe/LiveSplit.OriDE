@@ -36,7 +36,7 @@ namespace LiveSplit.OriDE.Memory {
 			seinCharacter.Write<float>(strength, 0x0, 0x48, 0x18, 0x28, 0x8);
 			seinCharacter.Write<float>(angle, 0x0, 0x48, 0x18, 0x28, 0xc);
 		}
-		public void SetSpeed(float maxSpeed, float accGround, float accAir, float waterSpeed, float bashSpeed, float stompSpeed, float wallJumpImp, float chargeJumpSpeed, float dashTime, float jumpHeight, float climbSteps) {
+		public void SetSpeed(float maxSpeed, float accGround, float accAir, float waterSpeed, float bashSpeed, float stompSpeed, float wallJumpImp, float chargeJumpSpeed, float wallChargeJumpSpeed, float jumpHeight, float climbSteps) {
 			seinCharacter.Write<float>(accGround, 0x0, 0x48, 0x14, 0x28, 0x8, 0x8);
 			seinCharacter.Write<float>(accGround / 2f, 0x0, 0x48, 0x14, 0x28, 0x8, 0xc);
 			seinCharacter.Write<float>(maxSpeed, 0x0, 0x48, 0x14, 0x28, 0x8, 0x10);
@@ -55,12 +55,23 @@ namespace LiveSplit.OriDE.Memory {
 			seinCharacter.Write<float>(wallJumpImp * 2, 0x0, 0x10, 0x10, 0x48);
 
 			seinCharacter.Write<float>(chargeJumpSpeed, 0x0, 0x10, 0x18, 0x4c);
-			seinCharacter.Write<float>(chargeJumpSpeed, 0x0, 0x10, 0x1c, 0x48);
+			seinCharacter.Write<float>(wallChargeJumpSpeed, 0x0, 0x10, 0x1c, 0x48);
 
-			seinCharacter.Write<float>(dashTime, 0x0, 0x10, 0x80, 0x7c);
-			seinCharacter.Write<float>(dashTime, 0x0, 0x10, 0x80, 0x80);
-
-			seinCharacter.Write<float>(jumpHeight, 0x0, 0x10, 0xc, 0x68);
+			if (jumpHeight == 3f) {
+				seinCharacter.Write<float>(3f, 0x0, 0x10, 0xc, 0x60);
+				seinCharacter.Write<float>(3f, 0x0, 0x10, 0xc, 0x54);
+				seinCharacter.Write<float>(3f, 0x0, 0x10, 0xc, 0x64);
+				seinCharacter.Write<float>(3.75f, 0x0, 0x10, 0xc, 0x70);
+				seinCharacter.Write<float>(4.25f, 0x0, 0x10, 0xc, 0x74);
+				seinCharacter.Write<float>(4.25f, 0x0, 0x10, 0xc, 0x58);
+			} else {
+				seinCharacter.Write<float>(jumpHeight, 0x0, 0x10, 0xc, 0x60);
+				seinCharacter.Write<float>(jumpHeight, 0x0, 0x10, 0xc, 0x54);
+				seinCharacter.Write<float>(jumpHeight, 0x0, 0x10, 0xc, 0x64);
+				seinCharacter.Write<float>(jumpHeight, 0x0, 0x10, 0xc, 0x70);
+				seinCharacter.Write<float>(jumpHeight, 0x0, 0x10, 0xc, 0x74);
+				seinCharacter.Write<float>(jumpHeight, 0x0, 0x10, 0xc, 0x58);
+			}
 
 			seinCharacter.Write<float>(climbSteps, 0x0, 0x10, 0x30, 0x5c);
 			seinCharacter.Write<float>(climbSteps, 0x0, 0x10, 0x30, 0x60);
