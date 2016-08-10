@@ -7,62 +7,53 @@ using System.Windows.Forms;
 namespace LiveSplit.OriDE {
 	public partial class OriManager : Form {
 		public OriMemory Memory { get; set; }
-		public OriComponent Component { get; set; }
 		private bool useLivesplitColors = true, extraFast = false, goingFast = false;
 		public OriManager() {
 			InitializeComponent();
-			Visible = false;
+			Memory = new OriMemory();
 			Thread t = new Thread(UpdateLoop);
 			t.IsBackground = true;
 			t.Start();
 		}
 
-		private void OriManager_FormClosing(object sender, FormClosingEventArgs e) {
-			e.Cancel = Memory != null;
-			if (e.Cancel && this.WindowState != FormWindowState.Minimized) {
-				this.WindowState = FormWindowState.Minimized;
-			}
-		}
 		private void OriManager_KeyDown(object sender, KeyEventArgs e) {
 			if (e.Control && e.KeyCode == Keys.L) {
 				useLivesplitColors = !useLivesplitColors;
+				if(useLivesplitColors) {
+					this.BackColor = Color.White;
+					this.ForeColor = Color.Black;
+				} else {
+					this.BackColor = Color.Black;
+					this.ForeColor = Color.White;
+				}
 			} else if (e.Control && e.KeyCode == Keys.F) {
 				extraFast = !extraFast;
 			}
 		}
 
 		private void UpdateLoop() {
+			bool lastHooked = false;
 			while (true) {
 				try {
-					UpdateValues();
+					bool hooked = Memory.HookProcess();
+					if (hooked) {
+						UpdateValues();
+					}
+					if (lastHooked != hooked) {
+						lastHooked = hooked;
+						this.Invoke((Action)delegate () { lblNote.Visible = !hooked; });
+					}
 					Thread.Sleep(33);
 				} catch { }
 			}
 		}
-		public Color ToRGB(Color c) {
-			return Color.FromArgb((255 << 24) | (c.R << 16) | (c.G << 8) | c.B);
-		}
 		public void UpdateValues() {
 			if (this.InvokeRequired) {
 				this.Invoke((Action)UpdateValues);
-			} else if (this.Visible && Memory != null && Memory.IsHooked) {
-				lblNote.Visible = Component != null && Component.Model != null && Component.Model.CurrentState.CurrentPhase != Model.TimerPhase.NotRunning;
-
-				if (useLivesplitColors && Component != null && Component.Model != null) {
-					if (ToRGB(Component.Model.CurrentState.LayoutSettings.BackgroundColor) != this.BackColor) {
-						this.BackColor = ToRGB(Component.Model.CurrentState.LayoutSettings.BackgroundColor);
-					}
-					if (ToRGB(Component.Model.CurrentState.LayoutSettings.TextColor) != this.ForeColor) {
-						this.ForeColor = ToRGB(Component.Model.CurrentState.LayoutSettings.TextColor);
-					}
-				} else if (this.BackColor != Color.White) {
-					this.BackColor = Color.White;
-					this.ForeColor = Color.Black;
-				}
-
+			} else {
 				GameState gameState = Memory.GetGameState();
-				bool isInGameWorld = Component.CheckInGameWorld(gameState);
-				bool isStartingGame = Component.CheckStartingNewGame(gameState);
+				bool isInGameWorld = CheckInGameWorld(gameState);
+				bool isStartingGame = CheckStartingNewGame(gameState);
 				PointF currentSpeed = Memory.CurrentSpeed();
 				PointF pos = Memory.GetCameraTargetPosition();
 				HitBox ori = new HitBox(pos, 0.68f, 1.15f, true);
@@ -114,9 +105,16 @@ namespace LiveSplit.OriDE {
 					lblXP.Text = "XP: N/A";
 					lblKeys.Text = "Keys: N/A";
 				}
-			} else if (Memory == null && this.Visible) {
-				this.Hide();
 			}
+		}
+		public bool CheckInGame(GameState state) {
+			return state != GameState.Logos && state != GameState.StartScreen && state != GameState.TitleScreen;
+		}
+		public bool CheckInGameWorld(GameState state) {
+			return CheckInGame(state) && state != GameState.Prologue && !Memory.IsEnteringGame();
+		}
+		public bool CheckStartingNewGame(GameState state) {
+			return state == GameState.Prologue;
 		}
 		public int GetXP(int level) {
 			switch (level) {

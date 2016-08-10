@@ -145,15 +145,14 @@
 			this.lblNote.Name = "lblNote";
 			this.lblNote.Size = new System.Drawing.Size(364, 136);
 			this.lblNote.TabIndex = 14;
-			this.lblNote.Text = "Not available when timer is active";
+			this.lblNote.Text = "Not available";
 			this.lblNote.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.lblNote.Visible = false;
 			// 
 			// OriManager
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.Color.White;
+			this.BackColor = System.Drawing.Color.Black;
 			this.ClientSize = new System.Drawing.Size(364, 136);
 			this.Controls.Add(this.lblNote);
 			this.Controls.Add(this.lblKeys);
@@ -166,14 +165,13 @@
 			this.Controls.Add(this.lblLevel);
 			this.Controls.Add(this.lblPos);
 			this.Controls.Add(this.lblMap);
-			this.ForeColor = System.Drawing.Color.Black;
+			this.ForeColor = System.Drawing.Color.White;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "OriManager";
 			this.Text = "Ori Manager";
 			this.TopMost = true;
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OriManager_FormClosing);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OriManager_KeyDown);
 			this.ResumeLayout(false);
 			this.PerformLayout();

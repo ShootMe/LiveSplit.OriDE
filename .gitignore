@@ -7,3 +7,5 @@
 /Components/LiveSplit.OriDE.exe
 /obj
 /LiveSplit.OriDE.csproj.user
+/Manager/bin
+/Manager/obj
