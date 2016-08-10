@@ -19,6 +19,9 @@ namespace LiveSplit.OriDE {
 
 		private void OriManager_FormClosing(object sender, FormClosingEventArgs e) {
 			e.Cancel = Memory != null;
+			if (e.Cancel && this.WindowState != FormWindowState.Minimized) {
+				this.WindowState = FormWindowState.Minimized;
+			}
 		}
 		private void OriManager_KeyDown(object sender, KeyEventArgs e) {
 			if (e.Control && e.KeyCode == Keys.L) {
@@ -43,6 +46,8 @@ namespace LiveSplit.OriDE {
 			if (this.InvokeRequired) {
 				this.Invoke((Action)UpdateValues);
 			} else if (this.Visible && Memory != null && Memory.IsHooked) {
+				lblNote.Visible = Component != null && Component.Model != null && Component.Model.CurrentState.CurrentPhase != Model.TimerPhase.NotRunning;
+
 				if (useLivesplitColors && Component != null && Component.Model != null) {
 					if (ToRGB(Component.Model.CurrentState.LayoutSettings.BackgroundColor) != this.BackColor) {
 						this.BackColor = ToRGB(Component.Model.CurrentState.LayoutSettings.BackgroundColor);
@@ -54,23 +59,11 @@ namespace LiveSplit.OriDE {
 					this.BackColor = Color.White;
 					this.ForeColor = Color.Black;
 				}
+
 				GameState gameState = Memory.GetGameState();
 				bool isInGameWorld = Component.CheckInGameWorld(gameState);
 				bool isStartingGame = Component.CheckStartingNewGame(gameState);
 				PointF currentSpeed = Memory.CurrentSpeed();
-
-				//int inputDir = Memory.SeinInputDir();
-				//Memory.LockInput(true);
-				//if (inputDir == 1) {
-				//	Memory.ChangeGravity(26f, 0f);
-				//} else if (inputDir == 2) {
-				//	Memory.ChangeGravity(26f, 180f);
-				//} else if (inputDir == 3) {
-				//	Memory.ChangeGravity(26f, 270f);
-				//} else if (inputDir == 4) {
-				//	Memory.ChangeGravity(26f, 90f);
-				//}
-
 				PointF pos = Memory.GetCameraTargetPosition();
 				HitBox ori = new HitBox(pos, 0.68f, 1.15f, true);
 				HitBox hitBox = new HitBox("145,580,20,40");

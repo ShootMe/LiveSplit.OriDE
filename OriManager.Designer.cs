@@ -34,6 +34,7 @@
 			this.lblAbility = new System.Windows.Forms.Label();
 			this.lblSpeed = new System.Windows.Forms.Label();
 			this.lblKeys = new System.Windows.Forms.Label();
+			this.lblNote = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// lblMap
@@ -136,12 +137,25 @@
 			this.lblKeys.TabIndex = 13;
 			this.lblKeys.Text = "Keys: N/A";
 			// 
+			// lblNote
+			// 
+			this.lblNote.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lblNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblNote.Location = new System.Drawing.Point(0, 0);
+			this.lblNote.Name = "lblNote";
+			this.lblNote.Size = new System.Drawing.Size(364, 136);
+			this.lblNote.TabIndex = 14;
+			this.lblNote.Text = "Not available when timer is active";
+			this.lblNote.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lblNote.Visible = false;
+			// 
 			// OriManager
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(364, 136);
+			this.Controls.Add(this.lblNote);
 			this.Controls.Add(this.lblKeys);
 			this.Controls.Add(this.lblSpeed);
 			this.Controls.Add(this.lblAbility);
@@ -156,7 +170,6 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
-			this.MinimizeBox = false;
 			this.Name = "OriManager";
 			this.Text = "Ori Manager";
 			this.TopMost = true;
@@ -178,5 +191,6 @@
 		private System.Windows.Forms.Label lblAbility;
 		private System.Windows.Forms.Label lblSpeed;
 		private System.Windows.Forms.Label lblKeys;
+		private System.Windows.Forms.Label lblNote;
 	}
 }

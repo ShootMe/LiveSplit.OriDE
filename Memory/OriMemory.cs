@@ -19,22 +19,12 @@ namespace LiveSplit.OriDE.Memory {
 			gameController = new ProgramPointer(this, "GameController") { IsStatic = true };
 		}
 
-		public void LockInput(bool lockit) {
-			seinCharacter.Write<bool>(lockit, 0x0, 0x48, 0x14, 0x28, 0x10);
-		}
-		public bool IsLocked() {
-			return seinCharacter.Read<bool>(0x0, 0x48, 0x14, 0x28, 0x10);
-		}
 		public int SeinInputDir() {
 			bool down = seinCharacter.Read<bool>(0x0, 0x34, 0x8, 0x8);
 			bool left = seinCharacter.Read<bool>(0x0, 0x34, 0xc, 0x8);
 			bool right = seinCharacter.Read<bool>(0x0, 0x34, 0x10, 0x8);
 			bool up = seinCharacter.Read<bool>(0x0, 0x34, 0x14, 0x8);
 			return down ? 1 : up ? 2 : left ? 3 : right ? 4 : 0;
-		}
-		public void ChangeGravity(float strength, float angle) {
-			seinCharacter.Write<float>(strength, 0x0, 0x48, 0x18, 0x28, 0x8);
-			seinCharacter.Write<float>(angle, 0x0, 0x48, 0x18, 0x28, 0xc);
 		}
 		public float WaterSpeed() {
 			return seinCharacter.Read<float>(0x0, 0x10, 0x3c, 0x98);
