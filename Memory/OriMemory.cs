@@ -77,7 +77,29 @@ namespace LiveSplit.OriDE.Memory {
 
 			float px = seinCharacter.Read<float>(0x0, 0x48, 0x10, 0xbc);
 			float py = seinCharacter.Read<float>(0x0, 0x48, 0x10, 0xc0);
-			return new PointF(px, py);
+			bool onGround = seinCharacter.Read<bool>(0x0, 0x48, 0x10, 0x18, 0x9);
+			float gravityAngle = seinCharacter.Read<float>(0x0, 0x48, 0x10, 0xb8);
+			float gx = seinCharacter.Read<float>(0x0, 0x48, 0x10, 0x60);
+			float gy = seinCharacter.Read<float>(0x0, 0x48, 0x10, 0x64);
+			PointF groundNormal = new PointF(gx, gy);
+			PointF groundBinomial = new PointF(gy, -gx);
+
+			return (py > 0.0001f || !onGround) ? Rotate(new PointF(px, py), gravityAngle) : Add(Mul(groundNormal, py), Mul(groundBinomial, px));
+		}
+		public static PointF Add(PointF one, PointF two) {
+			return new PointF(one.X + two.X, one.Y + two.Y);
+		}
+		public static PointF Mul(PointF one, float scale) {
+			return new PointF(one.X * scale, one.Y * scale);
+		}
+		public static PointF Rotate(PointF v, float angle) {
+			if (angle == 0f) {
+				return v;
+			}
+			float f = angle * 0.0174532924f;
+			float num = (float)Math.Cos(f);
+			float num2 = (float)Math.Sin(f);
+			return new PointF(v.X * num - v.Y * num2, v.X * num2 + v.Y * num);
 		}
 		public void ActivateRainbowDash() {
 			if (GetAbility("Dash") && rainbowDash.Value != IntPtr.Zero && !rainbowDash.Read<bool>()) {
