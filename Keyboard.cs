@@ -255,9 +255,24 @@ namespace LiveSplit.OriDE {
 				NativeMethods.UnhookWindowsHookEx(hookID);
 			} catch { }
 		}
+		public static bool ApplicationIsActivated(int procID) {
+			var activatedHandle = NativeMethods.GetForegroundWindow();
+			if (activatedHandle == IntPtr.Zero) {
+				return true;
+			}
+
+			int activeProcId;
+			NativeMethods.GetWindowThreadProcessId(activatedHandle, out activeProcId);
+
+			return activeProcId == procID;
+		}
 
 		[ComVisibleAttribute(false), System.Security.SuppressUnmanagedCodeSecurity()]
-		internal class NativeMethods {
+		internal static class NativeMethods {
+			[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+			public static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
+			[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+			public static extern IntPtr GetForegroundWindow();
 			[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
 			public static extern IntPtr GetModuleHandle(string lpModuleName);
 			[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]

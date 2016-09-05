@@ -27,7 +27,7 @@ namespace LiveSplit.OriDE {
 			if (Memory != null && Memory.Program != null) {
 				int state = Memory.GetTASState();
 				if ((state & 1) != 0) {
-					Memory.SetTASCharacter((byte)e.KeyCode);
+					Memory.SetTASCharacter((byte)((byte)e.KeyCode & 127));
 				}
 			}
 		}
