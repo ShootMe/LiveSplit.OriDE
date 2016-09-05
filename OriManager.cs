@@ -25,7 +25,10 @@ namespace LiveSplit.OriDE {
 
 		private void KeyhookPress(KeyboardHook.KeyboardHookEventArgs e) {
 			if (Memory != null && Memory.Program != null) {
-				File.WriteAllBytes(Path.Combine(Path.GetDirectoryName(Memory.Program.MainModule.FileName), "Keypress.dat"), new byte[] { (byte)e.KeyCode });
+				int state = Memory.GetTASState();
+				if ((state & 1) != 0) {
+					Memory.SetTASCharacter((byte)e.KeyCode);
+				}
 			}
 		}
 

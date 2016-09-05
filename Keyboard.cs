@@ -141,57 +141,58 @@ namespace LiveSplit.OriDE {
 		/// <summary>
 		/// Processes the key event captured by the hook.
 		/// </summary>
-		private IntPtr HookCallback(
-			int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam) {
-			bool AllowKey = PassAllKeysToNextApp;
+		private IntPtr HookCallback(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam) {
+			try {
+				bool AllowKey = PassAllKeysToNextApp;
 
-			//Filter wParam for KeyUp events only
-			if (nCode >= 0) {
-				if (wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP) {
+				//Filter wParam for KeyUp events only
+				if (nCode >= 0) {
+					if (wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP) {
 
-					// Check for modifier keys, but only if the key being
-					// currently processed isn't a modifier key (in other
-					// words, CheckModifiers will only run if Ctrl, Shift,
-					// CapsLock or Alt are active at the same time as
-					// another key)
-					if (!(lParam.vkCode >= 160 && lParam.vkCode <= 164)) {
-						CheckModifiers();
-					}
-
-					// Check for key combinations that are allowed to 
-					// get through to Windows
-					//
-					// Ctrl+Esc or Windows key
-					if (AllowWindowsKey) {
-						switch (lParam.flags) {
-							//Ctrl+Esc
-							case 0:
-								if (lParam.vkCode == 27)
-									AllowKey = true;
-								break;
-
-							//Windows keys
-							case 1:
-								if ((lParam.vkCode == 91) || (lParam.vkCode == 92))
-									AllowKey = true;
-								break;
+						// Check for modifier keys, but only if the key being
+						// currently processed isn't a modifier key (in other
+						// words, CheckModifiers will only run if Ctrl, Shift,
+						// CapsLock or Alt are active at the same time as
+						// another key)
+						if (!(lParam.vkCode >= 160 && lParam.vkCode <= 164)) {
+							CheckModifiers();
 						}
-					}
-					// Alt+Tab
-					if (AllowAltTab) {
-						if ((lParam.flags == 32) && (lParam.vkCode == 9))
-							AllowKey = true;
+
+						// Check for key combinations that are allowed to 
+						// get through to Windows
+						//
+						// Ctrl+Esc or Windows key
+						if (AllowWindowsKey) {
+							switch (lParam.flags) {
+								//Ctrl+Esc
+								case 0:
+									if (lParam.vkCode == 27)
+										AllowKey = true;
+									break;
+
+								//Windows keys
+								case 1:
+									if ((lParam.vkCode == 91) || (lParam.vkCode == 92))
+										AllowKey = true;
+									break;
+							}
+						}
+						// Alt+Tab
+						if (AllowAltTab) {
+							if ((lParam.flags == 32) && (lParam.vkCode == 9))
+								AllowKey = true;
+						}
+
+						OnKeyIntercepted(new KeyboardHookEventArgs(lParam.vkCode, AllowKey));
 					}
 
-					OnKeyIntercepted(new KeyboardHookEventArgs(lParam.vkCode, AllowKey));
+					//If this key is being suppressed, return a dummy value
+					if (AllowKey == false)
+						return (System.IntPtr)1;
 				}
-
-				//If this key is being suppressed, return a dummy value
-				if (AllowKey == false)
-					return (System.IntPtr)1;
-			}
-			//Pass key to next application
-			return NativeMethods.CallNextHookEx(hookID, nCode, wParam, ref lParam);
+				//Pass key to next application
+				return NativeMethods.CallNextHookEx(hookID, nCode, wParam, ref lParam);
+			} catch { return IntPtr.Zero; }
 		}
 
 		/// <summary>
@@ -213,7 +214,6 @@ namespace LiveSplit.OriDE {
 		/// Event arguments for the KeyboardHook class's KeyIntercepted event.
 		/// </summary>
 		public class KeyboardHookEventArgs : System.EventArgs {
-
 			private string keyName;
 			private int keyCode;
 			private bool passThrough;
@@ -251,7 +251,9 @@ namespace LiveSplit.OriDE {
 		/// Releases the keyboard hook.
 		/// </summary>
 		public void Dispose() {
-			NativeMethods.UnhookWindowsHookEx(hookID);
+			try {
+				NativeMethods.UnhookWindowsHookEx(hookID);
+			} catch { }
 		}
 
 		[ComVisibleAttribute(false), System.Security.SuppressUnmanagedCodeSecurity()]
