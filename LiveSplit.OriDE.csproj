@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Keyboard.cs" />
     <Compile Include="Memory\Entities.cs" />
     <Compile Include="OriComponent.cs" />
     <Compile Include="OriFactory.cs" />

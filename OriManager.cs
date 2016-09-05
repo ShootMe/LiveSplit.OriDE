@@ -2,24 +2,37 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 namespace LiveSplit.OriDE {
 	public partial class OriManager : Form {
 		public OriMemory Memory { get; set; }
 		private bool useLivesplitColors = true, extraFast = false, goingFast = false;
+		private KeyboardHook kbHook;
 		public OriManager() {
+			kbHook = new KeyboardHook(KeyboardHook.Parameters.PassAllKeysToNextApp);
+			kbHook.KeyIntercepted += KeyhookPress;
 			InitializeComponent();
 			Memory = new OriMemory();
 			Thread t = new Thread(UpdateLoop);
 			t.IsBackground = true;
 			t.Start();
 		}
+		~OriManager() {
+			kbHook.Dispose();
+		}
+
+		private void KeyhookPress(KeyboardHook.KeyboardHookEventArgs e) {
+			if (Memory != null && Memory.Program != null) {
+				File.WriteAllBytes(Path.Combine(Path.GetDirectoryName(Memory.Program.MainModule.FileName), "Keypress.dat"), new byte[] { (byte)e.KeyCode });
+			}
+		}
 
 		private void OriManager_KeyDown(object sender, KeyEventArgs e) {
 			if (e.Control && e.KeyCode == Keys.L) {
 				useLivesplitColors = !useLivesplitColors;
-				if(useLivesplitColors) {
+				if (useLivesplitColors) {
 					this.BackColor = Color.White;
 					this.ForeColor = Color.Black;
 				} else {
@@ -86,7 +99,7 @@ namespace LiveSplit.OriDE {
 				lblArea.Text = "Area: " + (string.IsNullOrEmpty(currentArea.Name) ? "N/A" : currentArea.Name + " - " + currentArea.Progress.ToString("0.00") + "%");
 				lblMap.Text = "Total: " + total.ToString("0.00") + "%";
 				lblPos.Text = "Pos: " + pos.X.ToString("0.00") + ", " + pos.Y.ToString("0.00");
-				lblSpeed.Text = (extraFast ? "Insane Speed: " : "Speed: ") + currentSpeed.X.ToString("0.00") + ", " + currentSpeed.Y.ToString("0.00");
+				lblSpeed.Text = (extraFast ? "Insane Speed: " : "Speed: ") + currentSpeed.X.ToString("0.00") + ", " + currentSpeed.Y.ToString("0.00") + " (" + Math.Sqrt(currentSpeed.X * currentSpeed.X + currentSpeed.Y * currentSpeed.Y).ToString("0.00") + ")";
 
 				if (isInGameWorld) {
 					int level = Memory.GetCurrentLevel();
