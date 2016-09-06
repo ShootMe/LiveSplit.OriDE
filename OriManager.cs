@@ -103,6 +103,8 @@ namespace LiveSplit.OriDE {
 				lblMap.Text = "Total: " + total.ToString("0.00") + "%";
 				lblPos.Text = "Pos: " + pos.X.ToString("0.00") + ", " + pos.Y.ToString("0.00");
 				lblSpeed.Text = (extraFast ? "Insane Speed: " : "Speed: ") + currentSpeed.X.ToString("0.00") + ", " + currentSpeed.Y.ToString("0.00") + " (" + Math.Sqrt(currentSpeed.X * currentSpeed.X + currentSpeed.Y * currentSpeed.Y).ToString("0.00") + ")";
+				PointF cursor = Memory.GetCursorPosition();
+				lblCursorPosition.Text = "Cursor: " + cursor.X.ToString("0.000") + ", " + cursor.Y.ToString("0.000");
 
 				if (isInGameWorld) {
 					int level = Memory.GetCurrentLevel();

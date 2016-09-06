@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 namespace LiveSplit.OriDE.Memory {
 	public partial class OriMemory {
-		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameStateMachine, rainbowDash, gameController, tas, tasState;
+		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameStateMachine, rainbowDash, gameController, tas, tasState, coreInput;
 		public Process Program { get; set; }
 		public bool IsHooked { get; set; } = false;
 
@@ -19,6 +19,7 @@ namespace LiveSplit.OriDE.Memory {
 			gameController = new ProgramPointer(this, "GameController") { IsStatic = true };
 			tas = new ProgramPointer(this, "TAS") { IsStatic = false };
 			tasState = new ProgramPointer(this, "TASState") { IsStatic = false };
+			coreInput = new ProgramPointer(this, "Input") { IsStatic = false };
 		}
 
 		public int SeinInputDir() {
@@ -102,6 +103,12 @@ namespace LiveSplit.OriDE.Memory {
 			float num = (float)Math.Cos(f);
 			float num2 = (float)Math.Sin(f);
 			return new PointF(v.X * num - v.Y * num2, v.X * num2 + v.Y * num);
+		}
+		public PointF GetCursorPosition() {
+			if (coreInput.Value == IntPtr.Zero) { return new PointF(); }
+			float mx = coreInput.Read<float>();
+			float my = coreInput.Read<float>(0x4);
+			return new PointF(mx, my);
 		}
 		public void ActivateRainbowDash() {
 			if (GetAbility("Dash") && rainbowDash.Value != IntPtr.Zero && !rainbowDash.Read<bool>()) {
@@ -392,7 +399,8 @@ namespace LiveSplit.OriDE.Memory {
 					{"GameWorld",        "558BEC53575683EC0C8B7D08B8????????89388B47|-8"},
 					{"RainbowDash",      "EC535783EC108B7D08C687????????000FB605????????85C074|-7" },
 					{"TAS",              "558BEC53575683EC1CD9EED95DF00FB705????????668945E683EC0C6A02E8????????83C410D95DF083EC086AFF6A04E8????????83C4108845E583EC086AFF6A05|-49" },
-					{"TASState",         "558BEC53575683EC1CD9EED95DF00FB705????????668945E683EC0C6A02E8????????83C410D95DF083EC086AFF6A04E8????????83C4108845E583EC086AFF6A05|180" }
+					{"TASState",         "558BEC53575683EC1CD9EED95DF00FB705????????668945E683EC0C6A02E8????????83C410D95DF083EC086AFF6A04E8????????83C4108845E583EC086AFF6A05|180" },
+					{"Input",            "558BEC83EC488B05????????8B40188B40108945B8B8????????8B08894DC08B40048945C48D45C883EC0483EC088B4DC0890C248B4DC4894C240450E8????????83C40C8B45B88D4DD483EC0C83EC0C8B55C88914248B55CC|-67" }
 			}},
 		};
 		private IntPtr pointer;
