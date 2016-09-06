@@ -36,6 +36,9 @@
 			this.lblKeys = new System.Windows.Forms.Label();
 			this.lblNote = new System.Windows.Forms.Label();
 			this.lblCursorPosition = new System.Windows.Forms.Label();
+			this.lblCurrentInput = new System.Windows.Forms.Label();
+			this.lblNextInput = new System.Windows.Forms.Label();
+			this.lblTASStates = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// lblMap
@@ -159,6 +162,39 @@
 			this.lblCursorPosition.TabIndex = 15;
 			this.lblCursorPosition.Text = "Cursor: 1.000, 1.000";
 			// 
+			// lblCurrentInput
+			// 
+			this.lblCurrentInput.AutoSize = true;
+			this.lblCurrentInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblCurrentInput.Location = new System.Drawing.Point(7, 129);
+			this.lblCurrentInput.Name = "lblCurrentInput";
+			this.lblCurrentInput.Size = new System.Drawing.Size(484, 20);
+			this.lblCurrentInput.TabIndex = 16;
+			this.lblCurrentInput.Text = "Input: Line 10 (1000,Left,XAxis,0.599,YAxis,0.599) (1 / 1000 34000)";
+			this.lblCurrentInput.Visible = false;
+			// 
+			// lblNextInput
+			// 
+			this.lblNextInput.AutoSize = true;
+			this.lblNextInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblNextInput.Location = new System.Drawing.Point(7, 149);
+			this.lblNextInput.Name = "lblNextInput";
+			this.lblNextInput.Size = new System.Drawing.Size(483, 20);
+			this.lblNextInput.TabIndex = 17;
+			this.lblNextInput.Text = "Next:  Line 10 (1000,Left,XAxis,0.599,YAxis,0.599) (1 / 1000 34000)";
+			this.lblNextInput.Visible = false;
+			// 
+			// lblTASStates
+			// 
+			this.lblTASStates.AutoSize = true;
+			this.lblTASStates.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblTASStates.Location = new System.Drawing.Point(7, 169);
+			this.lblTASStates.Name = "lblTASStates";
+			this.lblTASStates.Size = new System.Drawing.Size(468, 20);
+			this.lblTASStates.TabIndex = 18;
+			this.lblTASStates.Text = "States: OnGround Jumping CanBash CDashTarget AttackTarget";
+			this.lblTASStates.Visible = false;
+			// 
 			// OriManager
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -166,6 +202,9 @@
 			this.BackColor = System.Drawing.Color.Black;
 			this.ClientSize = new System.Drawing.Size(364, 136);
 			this.Controls.Add(this.lblNote);
+			this.Controls.Add(this.lblTASStates);
+			this.Controls.Add(this.lblNextInput);
+			this.Controls.Add(this.lblCurrentInput);
 			this.Controls.Add(this.lblCursorPosition);
 			this.Controls.Add(this.lblKeys);
 			this.Controls.Add(this.lblSpeed);
@@ -203,5 +242,8 @@
 		private System.Windows.Forms.Label lblKeys;
 		private System.Windows.Forms.Label lblNote;
 		private System.Windows.Forms.Label lblCursorPosition;
+		private System.Windows.Forms.Label lblCurrentInput;
+		private System.Windows.Forms.Label lblNextInput;
+		private System.Windows.Forms.Label lblTASStates;
 	}
 }

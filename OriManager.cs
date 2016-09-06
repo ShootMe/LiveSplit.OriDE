@@ -44,6 +44,20 @@ namespace LiveSplit.OriDE {
 				}
 			} else if (e.Control && e.KeyCode == Keys.F) {
 				extraFast = !extraFast;
+			} else if(e.Control && e.KeyCode == Keys.T) {
+				if(this.Width == 600) {
+					this.Width = 380;
+					this.Height = 175;
+					lblCurrentInput.Visible = false;
+					lblNextInput.Visible = false;
+					lblTASStates.Visible = false;
+				} else {
+					this.Width = 600;
+					this.Height = 235;
+					lblCurrentInput.Visible = true;
+					lblNextInput.Visible = true;
+					lblTASStates.Visible = true;
+				}
 			}
 		}
 
@@ -59,7 +73,7 @@ namespace LiveSplit.OriDE {
 						lastHooked = hooked;
 						this.Invoke((Action)delegate () { lblNote.Visible = !hooked; });
 					}
-					Thread.Sleep(33);
+					Thread.Sleep(12);
 				} catch { }
 			}
 		}
@@ -67,6 +81,18 @@ namespace LiveSplit.OriDE {
 			if (this.InvokeRequired) {
 				this.Invoke((Action)UpdateValues);
 			} else {
+				bool tasEnabled = this.Width == 600 || (Memory.GetTASState() & 1) != 0;
+				if (this.Width < 600 && tasEnabled) {
+					this.Width = 600;
+					this.Height = 235;
+					lblCurrentInput.Visible = true;
+					lblNextInput.Visible = true;
+					lblTASStates.Visible = true;
+				} else if(tasEnabled) {
+					lblCurrentInput.Text = Memory.GetTASCurrentInput();
+					lblNextInput.Text = Memory.GetTASNextInput();
+					lblTASStates.Text = Memory.GetTASExtraInfo();
+				}
 				GameState gameState = Memory.GetGameState();
 				bool isInGameWorld = CheckInGameWorld(gameState);
 				bool isStartingGame = CheckStartingNewGame(gameState);

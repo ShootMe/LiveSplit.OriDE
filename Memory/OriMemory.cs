@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 namespace LiveSplit.OriDE.Memory {
 	public partial class OriMemory {
-		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameStateMachine, rainbowDash, gameController, tas, tasState, coreInput;
+		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameStateMachine, rainbowDash, gameController, tas, coreInput;
 		public Process Program { get; set; }
 		public bool IsHooked { get; set; } = false;
 
@@ -18,7 +18,6 @@ namespace LiveSplit.OriDE.Memory {
 			rainbowDash = new ProgramPointer(this, "RainbowDash") { IsStatic = false };
 			gameController = new ProgramPointer(this, "GameController") { IsStatic = true };
 			tas = new ProgramPointer(this, "TAS") { IsStatic = false };
-			tasState = new ProgramPointer(this, "TASState") { IsStatic = false };
 			coreInput = new ProgramPointer(this, "Input") { IsStatic = false };
 		}
 
@@ -278,7 +277,16 @@ namespace LiveSplit.OriDE.Memory {
 			}
 		}
 		public int GetTASState() {
-			return tasState.Read<int>();
+			return tas.Read<int>(-0x20);
+		}
+		public string GetTASCurrentInput() {
+			return tas.ReadString(0x4);
+		}
+		public string GetTASNextInput() {
+			return tas.ReadString(0x8);
+		}
+		public string GetTASExtraInfo() {
+			return tas.ReadString(0xc);
 		}
 
 		public bool HookProcess() {
@@ -399,24 +407,22 @@ namespace LiveSplit.OriDE.Memory {
 					{"GameWorld",        "558BEC53575683EC0C8B7D08B8????????89388B47|-8"},
 					{"RainbowDash",      "EC535783EC108B7D08C687????????000FB605????????85C074|-7" },
 					{"TAS",              "558BEC53575683EC1CD9EED95DF00FB705????????668945E683EC0C6A02E8????????83C410D95DF083EC086AFF6A04E8????????83C4108845E583EC086AFF6A05|-49" },
-					{"TASState",         "558BEC53575683EC1CD9EED95DF00FB705????????668945E683EC0C6A02E8????????83C410D95DF083EC086AFF6A04E8????????83C4108845E583EC086AFF6A05|180" },
 					{"Input",            "558BEC83EC488B05????????8B40188B40108945B8B8????????8B08894DC08B40048945C48D45C883EC0483EC088B4DC0890C248B4DC4894C240450E8????????83C40C8B45B88D4DD483EC0C83EC0C8B55C88914248B55CC|-67" }
 			}},
 		};
-		private IntPtr pointer;
+		private IntPtr pointer, addressLocation;
 		public OriMemory Memory { get; set; }
 		public string Name { get; set; }
 		public bool IsStatic { get; set; }
 		private int lastID;
 		private DateTime lastTry;
-		public ProgramPointer(OriMemory memory, string name) {
+		public ProgramPointer(OriMemory memory, string name, bool isStatic = true) {
 			this.Memory = memory;
 			this.Name = name;
-			this.IsStatic = true;
+			this.IsStatic = isStatic;
 			lastID = memory.Program == null ? -1 : memory.Program.Id;
 			lastTry = DateTime.MinValue;
 		}
-
 		public IntPtr Value {
 			get {
 				if (!Memory.IsHooked) {
@@ -425,6 +431,16 @@ namespace LiveSplit.OriDE.Memory {
 					GetPointer(ref pointer, Name);
 				}
 				return pointer;
+			}
+		}
+		public IntPtr Address {
+			get {
+				if (!Memory.IsHooked) {
+					addressLocation = IntPtr.Zero;
+				} else {
+					GetPointer(ref pointer, Name);
+				}
+				return addressLocation;
 			}
 		}
 		public T Read<T>(params int[] offsets) {
@@ -448,13 +464,15 @@ namespace LiveSplit.OriDE.Memory {
 				}
 				if (ptr == IntPtr.Zero && DateTime.Now > lastTry.AddSeconds(1)) {
 					lastTry = DateTime.Now;
-					ptr = GetVersionedFunctionPointer(name);
-					if (ptr != IntPtr.Zero) {
+					addressLocation = GetVersionedFunctionPointer(name);
+					if (addressLocation != IntPtr.Zero) {
 						if (IsStatic) {
-							ptr = Memory.Program.Read<IntPtr>(ptr, 0, 0);
+							ptr = Memory.Program.Read<IntPtr>(addressLocation, 0, 0);
 						} else {
-							ptr = Memory.Program.Read<IntPtr>(ptr, 0);
+							ptr = Memory.Program.Read<IntPtr>(addressLocation, 0);
 						}
+					} else {
+						ptr = IntPtr.Zero;
 					}
 				}
 			}
