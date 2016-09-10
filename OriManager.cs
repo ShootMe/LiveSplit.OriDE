@@ -11,6 +11,7 @@ namespace LiveSplit.OriDE {
 		private bool useLivesplitColors = true, extraFast = false, goingFast = false;
 		private KeyboardHook kbHook;
 		public OriManager() {
+			this.DoubleBuffered = true;
 			kbHook = new KeyboardHook(KeyboardHook.Parameters.PassAllKeysToNextApp);
 			kbHook.KeyIntercepted += KeyhookPress;
 			InitializeComponent();
