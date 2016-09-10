@@ -28,7 +28,7 @@ namespace LiveSplit.OriDE {
 				int state = Memory.GetTASState();
 				if ((state & 1) != 0) {
 					int key = e.KeyCode;
-					if(key == 222) { key = 39; }
+					if (key == 222) { key = 39; }
 					key = key & 127;
 					Memory.SetTASCharacter((byte)key);
 				}
@@ -47,8 +47,8 @@ namespace LiveSplit.OriDE {
 				}
 			} else if (e.Control && e.KeyCode == Keys.F) {
 				extraFast = !extraFast;
-			} else if(e.Control && e.KeyCode == Keys.T) {
-				if(this.Width == 600) {
+			} else if (e.Control && e.KeyCode == Keys.T) {
+				if (this.Width == 600) {
 					this.Width = 380;
 					this.Height = 175;
 					lblCurrentInput.Visible = false;
@@ -91,9 +91,11 @@ namespace LiveSplit.OriDE {
 					lblCurrentInput.Visible = true;
 					lblNextInput.Visible = true;
 					lblTASStates.Visible = true;
-				} else if(tasEnabled) {
-					lblCurrentInput.Text = Memory.GetTASCurrentInput();
-					lblNextInput.Text = Memory.GetTASNextInput();
+				} else {
+					if (tasEnabled) {
+						lblCurrentInput.Text = Memory.GetTASCurrentInput();
+						lblNextInput.Text = Memory.GetTASNextInput();
+					}
 					lblTASStates.Text = Memory.GetTASExtraInfo();
 				}
 				GameState gameState = Memory.GetGameState();
