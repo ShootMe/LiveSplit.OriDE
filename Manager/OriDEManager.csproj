@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="OriDisplay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveGameData.cs" />
     <EmbeddedResource Include="..\OriManager.resx">
       <Link>OriManager.resx</Link>
       <DependentUpon>OriManager.cs</DependentUpon>
