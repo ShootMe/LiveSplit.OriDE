@@ -69,7 +69,19 @@
     </Compile>
     <Compile Include="OriDisplay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaveEditor.Designer.cs">
+      <DependentUpon>SaveEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="SaveGameData.cs" />
+    <Compile Include="SaveManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaveManager.Designer.cs">
+      <DependentUpon>SaveManager.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="..\OriManager.resx">
       <Link>OriManager.resx</Link>
       <DependentUpon>OriManager.cs</DependentUpon>
@@ -84,6 +96,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SaveEditor.resx">
+      <DependentUpon>SaveEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaveManager.resx">
+      <DependentUpon>SaveManager.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -95,6 +113,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Images\forlornRuins.png" />
+    <EmbeddedResource Include="Images\ginsoTree.png" />
+    <EmbeddedResource Include="Images\hollowGrove.png" />
+    <EmbeddedResource Include="Images\mistyWoods.png" />
+    <EmbeddedResource Include="Images\moonGrotto.png" />
+    <EmbeddedResource Include="Images\sorrowPass.png" />
+    <EmbeddedResource Include="Images\sunkenGlades.png" />
+    <EmbeddedResource Include="Images\thornfeltSwamp.png" />
+    <EmbeddedResource Include="Images\mangrove.png" />
+    <EmbeddedResource Include="Images\mountHoru.png" />
     <Content Include="ori.ico" />
   </ItemGroup>
   <ItemGroup />

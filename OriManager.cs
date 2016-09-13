@@ -48,6 +48,10 @@ namespace LiveSplit.OriDE {
 				}
 			} else if (e.Control && e.KeyCode == Keys.F) {
 				extraFast = !extraFast;
+			} else if (e.Control && e.KeyCode == Keys.S) {
+				using(SaveManager saveManager = new SaveManager()) {
+					saveManager.ShowDialog(this);
+				}
 			} else if (e.Control && e.KeyCode == Keys.T) {
 				if (this.Width == 650) {
 					this.Width = 380;

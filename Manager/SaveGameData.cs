@@ -10,6 +10,7 @@ namespace LiveSplit.OriDE {
 		public const int DATA_VERSION = 1;
 		public const string FILE_FORMAT_STRING = "SaveGameData";
 
+		public string FilePath;
 		public int Version;
 		public int DataVersion;
 		public string AreaName = string.Empty;
@@ -88,6 +89,7 @@ namespace LiveSplit.OriDE {
 				using (BinaryReader reader = new BinaryReader(fs)) {
 					if (reader.ReadString() != HEADER_FORMAT_STRING) { return false; }
 
+					FilePath = filePath;
 					Version = reader.ReadInt32();
 					if (Version < 10) { return false; }
 
@@ -226,8 +228,8 @@ namespace LiveSplit.OriDE {
 		SparkFlame,
 		CinderFlame,
 		UltraSplitFlame,
-		Grenade,
 		Dash,
+		Grenade,
 		GrenadeUpgrade,
 		ChargeDash,
 		AirDash,
@@ -280,7 +282,7 @@ namespace LiveSplit.OriDE {
 			Data[offset + 2] = data[2];
 			Data[offset + 3] = data[3];
 		}
-		public float GetInt(int offset) {
+		public int GetInt(int offset) {
 			return BitConverter.ToInt32(Data, offset);
 		}
 		public void WriteFloat(int offset, float value) {
