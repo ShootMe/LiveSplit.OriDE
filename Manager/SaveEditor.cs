@@ -11,6 +11,7 @@ namespace LiveSplit.OriDE {
 		public static SceneID PlayerAbilities = new SceneID("4B417974465D2E6BE06A6D8DBD0F0BB3");
 		public static SceneID SeinSoulFlame = new SceneID("4548C1A49142B7E7C26404C530CF0CAC");
 		public static SceneID SeinDeathCounter = new SceneID("48B63153499A49ACEFDD874FE2C88CBC");
+		public static SceneID GameTimer = new SceneID("454EE3A50EB0CBE41EEF281B35EB93A9");
 
 		public SaveEditor() {
 			InitializeComponent();
@@ -116,7 +117,8 @@ namespace LiveSplit.OriDE {
 				}
 				cboArea.Text = currentArea;
 
-				txtTime.Text = (Save.Hours * 3600 + Save.Minutes * 60 + Save.Seconds).ToString();
+				data = Save.Master[GameTimer];
+				txtTime.Text = data.GetFloat(0).ToString("0.000");
 
 				this.Text = "Save Editor - " + Path.GetFileNameWithoutExtension(Save.FilePath);
 			} catch (Exception ex) {
@@ -240,10 +242,14 @@ namespace LiveSplit.OriDE {
 					Save.AreaName = currentArea;
 				}
 
-				int totalSeconds = int.Parse(txtTime.Text);
-				Save.Hours = totalSeconds / 3600;
-				Save.Minutes = (totalSeconds - Save.Hours * 3600) / 60;
-				Save.Seconds = (totalSeconds - Save.Hours * 3600 - Save.Minutes * 60);
+				float totalSeconds = float.Parse(txtTime.Text);
+				int totalSecs = (int)totalSeconds;
+				Save.Hours = totalSecs / 3600;
+				Save.Minutes = (totalSecs - Save.Hours * 3600) / 60;
+				Save.Seconds = (totalSecs - Save.Hours * 3600 - Save.Minutes * 60);
+
+				data = Save.Master[GameTimer];
+				data.WriteFloat(0, totalSeconds);
 
 				Save.Save(Save.FilePath);
 				this.Close();
