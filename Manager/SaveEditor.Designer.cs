@@ -99,41 +99,47 @@
 			this.txtSoulY = new System.Windows.Forms.TextBox();
 			this.lblSoulX = new System.Windows.Forms.Label();
 			this.txtSoulX = new System.Windows.Forms.TextBox();
+			this.cboArea = new System.Windows.Forms.ComboBox();
+			this.lblArea = new System.Windows.Forms.Label();
+			this.lblDeaths = new System.Windows.Forms.Label();
+			this.txtDeaths = new System.Windows.Forms.TextBox();
+			this.lblTime = new System.Windows.Forms.Label();
+			this.txtTime = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// txtPosX
 			// 
-			this.txtPosX.Location = new System.Drawing.Point(177, 13);
+			this.txtPosX.Location = new System.Drawing.Point(177, 38);
 			this.txtPosX.Name = "txtPosX";
 			this.txtPosX.Size = new System.Drawing.Size(75, 20);
-			this.txtPosX.TabIndex = 19;
+			this.txtPosX.TabIndex = 21;
 			this.txtPosX.Text = "1234.1234";
 			this.txtPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// lblPosX
 			// 
 			this.lblPosX.AutoSize = true;
-			this.lblPosX.Location = new System.Drawing.Point(136, 16);
+			this.lblPosX.Location = new System.Drawing.Point(136, 41);
 			this.lblPosX.Name = "lblPosX";
 			this.lblPosX.Size = new System.Drawing.Size(35, 13);
-			this.lblPosX.TabIndex = 18;
+			this.lblPosX.TabIndex = 20;
 			this.lblPosX.Text = "Pos X";
 			// 
 			// lblPosY
 			// 
 			this.lblPosY.AutoSize = true;
-			this.lblPosY.Location = new System.Drawing.Point(136, 42);
+			this.lblPosY.Location = new System.Drawing.Point(136, 67);
 			this.lblPosY.Name = "lblPosY";
 			this.lblPosY.Size = new System.Drawing.Size(35, 13);
-			this.lblPosY.TabIndex = 20;
+			this.lblPosY.TabIndex = 22;
 			this.lblPosY.Text = "Pos Y";
 			// 
 			// txtPosY
 			// 
-			this.txtPosY.Location = new System.Drawing.Point(177, 39);
+			this.txtPosY.Location = new System.Drawing.Point(177, 64);
 			this.txtPosY.Name = "txtPosY";
 			this.txtPosY.Size = new System.Drawing.Size(75, 20);
-			this.txtPosY.TabIndex = 21;
+			this.txtPosY.TabIndex = 23;
 			this.txtPosY.Text = "1234.1234";
 			this.txtPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
@@ -176,36 +182,36 @@
 			// lblVelocityY
 			// 
 			this.lblVelocityY.AutoSize = true;
-			this.lblVelocityY.Location = new System.Drawing.Point(117, 95);
+			this.lblVelocityY.Location = new System.Drawing.Point(117, 120);
 			this.lblVelocityY.Name = "lblVelocityY";
 			this.lblVelocityY.Size = new System.Drawing.Size(54, 13);
-			this.lblVelocityY.TabIndex = 24;
+			this.lblVelocityY.TabIndex = 26;
 			this.lblVelocityY.Text = "Velocity Y";
 			// 
 			// txtVelocityY
 			// 
-			this.txtVelocityY.Location = new System.Drawing.Point(177, 92);
+			this.txtVelocityY.Location = new System.Drawing.Point(177, 117);
 			this.txtVelocityY.Name = "txtVelocityY";
 			this.txtVelocityY.Size = new System.Drawing.Size(75, 20);
-			this.txtVelocityY.TabIndex = 25;
+			this.txtVelocityY.TabIndex = 27;
 			this.txtVelocityY.Text = "1234.1234";
 			this.txtVelocityY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// lblVelocityX
 			// 
 			this.lblVelocityX.AutoSize = true;
-			this.lblVelocityX.Location = new System.Drawing.Point(117, 69);
+			this.lblVelocityX.Location = new System.Drawing.Point(117, 94);
 			this.lblVelocityX.Name = "lblVelocityX";
 			this.lblVelocityX.Size = new System.Drawing.Size(54, 13);
-			this.lblVelocityX.TabIndex = 22;
+			this.lblVelocityX.TabIndex = 24;
 			this.lblVelocityX.Text = "Velocity X";
 			// 
 			// txtVelocityX
 			// 
-			this.txtVelocityX.Location = new System.Drawing.Point(177, 66);
+			this.txtVelocityX.Location = new System.Drawing.Point(177, 91);
 			this.txtVelocityX.Name = "txtVelocityX";
 			this.txtVelocityX.Size = new System.Drawing.Size(75, 20);
-			this.txtVelocityX.TabIndex = 23;
+			this.txtVelocityX.TabIndex = 25;
 			this.txtVelocityX.Text = "1234.1234";
 			this.txtVelocityX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
@@ -303,10 +309,10 @@
 			// 
 			this.btnSave.BackColor = System.Drawing.Color.Black;
 			this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnSave.Location = new System.Drawing.Point(136, 219);
+			this.btnSave.Location = new System.Drawing.Point(327, 224);
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size(58, 23);
-			this.btnSave.TabIndex = 73;
+			this.btnSave.Size = new System.Drawing.Size(50, 23);
+			this.btnSave.TabIndex = 79;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = false;
 			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -317,7 +323,7 @@
 			this.chkSpiritFlame.Location = new System.Drawing.Point(327, 11);
 			this.chkSpiritFlame.Name = "chkSpiritFlame";
 			this.chkSpiritFlame.Size = new System.Drawing.Size(47, 17);
-			this.chkSpiritFlame.TabIndex = 32;
+			this.chkSpiritFlame.TabIndex = 38;
 			this.chkSpiritFlame.Text = "Sein";
 			this.chkSpiritFlame.UseVisualStyleBackColor = true;
 			// 
@@ -327,7 +333,7 @@
 			this.chkWallJump.Location = new System.Drawing.Point(327, 30);
 			this.chkWallJump.Name = "chkWallJump";
 			this.chkWallJump.Size = new System.Drawing.Size(75, 17);
-			this.chkWallJump.TabIndex = 33;
+			this.chkWallJump.TabIndex = 39;
 			this.chkWallJump.Text = "Wall Jump";
 			this.chkWallJump.UseVisualStyleBackColor = true;
 			// 
@@ -337,7 +343,7 @@
 			this.chkChargeFlame.Location = new System.Drawing.Point(327, 49);
 			this.chkChargeFlame.Name = "chkChargeFlame";
 			this.chkChargeFlame.Size = new System.Drawing.Size(91, 17);
-			this.chkChargeFlame.TabIndex = 34;
+			this.chkChargeFlame.TabIndex = 40;
 			this.chkChargeFlame.Text = "Charge Flame";
 			this.chkChargeFlame.UseVisualStyleBackColor = true;
 			// 
@@ -347,7 +353,7 @@
 			this.chkDoubleJump.Location = new System.Drawing.Point(327, 87);
 			this.chkDoubleJump.Name = "chkDoubleJump";
 			this.chkDoubleJump.Size = new System.Drawing.Size(88, 17);
-			this.chkDoubleJump.TabIndex = 36;
+			this.chkDoubleJump.TabIndex = 42;
 			this.chkDoubleJump.Text = "Double Jump";
 			this.chkDoubleJump.UseVisualStyleBackColor = true;
 			// 
@@ -357,7 +363,7 @@
 			this.chkBash.Location = new System.Drawing.Point(327, 106);
 			this.chkBash.Name = "chkBash";
 			this.chkBash.Size = new System.Drawing.Size(50, 17);
-			this.chkBash.TabIndex = 37;
+			this.chkBash.TabIndex = 43;
 			this.chkBash.Text = "Bash";
 			this.chkBash.UseVisualStyleBackColor = true;
 			// 
@@ -367,7 +373,7 @@
 			this.chkStomp.Location = new System.Drawing.Point(327, 125);
 			this.chkStomp.Name = "chkStomp";
 			this.chkStomp.Size = new System.Drawing.Size(56, 17);
-			this.chkStomp.TabIndex = 38;
+			this.chkStomp.TabIndex = 44;
 			this.chkStomp.Text = "Stomp";
 			this.chkStomp.UseVisualStyleBackColor = true;
 			// 
@@ -377,7 +383,7 @@
 			this.chkGlide.Location = new System.Drawing.Point(327, 163);
 			this.chkGlide.Name = "chkGlide";
 			this.chkGlide.Size = new System.Drawing.Size(50, 17);
-			this.chkGlide.TabIndex = 40;
+			this.chkGlide.TabIndex = 46;
 			this.chkGlide.Text = "Glide";
 			this.chkGlide.UseVisualStyleBackColor = true;
 			// 
@@ -387,7 +393,7 @@
 			this.chkClimb.Location = new System.Drawing.Point(327, 182);
 			this.chkClimb.Name = "chkClimb";
 			this.chkClimb.Size = new System.Drawing.Size(51, 17);
-			this.chkClimb.TabIndex = 41;
+			this.chkClimb.TabIndex = 47;
 			this.chkClimb.Text = "Climb";
 			this.chkClimb.UseVisualStyleBackColor = true;
 			// 
@@ -397,7 +403,7 @@
 			this.chkChargeJump.Location = new System.Drawing.Point(327, 201);
 			this.chkChargeJump.Name = "chkChargeJump";
 			this.chkChargeJump.Size = new System.Drawing.Size(88, 17);
-			this.chkChargeJump.TabIndex = 42;
+			this.chkChargeJump.TabIndex = 48;
 			this.chkChargeJump.Text = "Charge Jump";
 			this.chkChargeJump.UseVisualStyleBackColor = true;
 			// 
@@ -407,7 +413,7 @@
 			this.chkDash.Location = new System.Drawing.Point(327, 68);
 			this.chkDash.Name = "chkDash";
 			this.chkDash.Size = new System.Drawing.Size(51, 17);
-			this.chkDash.TabIndex = 35;
+			this.chkDash.TabIndex = 41;
 			this.chkDash.Text = "Dash";
 			this.chkDash.UseVisualStyleBackColor = true;
 			// 
@@ -417,7 +423,7 @@
 			this.chkGrenade.Location = new System.Drawing.Point(327, 144);
 			this.chkGrenade.Name = "chkGrenade";
 			this.chkGrenade.Size = new System.Drawing.Size(67, 17);
-			this.chkGrenade.TabIndex = 39;
+			this.chkGrenade.TabIndex = 45;
 			this.chkGrenade.Text = "Grenade";
 			this.chkGrenade.UseVisualStyleBackColor = true;
 			// 
@@ -427,7 +433,7 @@
 			this.chkMapMarkers.Location = new System.Drawing.Point(568, 30);
 			this.chkMapMarkers.Name = "chkMapMarkers";
 			this.chkMapMarkers.Size = new System.Drawing.Size(88, 17);
-			this.chkMapMarkers.TabIndex = 54;
+			this.chkMapMarkers.TabIndex = 60;
 			this.chkMapMarkers.Text = "Map Markers";
 			this.chkMapMarkers.UseVisualStyleBackColor = true;
 			// 
@@ -437,7 +443,7 @@
 			this.chkSplitFlame.Location = new System.Drawing.Point(441, 68);
 			this.chkSplitFlame.Name = "chkSplitFlame";
 			this.chkSplitFlame.Size = new System.Drawing.Size(77, 17);
-			this.chkSplitFlame.TabIndex = 46;
+			this.chkSplitFlame.TabIndex = 52;
 			this.chkSplitFlame.Text = "Split Flame";
 			this.chkSplitFlame.UseVisualStyleBackColor = true;
 			// 
@@ -447,7 +453,7 @@
 			this.chkEnergyEfficiency.Location = new System.Drawing.Point(568, 87);
 			this.chkEnergyEfficiency.Name = "chkEnergyEfficiency";
 			this.chkEnergyEfficiency.Size = new System.Drawing.Size(108, 17);
-			this.chkEnergyEfficiency.TabIndex = 57;
+			this.chkEnergyEfficiency.TabIndex = 63;
 			this.chkEnergyEfficiency.Text = "Energy Efficiency";
 			this.chkEnergyEfficiency.UseVisualStyleBackColor = true;
 			// 
@@ -457,7 +463,7 @@
 			this.chkUltraMagnet.Location = new System.Drawing.Point(568, 68);
 			this.chkUltraMagnet.Name = "chkUltraMagnet";
 			this.chkUltraMagnet.Size = new System.Drawing.Size(87, 17);
-			this.chkUltraMagnet.TabIndex = 56;
+			this.chkUltraMagnet.TabIndex = 62;
 			this.chkUltraMagnet.Text = "Ultra Magnet";
 			this.chkUltraMagnet.UseVisualStyleBackColor = true;
 			// 
@@ -467,7 +473,7 @@
 			this.chkLifeEfficiency.Location = new System.Drawing.Point(568, 49);
 			this.chkLifeEfficiency.Name = "chkLifeEfficiency";
 			this.chkLifeEfficiency.Size = new System.Drawing.Size(92, 17);
-			this.chkLifeEfficiency.TabIndex = 55;
+			this.chkLifeEfficiency.TabIndex = 61;
 			this.chkLifeEfficiency.Text = "Life Efficiency";
 			this.chkLifeEfficiency.UseVisualStyleBackColor = true;
 			// 
@@ -477,7 +483,7 @@
 			this.chkMagnet.Location = new System.Drawing.Point(568, 11);
 			this.chkMagnet.Name = "chkMagnet";
 			this.chkMagnet.Size = new System.Drawing.Size(62, 17);
-			this.chkMagnet.TabIndex = 53;
+			this.chkMagnet.TabIndex = 59;
 			this.chkMagnet.Text = "Magnet";
 			this.chkMagnet.UseVisualStyleBackColor = true;
 			// 
@@ -487,7 +493,7 @@
 			this.chkCinderFlame.Location = new System.Drawing.Point(441, 106);
 			this.chkCinderFlame.Name = "chkCinderFlame";
 			this.chkCinderFlame.Size = new System.Drawing.Size(87, 17);
-			this.chkCinderFlame.TabIndex = 48;
+			this.chkCinderFlame.TabIndex = 54;
 			this.chkCinderFlame.Text = "Cinder Flame";
 			this.chkCinderFlame.UseVisualStyleBackColor = true;
 			// 
@@ -497,7 +503,7 @@
 			this.chkUltraLightBurst.Location = new System.Drawing.Point(441, 87);
 			this.chkUltraLightBurst.Name = "chkUltraLightBurst";
 			this.chkUltraLightBurst.Size = new System.Drawing.Size(101, 17);
-			this.chkUltraLightBurst.TabIndex = 47;
+			this.chkUltraLightBurst.TabIndex = 53;
 			this.chkUltraLightBurst.Text = "Ultra Light Burst";
 			this.chkUltraLightBurst.UseVisualStyleBackColor = true;
 			// 
@@ -507,7 +513,7 @@
 			this.chkChargeFlameBurn.Location = new System.Drawing.Point(441, 49);
 			this.chkChargeFlameBurn.Name = "chkChargeFlameBurn";
 			this.chkChargeFlameBurn.Size = new System.Drawing.Size(116, 17);
-			this.chkChargeFlameBurn.TabIndex = 45;
+			this.chkChargeFlameBurn.TabIndex = 51;
 			this.chkChargeFlameBurn.Text = "Charge Flame Burn";
 			this.chkChargeFlameBurn.UseVisualStyleBackColor = true;
 			// 
@@ -517,7 +523,7 @@
 			this.chkSparkFlame.Location = new System.Drawing.Point(441, 30);
 			this.chkSparkFlame.Name = "chkSparkFlame";
 			this.chkSparkFlame.Size = new System.Drawing.Size(85, 17);
-			this.chkSparkFlame.TabIndex = 44;
+			this.chkSparkFlame.TabIndex = 50;
 			this.chkSparkFlame.Text = "Spark Flame";
 			this.chkSparkFlame.UseVisualStyleBackColor = true;
 			// 
@@ -527,7 +533,7 @@
 			this.chkQuickFlame.Location = new System.Drawing.Point(441, 11);
 			this.chkQuickFlame.Name = "chkQuickFlame";
 			this.chkQuickFlame.Size = new System.Drawing.Size(85, 17);
-			this.chkQuickFlame.TabIndex = 43;
+			this.chkQuickFlame.TabIndex = 49;
 			this.chkQuickFlame.Text = "Quick Flame";
 			this.chkQuickFlame.UseVisualStyleBackColor = true;
 			// 
@@ -537,7 +543,7 @@
 			this.chkUltraStomp.Location = new System.Drawing.Point(441, 125);
 			this.chkUltraStomp.Name = "chkUltraStomp";
 			this.chkUltraStomp.Size = new System.Drawing.Size(81, 17);
-			this.chkUltraStomp.TabIndex = 49;
+			this.chkUltraStomp.TabIndex = 55;
 			this.chkUltraStomp.Text = "Ultra Stomp";
 			this.chkUltraStomp.UseVisualStyleBackColor = true;
 			// 
@@ -547,7 +553,7 @@
 			this.chkRapidFlame.Location = new System.Drawing.Point(441, 144);
 			this.chkRapidFlame.Name = "chkRapidFlame";
 			this.chkRapidFlame.Size = new System.Drawing.Size(85, 17);
-			this.chkRapidFlame.TabIndex = 50;
+			this.chkRapidFlame.TabIndex = 56;
 			this.chkRapidFlame.Text = "Rapid Flame";
 			this.chkRapidFlame.UseVisualStyleBackColor = true;
 			// 
@@ -557,7 +563,7 @@
 			this.chkChargeFlameBlast.Location = new System.Drawing.Point(441, 163);
 			this.chkChargeFlameBlast.Name = "chkChargeFlameBlast";
 			this.chkChargeFlameBlast.Size = new System.Drawing.Size(117, 17);
-			this.chkChargeFlameBlast.TabIndex = 51;
+			this.chkChargeFlameBlast.TabIndex = 57;
 			this.chkChargeFlameBlast.Text = "Charge Flame Blast";
 			this.chkChargeFlameBlast.UseVisualStyleBackColor = true;
 			// 
@@ -567,7 +573,7 @@
 			this.chkUltraSplitFlame.Location = new System.Drawing.Point(441, 182);
 			this.chkUltraSplitFlame.Name = "chkUltraSplitFlame";
 			this.chkUltraSplitFlame.Size = new System.Drawing.Size(102, 17);
-			this.chkUltraSplitFlame.TabIndex = 52;
+			this.chkUltraSplitFlame.TabIndex = 58;
 			this.chkUltraSplitFlame.Text = "Ultra Split Flame";
 			this.chkUltraSplitFlame.UseVisualStyleBackColor = true;
 			// 
@@ -577,7 +583,7 @@
 			this.chkAbilityMarkers.Location = new System.Drawing.Point(568, 106);
 			this.chkAbilityMarkers.Name = "chkAbilityMarkers";
 			this.chkAbilityMarkers.Size = new System.Drawing.Size(94, 17);
-			this.chkAbilityMarkers.TabIndex = 58;
+			this.chkAbilityMarkers.TabIndex = 64;
 			this.chkAbilityMarkers.Text = "Ability Markers";
 			this.chkAbilityMarkers.UseVisualStyleBackColor = true;
 			// 
@@ -587,7 +593,7 @@
 			this.chkSpiritEfficiency.Location = new System.Drawing.Point(568, 125);
 			this.chkSpiritEfficiency.Name = "chkSpiritEfficiency";
 			this.chkSpiritEfficiency.Size = new System.Drawing.Size(98, 17);
-			this.chkSpiritEfficiency.TabIndex = 59;
+			this.chkSpiritEfficiency.TabIndex = 65;
 			this.chkSpiritEfficiency.Text = "Spirit Efficiency";
 			this.chkSpiritEfficiency.UseVisualStyleBackColor = true;
 			// 
@@ -597,7 +603,7 @@
 			this.chkLifeMarkers.Location = new System.Drawing.Point(568, 144);
 			this.chkLifeMarkers.Name = "chkLifeMarkers";
 			this.chkLifeMarkers.Size = new System.Drawing.Size(84, 17);
-			this.chkLifeMarkers.TabIndex = 60;
+			this.chkLifeMarkers.TabIndex = 66;
 			this.chkLifeMarkers.Text = "Life Markers";
 			this.chkLifeMarkers.UseVisualStyleBackColor = true;
 			// 
@@ -607,7 +613,7 @@
 			this.chkEnergyMarkers.Location = new System.Drawing.Point(568, 163);
 			this.chkEnergyMarkers.Name = "chkEnergyMarkers";
 			this.chkEnergyMarkers.Size = new System.Drawing.Size(100, 17);
-			this.chkEnergyMarkers.TabIndex = 61;
+			this.chkEnergyMarkers.TabIndex = 67;
 			this.chkEnergyMarkers.Text = "Energy Markers";
 			this.chkEnergyMarkers.UseVisualStyleBackColor = true;
 			// 
@@ -617,7 +623,7 @@
 			this.chkSense.Location = new System.Drawing.Point(568, 182);
 			this.chkSense.Name = "chkSense";
 			this.chkSense.Size = new System.Drawing.Size(56, 17);
-			this.chkSense.TabIndex = 62;
+			this.chkSense.TabIndex = 68;
 			this.chkSense.Text = "Sense";
 			this.chkSense.UseVisualStyleBackColor = true;
 			// 
@@ -627,7 +633,7 @@
 			this.chkUltraDefense.Location = new System.Drawing.Point(690, 182);
 			this.chkUltraDefense.Name = "chkUltraDefense";
 			this.chkUltraDefense.Size = new System.Drawing.Size(91, 17);
-			this.chkUltraDefense.TabIndex = 72;
+			this.chkUltraDefense.TabIndex = 78;
 			this.chkUltraDefense.Text = "Ultra Defense";
 			this.chkUltraDefense.UseVisualStyleBackColor = true;
 			// 
@@ -637,7 +643,7 @@
 			this.chkTripleJump.Location = new System.Drawing.Point(690, 163);
 			this.chkTripleJump.Name = "chkTripleJump";
 			this.chkTripleJump.Size = new System.Drawing.Size(80, 17);
-			this.chkTripleJump.TabIndex = 71;
+			this.chkTripleJump.TabIndex = 77;
 			this.chkTripleJump.Text = "Triple Jump";
 			this.chkTripleJump.UseVisualStyleBackColor = true;
 			// 
@@ -647,7 +653,7 @@
 			this.chkSoulLinkEfficiency.Location = new System.Drawing.Point(690, 144);
 			this.chkSoulLinkEfficiency.Name = "chkSoulLinkEfficiency";
 			this.chkSoulLinkEfficiency.Size = new System.Drawing.Size(119, 17);
-			this.chkSoulLinkEfficiency.TabIndex = 70;
+			this.chkSoulLinkEfficiency.TabIndex = 76;
 			this.chkSoulLinkEfficiency.Text = "Soul Link Efficiency";
 			this.chkSoulLinkEfficiency.UseVisualStyleBackColor = true;
 			// 
@@ -657,7 +663,7 @@
 			this.chkWaterBreath.Location = new System.Drawing.Point(690, 125);
 			this.chkWaterBreath.Name = "chkWaterBreath";
 			this.chkWaterBreath.Size = new System.Drawing.Size(89, 17);
-			this.chkWaterBreath.TabIndex = 69;
+			this.chkWaterBreath.TabIndex = 75;
 			this.chkWaterBreath.Text = "Water Breath";
 			this.chkWaterBreath.UseVisualStyleBackColor = true;
 			// 
@@ -667,7 +673,7 @@
 			this.chkChargeDash.Location = new System.Drawing.Point(690, 106);
 			this.chkChargeDash.Name = "chkChargeDash";
 			this.chkChargeDash.Size = new System.Drawing.Size(88, 17);
-			this.chkChargeDash.TabIndex = 68;
+			this.chkChargeDash.TabIndex = 74;
 			this.chkChargeDash.Text = "Charge Dash";
 			this.chkChargeDash.UseVisualStyleBackColor = true;
 			// 
@@ -677,7 +683,7 @@
 			this.chkRegroup.Location = new System.Drawing.Point(690, 30);
 			this.chkRegroup.Name = "chkRegroup";
 			this.chkRegroup.Size = new System.Drawing.Size(67, 17);
-			this.chkRegroup.TabIndex = 64;
+			this.chkRegroup.TabIndex = 70;
 			this.chkRegroup.Text = "Regroup";
 			this.chkRegroup.UseVisualStyleBackColor = true;
 			// 
@@ -687,7 +693,7 @@
 			this.chkUltraSoulLink.Location = new System.Drawing.Point(690, 87);
 			this.chkUltraSoulLink.Name = "chkUltraSoulLink";
 			this.chkUltraSoulLink.Size = new System.Drawing.Size(95, 17);
-			this.chkUltraSoulLink.TabIndex = 67;
+			this.chkUltraSoulLink.TabIndex = 73;
 			this.chkUltraSoulLink.Text = "Ultra Soul Link";
 			this.chkUltraSoulLink.UseVisualStyleBackColor = true;
 			// 
@@ -697,7 +703,7 @@
 			this.chkAirDash.Location = new System.Drawing.Point(690, 68);
 			this.chkAirDash.Name = "chkAirDash";
 			this.chkAirDash.Size = new System.Drawing.Size(66, 17);
-			this.chkAirDash.TabIndex = 66;
+			this.chkAirDash.TabIndex = 72;
 			this.chkAirDash.Text = "Air Dash";
 			this.chkAirDash.UseVisualStyleBackColor = true;
 			// 
@@ -707,7 +713,7 @@
 			this.chkChargeFlameEfficiency.Location = new System.Drawing.Point(690, 49);
 			this.chkChargeFlameEfficiency.Name = "chkChargeFlameEfficiency";
 			this.chkChargeFlameEfficiency.Size = new System.Drawing.Size(140, 17);
-			this.chkChargeFlameEfficiency.TabIndex = 65;
+			this.chkChargeFlameEfficiency.TabIndex = 71;
 			this.chkChargeFlameEfficiency.Text = "Charge Flame Efficiency";
 			this.chkChargeFlameEfficiency.UseVisualStyleBackColor = true;
 			// 
@@ -717,7 +723,7 @@
 			this.chkRekindle.Location = new System.Drawing.Point(690, 11);
 			this.chkRekindle.Name = "chkRekindle";
 			this.chkRekindle.Size = new System.Drawing.Size(68, 17);
-			this.chkRekindle.TabIndex = 63;
+			this.chkRekindle.TabIndex = 69;
 			this.chkRekindle.Text = "Rekindle";
 			this.chkRekindle.UseVisualStyleBackColor = true;
 			// 
@@ -725,10 +731,10 @@
 			// 
 			this.btnDelete.BackColor = System.Drawing.Color.Black;
 			this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnDelete.Location = new System.Drawing.Point(226, 219);
+			this.btnDelete.Location = new System.Drawing.Point(441, 224);
 			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(58, 23);
-			this.btnDelete.TabIndex = 74;
+			this.btnDelete.Size = new System.Drawing.Size(50, 23);
+			this.btnDelete.TabIndex = 80;
 			this.btnDelete.Text = "Delete";
 			this.btnDelete.UseVisualStyleBackColor = false;
 			this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
@@ -740,7 +746,7 @@
 			this.btnAll.Location = new System.Drawing.Point(268, 11);
 			this.btnAll.Name = "btnAll";
 			this.btnAll.Size = new System.Drawing.Size(44, 23);
-			this.btnAll.TabIndex = 30;
+			this.btnAll.TabIndex = 36;
 			this.btnAll.Text = "All";
 			this.btnAll.UseVisualStyleBackColor = false;
 			this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
@@ -752,7 +758,7 @@
 			this.btnNone.Location = new System.Drawing.Point(268, 40);
 			this.btnNone.Name = "btnNone";
 			this.btnNone.Size = new System.Drawing.Size(44, 23);
-			this.btnNone.TabIndex = 31;
+			this.btnNone.TabIndex = 37;
 			this.btnNone.Text = "None";
 			this.btnNone.UseVisualStyleBackColor = false;
 			this.btnNone.Click += new System.EventHandler(this.btnNone_Click);
@@ -796,38 +802,103 @@
 			// lblSoulY
 			// 
 			this.lblSoulY.AutoSize = true;
-			this.lblSoulY.Location = new System.Drawing.Point(133, 147);
+			this.lblSoulY.Location = new System.Drawing.Point(133, 172);
 			this.lblSoulY.Name = "lblSoulY";
 			this.lblSoulY.Size = new System.Drawing.Size(38, 13);
-			this.lblSoulY.TabIndex = 28;
+			this.lblSoulY.TabIndex = 30;
 			this.lblSoulY.Text = "Soul Y";
 			// 
 			// txtSoulY
 			// 
-			this.txtSoulY.Location = new System.Drawing.Point(177, 144);
+			this.txtSoulY.Location = new System.Drawing.Point(177, 169);
 			this.txtSoulY.Name = "txtSoulY";
 			this.txtSoulY.Size = new System.Drawing.Size(75, 20);
-			this.txtSoulY.TabIndex = 29;
+			this.txtSoulY.TabIndex = 31;
 			this.txtSoulY.Text = "1234.1234";
 			this.txtSoulY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// lblSoulX
 			// 
 			this.lblSoulX.AutoSize = true;
-			this.lblSoulX.Location = new System.Drawing.Point(133, 121);
+			this.lblSoulX.Location = new System.Drawing.Point(133, 146);
 			this.lblSoulX.Name = "lblSoulX";
 			this.lblSoulX.Size = new System.Drawing.Size(38, 13);
-			this.lblSoulX.TabIndex = 26;
+			this.lblSoulX.TabIndex = 28;
 			this.lblSoulX.Text = "Soul X";
 			// 
 			// txtSoulX
 			// 
-			this.txtSoulX.Location = new System.Drawing.Point(177, 118);
+			this.txtSoulX.Location = new System.Drawing.Point(177, 143);
 			this.txtSoulX.Name = "txtSoulX";
 			this.txtSoulX.Size = new System.Drawing.Size(75, 20);
-			this.txtSoulX.TabIndex = 27;
+			this.txtSoulX.TabIndex = 29;
 			this.txtSoulX.Text = "1234.1234";
 			this.txtSoulX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// cboArea
+			// 
+			this.cboArea.FormattingEnabled = true;
+			this.cboArea.Items.AddRange(new object[] {
+            "Glades",
+            "Grove",
+            "Grotto",
+            "Ginso",
+            "Swamp",
+            "Blackroot",
+            "Valley",
+            "Misty",
+            "Sorrow",
+            "Forlorn",
+            "Horu"});
+			this.cboArea.Location = new System.Drawing.Point(177, 13);
+			this.cboArea.Name = "cboArea";
+			this.cboArea.Size = new System.Drawing.Size(75, 21);
+			this.cboArea.TabIndex = 19;
+			// 
+			// lblArea
+			// 
+			this.lblArea.AutoSize = true;
+			this.lblArea.Location = new System.Drawing.Point(142, 16);
+			this.lblArea.Name = "lblArea";
+			this.lblArea.Size = new System.Drawing.Size(29, 13);
+			this.lblArea.TabIndex = 18;
+			this.lblArea.Text = "Area";
+			// 
+			// lblDeaths
+			// 
+			this.lblDeaths.AutoSize = true;
+			this.lblDeaths.Location = new System.Drawing.Point(130, 198);
+			this.lblDeaths.Name = "lblDeaths";
+			this.lblDeaths.Size = new System.Drawing.Size(41, 13);
+			this.lblDeaths.TabIndex = 32;
+			this.lblDeaths.Text = "Deaths";
+			// 
+			// txtDeaths
+			// 
+			this.txtDeaths.Location = new System.Drawing.Point(177, 195);
+			this.txtDeaths.Name = "txtDeaths";
+			this.txtDeaths.Size = new System.Drawing.Size(75, 20);
+			this.txtDeaths.TabIndex = 33;
+			this.txtDeaths.Text = "99";
+			this.txtDeaths.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// lblTime
+			// 
+			this.lblTime.AutoSize = true;
+			this.lblTime.Location = new System.Drawing.Point(113, 224);
+			this.lblTime.Name = "lblTime";
+			this.lblTime.Size = new System.Drawing.Size(58, 13);
+			this.lblTime.TabIndex = 34;
+			this.lblTime.Text = "Time (Sec)";
+			// 
+			// txtTime
+			// 
+			this.txtTime.Location = new System.Drawing.Point(177, 221);
+			this.txtTime.Name = "txtTime";
+			this.txtTime.Size = new System.Drawing.Size(75, 20);
+			this.txtTime.TabIndex = 35;
+			this.txtTime.Text = "99999";
+			this.txtTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// SaveEditor
 			// 
@@ -835,7 +906,13 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.Black;
-			this.ClientSize = new System.Drawing.Size(835, 252);
+			this.ClientSize = new System.Drawing.Size(835, 257);
+			this.Controls.Add(this.lblTime);
+			this.Controls.Add(this.txtTime);
+			this.Controls.Add(this.lblDeaths);
+			this.Controls.Add(this.txtDeaths);
+			this.Controls.Add(this.lblArea);
+			this.Controls.Add(this.cboArea);
 			this.Controls.Add(this.lblSoulY);
 			this.Controls.Add(this.txtSoulY);
 			this.Controls.Add(this.lblSoulX);
@@ -1002,5 +1079,11 @@
 		private System.Windows.Forms.TextBox txtSoulY;
 		private System.Windows.Forms.Label lblSoulX;
 		private System.Windows.Forms.TextBox txtSoulX;
+		private System.Windows.Forms.ComboBox cboArea;
+		private System.Windows.Forms.Label lblArea;
+		private System.Windows.Forms.Label lblDeaths;
+		private System.Windows.Forms.TextBox txtDeaths;
+		private System.Windows.Forms.Label lblTime;
+		private System.Windows.Forms.TextBox txtTime;
 	}
 }

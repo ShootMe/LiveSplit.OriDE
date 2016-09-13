@@ -10,6 +10,7 @@ namespace LiveSplit.OriDE {
 		public static SceneID SeinLevel = new SceneID("44D72845AB790E021CC526C2EEAC82A5");
 		public static SceneID PlayerAbilities = new SceneID("4B417974465D2E6BE06A6D8DBD0F0BB3");
 		public static SceneID SeinSoulFlame = new SceneID("4548C1A49142B7E7C26404C530CF0CAC");
+		public static SceneID SeinDeathCounter = new SceneID("48B63153499A49ACEFDD874FE2C88CBC");
 
 		public SaveEditor() {
 			InitializeComponent();
@@ -95,6 +96,27 @@ namespace LiveSplit.OriDE {
 					txtSoulX.Text = string.Empty;
 					txtSoulY.Text = string.Empty;
 				}
+
+				data = Save.Master[SeinDeathCounter];
+				txtDeaths.Text = data.GetInt(0).ToString();
+
+				string currentArea = string.Empty;
+				switch (Save.AreaName) {
+					case "ginsoTree": currentArea = "Ginso"; break;
+					case "sunkenGlades": currentArea = "Glades"; break;
+					case "hollowGrove": currentArea = "Grove"; break;
+					case "moonGrotto": currentArea = "Grotto"; break;
+					case "thornfeltSwamp": currentArea = "Swamp"; break;
+					case "mangrove": currentArea = "Blackroot"; break;
+					case "mistyWoods": currentArea = "Misty"; break;
+					case "sorrowPass": currentArea = "Sorrow"; break;
+					case "forlornRuins": currentArea = "Forlorn"; break;
+					case "mountHoru": currentArea = "Horu"; break;
+					case "valleyOfTheWind": currentArea = "Valley"; break;
+				}
+				cboArea.Text = currentArea;
+
+				txtTime.Text = (Save.Hours * 3600 + Save.Minutes * 60 + Save.Seconds).ToString();
 
 				this.Text = "Save Editor - " + Path.GetFileNameWithoutExtension(Save.FilePath);
 			} catch (Exception ex) {
@@ -192,6 +214,36 @@ namespace LiveSplit.OriDE {
 					}
 					data[(int)SoulFlameInfo.HasSoulFlame] = 0;
 				}
+
+				data = Save.Master[SeinDeathCounter];
+				int deaths = int.Parse(txtDeaths.Text);
+				data.WriteInt(0, deaths);
+				if (Save.Difficulty == DifficultyMode.OneLife) {
+					Save.WasKilled = deaths > 0;
+				}
+
+				string currentArea = string.Empty;
+				switch (cboArea.Text) {
+					case "Ginso": currentArea = "ginsoTree"; break;
+					case "Glades": currentArea = "sunkenGlades"; break;
+					case "Grove": currentArea = "hollowGrove"; break;
+					case "Grotto": currentArea = "moonGrotto"; break;
+					case "Swamp": currentArea = "thornfeltSwamp"; break;
+					case "Blackroot": currentArea = "mangrove"; break;
+					case "Misty": currentArea = "mistyWoods"; break;
+					case "Sorrow": currentArea = "sorrowPass"; break;
+					case "Forlorn": currentArea = "forlornRuins"; break;
+					case "Horu": currentArea = "mountHoru"; break;
+					case "Valley": currentArea = "valleyOfTheWind"; break;
+				}
+				if (!string.IsNullOrEmpty(currentArea)) {
+					Save.AreaName = currentArea;
+				}
+
+				int totalSeconds = int.Parse(txtTime.Text);
+				Save.Hours = totalSeconds / 3600;
+				Save.Minutes = (totalSeconds - Save.Hours * 3600) / 60;
+				Save.Seconds = (totalSeconds - Save.Hours * 3600 - Save.Minutes * 60);
 
 				Save.Save(Save.FilePath);
 				this.Close();

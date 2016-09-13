@@ -123,6 +123,7 @@
     <EmbeddedResource Include="Images\thornfeltSwamp.png" />
     <EmbeddedResource Include="Images\mangrove.png" />
     <EmbeddedResource Include="Images\mountHoru.png" />
+    <EmbeddedResource Include="Images\valleyOfTheWind.png" />
     <Content Include="ori.ico" />
   </ItemGroup>
   <ItemGroup />
