@@ -88,6 +88,9 @@
 			this.chkAirDash = new System.Windows.Forms.CheckBox();
 			this.chkChargeFlameEfficiency = new System.Windows.Forms.CheckBox();
 			this.chkRekindle = new System.Windows.Forms.CheckBox();
+			this.btnDelete = new System.Windows.Forms.Button();
+			this.btnAll = new System.Windows.Forms.Button();
+			this.btnNone = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// txtPosX
@@ -292,9 +295,9 @@
 			// 
 			this.btnSave.BackColor = System.Drawing.Color.Black;
 			this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnSave.Location = new System.Drawing.Point(173, 167);
+			this.btnSave.Location = new System.Drawing.Point(120, 173);
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size(75, 23);
+			this.btnSave.Size = new System.Drawing.Size(58, 23);
 			this.btnSave.TabIndex = 63;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = false;
@@ -710,6 +713,42 @@
 			this.chkRekindle.Text = "Rekindle";
 			this.chkRekindle.UseVisualStyleBackColor = true;
 			// 
+			// btnDelete
+			// 
+			this.btnDelete.BackColor = System.Drawing.Color.Black;
+			this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnDelete.Location = new System.Drawing.Point(248, 173);
+			this.btnDelete.Name = "btnDelete";
+			this.btnDelete.Size = new System.Drawing.Size(58, 23);
+			this.btnDelete.TabIndex = 65;
+			this.btnDelete.Text = "Delete";
+			this.btnDelete.UseVisualStyleBackColor = false;
+			this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+			// 
+			// btnAll
+			// 
+			this.btnAll.BackColor = System.Drawing.Color.Black;
+			this.btnAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnAll.Location = new System.Drawing.Point(265, 37);
+			this.btnAll.Name = "btnAll";
+			this.btnAll.Size = new System.Drawing.Size(44, 23);
+			this.btnAll.TabIndex = 66;
+			this.btnAll.Text = "All";
+			this.btnAll.UseVisualStyleBackColor = false;
+			this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
+			// 
+			// btnNone
+			// 
+			this.btnNone.BackColor = System.Drawing.Color.Black;
+			this.btnNone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnNone.Location = new System.Drawing.Point(265, 66);
+			this.btnNone.Name = "btnNone";
+			this.btnNone.Size = new System.Drawing.Size(44, 23);
+			this.btnNone.TabIndex = 67;
+			this.btnNone.Text = "None";
+			this.btnNone.UseVisualStyleBackColor = false;
+			this.btnNone.Click += new System.EventHandler(this.btnNone_Click);
+			// 
 			// SaveEditor
 			// 
 			this.AcceptButton = this.btnSave;
@@ -717,6 +756,9 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.Black;
 			this.ClientSize = new System.Drawing.Size(835, 208);
+			this.Controls.Add(this.btnNone);
+			this.Controls.Add(this.btnAll);
+			this.Controls.Add(this.btnDelete);
 			this.Controls.Add(this.chkUltraDefense);
 			this.Controls.Add(this.chkTripleJump);
 			this.Controls.Add(this.chkSoulLinkEfficiency);
@@ -861,5 +903,8 @@
 		private System.Windows.Forms.CheckBox chkAirDash;
 		private System.Windows.Forms.CheckBox chkChargeFlameEfficiency;
 		private System.Windows.Forms.CheckBox chkRekindle;
+		private System.Windows.Forms.Button btnDelete;
+		private System.Windows.Forms.Button btnAll;
+		private System.Windows.Forms.Button btnNone;
 	}
 }
