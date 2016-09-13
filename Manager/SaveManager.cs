@@ -75,8 +75,11 @@ namespace LiveSplit.OriDE {
 			flowLayout.PerformLayout();
 
 			int sqSize = (int)Math.Ceiling(Math.Sqrt(count));
-
-			this.ClientSize = new Size(sqSize * 200, sqSize * 78);
+			if (count > sqSize * (sqSize - 1)) {
+				this.ClientSize = new Size(sqSize * 200, sqSize * 78);
+			} else {
+				this.ClientSize = new Size((sqSize - 1) * 200, sqSize * 78);
+			}
 		}
 
 		private void SaveImage_Click(object sender, EventArgs e) {
@@ -93,7 +96,7 @@ namespace LiveSplit.OriDE {
 					if (panel != null) {
 						foreach (Control pc in panel.Controls) {
 							PictureBox pb = pc as PictureBox;
-							if(pb != null) {
+							if (pb != null) {
 								pb.Click -= SaveImage_Click;
 							}
 							pc.Dispose();
