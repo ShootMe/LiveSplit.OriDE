@@ -161,80 +161,6 @@ namespace LiveSplit.OriDE {
 			return this.Scenes.ContainsKey(sceneGUID);
 		}
 	}
-	public enum WorldProgression {
-		Prologue,
-		StartOfGame = 10,
-		SpiritTreeReached = 20,
-		EnteredGinsoTree = 30,
-		FinishedGinsoTree = 40,
-		MistLifted = 50,
-		WindRestored = 60,
-		AfterNest = 70,
-		WarmthReturned = 80,
-		Finished = 90
-	}
-	public enum DifficultyMode {
-		Easy,
-		Normal,
-		Hard,
-		OneLife
-	}
-	public enum LevelInfo {
-		CurrentLevel,
-		Experience = 4,
-		AbilityPoints = 8
-	}
-	public enum SaveInfo {
-		PosX = 44,
-		PosY = 48,
-		SpeedX = 162,
-		SpeedY = 166
-	}
-	public enum Abilities {
-		Bash,
-		ChargeFlame,
-		WallJump,
-		Stomp,
-		DoubleJump,
-		ChargeJump,
-		Magnet,
-		UltraMagnet,
-		Climb,
-		Glide,
-		SpiritFlame,
-		RapidFire,
-		SoulEfficiency,
-		WaterBreath,
-		ChargeFlameBlast,
-		ChargeFlameBurn,
-		DoubleJumpUpgrade,
-		BashBuff,
-		UltraDefense,
-		HealthEfficiency,
-		Sense,
-		StompUpgrade,
-		QuickFlame,
-		MapMarkers,
-		EnergyEfficiency,
-		HealthMarkers,
-		EnergyMarkers,
-		AbilityMarkers,
-		Rekindle,
-		Regroup,
-		ChargeFlameEfficiency,
-		UltraSoulFlame,
-		SoulFlameEfficiency,
-		SplitFlameUpgrade,
-		SparkFlame,
-		CinderFlame,
-		UltraSplitFlame,
-		Dash,
-		Grenade,
-		GrenadeUpgrade,
-		ChargeDash,
-		AirDash,
-		GrenadeEfficiency
-	}
 	public class SceneCollection {
 		public SceneID ID;
 		public readonly Dictionary<SceneID, SceneData> Objects = new Dictionary<SceneID, SceneData>();
@@ -324,6 +250,10 @@ namespace LiveSplit.OriDE {
 			Left = left;
 			Right = right;
 		}
+		public SceneID(int left1, int left2, int right1, int right2) {
+			Left = ((long)left2 << 32) | ((long)left1 & ((1L << 32) - 1L));
+			Right = ((long)right2 << 32) | ((long)right1 & ((1L << 32) - 1L));
+		}
 		public SceneID(string id) {
 			for (int i = 0; i < 16; i++) {
 				long val = 0;
@@ -393,5 +323,90 @@ namespace LiveSplit.OriDE {
 		public override string ToString() {
 			return string.Concat(Left.ToString("X"), Right.ToString("X"));
 		}
+	}
+	public enum WorldProgression {
+		Prologue,
+		StartOfGame = 10,
+		SpiritTreeReached = 20,
+		EnteredGinsoTree = 30,
+		FinishedGinsoTree = 40,
+		MistLifted = 50,
+		WindRestored = 60,
+		AfterNest = 70,
+		WarmthReturned = 80,
+		Finished = 90
+	}
+	public enum DifficultyMode {
+		Easy,
+		Normal,
+		Hard,
+		OneLife
+	}
+	public enum LevelInfo {
+		CurrentLevel,
+		Experience = 4,
+		AbilityPoints = 8
+	}
+	public enum SaveInfo {
+		PosX = 44,
+		PosY = 48,
+		SpeedX = 162,
+		SpeedY = 166
+	}
+	public enum SoulFlameInfo {
+		SoulFlamesCast = 26,
+		HasSoulFlame = 30,
+		SoulX = 31,
+		SoulY = 35
+	}
+	public enum Abilities {
+		Bash,
+		ChargeFlame,
+		WallJump,
+		Stomp,
+		DoubleJump,
+		ChargeJump,
+		Magnet,
+		UltraMagnet,
+		Climb,
+		Glide,
+		SpiritFlame,
+		RapidFire,
+		SoulEfficiency,
+		WaterBreath,
+		ChargeFlameBlast,
+		ChargeFlameBurn,
+		DoubleJumpUpgrade,
+		BashBuff,
+		UltraDefense,
+		HealthEfficiency,
+		Sense,
+		StompUpgrade,
+		QuickFlame,
+		MapMarkers,
+		EnergyEfficiency,
+		HealthMarkers,
+		EnergyMarkers,
+		AbilityMarkers,
+		Rekindle,
+		Regroup,
+		ChargeFlameEfficiency,
+		UltraSoulFlame,
+		SoulFlameEfficiency,
+		SplitFlameUpgrade,
+		SparkFlame,
+		CinderFlame,
+		UltraSplitFlame,
+		Dash,
+		Grenade,
+		GrenadeUpgrade,
+		ChargeDash,
+		AirDash,
+		GrenadeEfficiency
+	}
+	public enum InventoryInfo {
+		Keystones,
+		Mapstones = 4,
+		SkillpointsPickedUp = 8
 	}
 }

@@ -29,8 +29,7 @@ namespace LiveSplit.OriDE {
 				SaveGameData save = new SaveGameData();
 				save.Load(files[i]);
 
-				SceneID levelInfo = new SceneID("44D72845AB790E021CC526C2EEAC82A5");
-				SceneData data = save.Master[levelInfo];
+				SceneData data = save.Master[SaveEditor.SeinLevel];
 				int currentLevel = data.GetInt((int)LevelInfo.CurrentLevel);
 				int currentXP = data.GetInt((int)LevelInfo.Experience);
 				int currentAP = data.GetInt((int)LevelInfo.AbilityPoints);

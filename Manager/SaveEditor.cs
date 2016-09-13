@@ -4,6 +4,13 @@ using System.Windows.Forms;
 namespace LiveSplit.OriDE {
 	public partial class SaveEditor : Form {
 		public SaveGameData Save { get; set; }
+
+		public static SceneID SeinInventory = new SceneID("444B746E7F7A0AE0CC208C40DE7CD9B1");
+		public static SceneID PlatformMovement = new SceneID("4AA674A355CA54E9321AEAB78E4E5599");
+		public static SceneID SeinLevel = new SceneID("44D72845AB790E021CC526C2EEAC82A5");
+		public static SceneID PlayerAbilities = new SceneID("4B417974465D2E6BE06A6D8DBD0F0BB3");
+		public static SceneID SeinSoulFlame = new SceneID("4548C1A49142B7E7C26404C530CF0CAC");
+
 		public SaveEditor() {
 			InitializeComponent();
 		}
@@ -12,34 +19,25 @@ namespace LiveSplit.OriDE {
 			if (Save == null) { return; }
 
 			try {
-				SceneID levelInfo = new SceneID("44D72845AB790E021CC526C2EEAC82A5");
-				SceneData data = Save.Master[levelInfo];
-				int currentLevel = data.GetInt((int)LevelInfo.CurrentLevel);
-				int currentXP = data.GetInt((int)LevelInfo.Experience);
-				int currentAP = data.GetInt((int)LevelInfo.AbilityPoints);
+				SceneData data = Save.Master[SeinLevel];
+				txtAP.Text = data.GetInt((int)LevelInfo.AbilityPoints).ToString();
+				txtXP.Text = data.GetInt((int)LevelInfo.Experience).ToString();
+				txtLvl.Text = data.GetInt((int)LevelInfo.CurrentLevel).ToString();
 
-				txtAP.Text = currentAP.ToString();
-				txtXP.Text = currentXP.ToString();
-				txtLvl.Text = currentLevel.ToString();
-				
 				txtEN.Text = Save.Energy.ToString();
 				txtENMax.Text = Save.MaxEnergy.ToString();
 
 				txtHP.Text = Save.Health.ToString();
 				txtHPMax.Text = Save.MaxHealth.ToString();
 
-				SceneID saveInfo = new SceneID("4AA674A355CA54E9321AEAB78E4E5599");
-				data = Save.Master[saveInfo];
-
+				data = Save.Master[PlatformMovement];
 				txtPosX.Text = data.GetFloat((int)SaveInfo.PosX).ToString("0.0000");
 				txtPosY.Text = data.GetFloat((int)SaveInfo.PosY).ToString("0.0000");
 
 				txtVelocityX.Text = data.GetFloat((int)SaveInfo.SpeedX).ToString("0.0000");
 				txtVelocityY.Text = data.GetFloat((int)SaveInfo.SpeedY).ToString("0.0000");
 
-				SceneID abilities = new SceneID("4B417974465D2E6BE06A6D8DBD0F0BB3");
-				data = Save.Master[abilities];
-
+				data = Save.Master[PlayerAbilities];
 				chkAbilityMarkers.Checked = data[(int)Abilities.AbilityMarkers] == 1;
 				chkAirDash.Checked = data[(int)Abilities.AirDash] == 1;
 				chkBash.Checked = data[(int)Abilities.Bash] == 1;
@@ -84,6 +82,20 @@ namespace LiveSplit.OriDE {
 				chkWallJump.Checked = data[(int)Abilities.WallJump] == 1;
 				chkWaterBreath.Checked = data[(int)Abilities.WaterBreath] == 1;
 
+				data = Save.Master[SeinInventory];
+				txtKeystones.Text = data.GetInt((int)InventoryInfo.Keystones).ToString();
+				txtMapstones.Text = data.GetInt((int)InventoryInfo.Mapstones).ToString();
+
+				data = Save.Master[SeinSoulFlame];
+				bool hasSoulFlame = data[(int)SoulFlameInfo.HasSoulFlame] == 1;
+				if (hasSoulFlame) {
+					txtSoulX.Text = data.GetFloat((int)SoulFlameInfo.SoulX).ToString("0.0000");
+					txtSoulY.Text = data.GetFloat((int)SoulFlameInfo.SoulY).ToString("0.0000");
+				} else {
+					txtSoulX.Text = string.Empty;
+					txtSoulY.Text = string.Empty;
+				}
+
 				this.Text = "Save Editor - " + Path.GetFileNameWithoutExtension(Save.FilePath);
 			} catch (Exception ex) {
 				MessageBox.Show("Failed to load save: " + ex.ToString());
@@ -96,9 +108,7 @@ namespace LiveSplit.OriDE {
 
 		private void btnSave_Click(object sender, EventArgs e) {
 			try {
-				SceneID levelInfo = new SceneID("44D72845AB790E021CC526C2EEAC82A5");
-				SceneData data = Save.Master[levelInfo];
-
+				SceneData data = Save.Master[SeinLevel];
 				data.WriteInt((int)LevelInfo.CurrentLevel, int.Parse(txtLvl.Text));
 				data.WriteInt((int)LevelInfo.Experience, int.Parse(txtXP.Text));
 				data.WriteInt((int)LevelInfo.AbilityPoints, int.Parse(txtAP.Text));
@@ -108,17 +118,13 @@ namespace LiveSplit.OriDE {
 				Save.Health = int.Parse(txtHP.Text);
 				Save.MaxHealth = int.Parse(txtHPMax.Text);
 
-				SceneID saveInfo = new SceneID("4AA674A355CA54E9321AEAB78E4E5599");
-				data = Save.Master[saveInfo];
-
+				data = Save.Master[PlatformMovement];
 				data.WriteFloat((int)SaveInfo.PosX, float.Parse(txtPosX.Text));
 				data.WriteFloat((int)SaveInfo.PosY, float.Parse(txtPosY.Text));
 				data.WriteFloat((int)SaveInfo.SpeedX, float.Parse(txtVelocityX.Text));
 				data.WriteFloat((int)SaveInfo.SpeedY, float.Parse(txtVelocityY.Text));
 
-				SceneID abilities = new SceneID("4B417974465D2E6BE06A6D8DBD0F0BB3");
-				data = Save.Master[abilities];
-
+				data = Save.Master[PlayerAbilities];
 				data[(int)Abilities.AbilityMarkers] = (byte)(chkAbilityMarkers.Checked ? 1 : 0);
 				data[(int)Abilities.AirDash] = (byte)(chkAirDash.Checked ? 1 : 0);
 				data[(int)Abilities.Bash] = (byte)(chkBash.Checked ? 1 : 0);
@@ -162,6 +168,30 @@ namespace LiveSplit.OriDE {
 				data[(int)Abilities.StompUpgrade] = (byte)(chkUltraStomp.Checked ? 1 : 0);
 				data[(int)Abilities.WallJump] = (byte)(chkWallJump.Checked ? 1 : 0);
 				data[(int)Abilities.WaterBreath] = (byte)(chkWaterBreath.Checked ? 1 : 0);
+
+				data = Save.Master[SeinInventory];
+				data.WriteInt((int)InventoryInfo.Keystones, int.Parse(txtKeystones.Text));
+				data.WriteInt((int)InventoryInfo.Mapstones, int.Parse(txtMapstones.Text));
+
+				data = Save.Master[SeinSoulFlame];
+				bool hasSoulFlame = !string.IsNullOrEmpty(txtSoulX.Text);
+				if (hasSoulFlame) {
+					if (data.Data.Length <= 31) {
+						byte[] newData = new byte[43];
+						Array.Copy(data.Data, newData, 31);
+						data.Data = newData;
+					}
+					data[(int)SoulFlameInfo.HasSoulFlame] = 1;
+					data.WriteFloat((int)SoulFlameInfo.SoulX, float.Parse(txtSoulX.Text));
+					data.WriteFloat((int)SoulFlameInfo.SoulY, float.Parse(txtSoulY.Text));
+				} else {
+					if (data.Data.Length > 31) {
+						byte[] newData = new byte[31];
+						Array.Copy(data.Data, newData, 31);
+						data.Data = newData;
+					}
+					data[(int)SoulFlameInfo.HasSoulFlame] = 0;
+				}
 
 				Save.Save(Save.FilePath);
 				this.Close();

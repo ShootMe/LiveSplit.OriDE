@@ -57,6 +57,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Keyboard.cs" />
+    <Compile Include="Manager\OriDisplay.cs" />
+    <Compile Include="Manager\SaveEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Manager\SaveEditor.Designer.cs">
+      <DependentUpon>SaveEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Manager\SaveGameData.cs" />
+    <Compile Include="Manager\SaveManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Manager\SaveManager.Designer.cs">
+      <DependentUpon>SaveManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="Memory\Entities.cs" />
     <Compile Include="OriComponent.cs" />
     <Compile Include="OriFactory.cs" />
@@ -92,6 +106,12 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Manager\SaveEditor.resx">
+      <DependentUpon>SaveEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Manager\SaveManager.resx">
+      <DependentUpon>SaveManager.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OriManager.resx">
       <DependentUpon>OriManager.cs</DependentUpon>
     </EmbeddedResource>
