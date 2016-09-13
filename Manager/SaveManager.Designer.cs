@@ -29,6 +29,7 @@
 			// 
 			// flowLayout
 			// 
+			this.flowLayout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.flowLayout.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayout.Location = new System.Drawing.Point(0, 0);
 			this.flowLayout.Name = "flowLayout";

@@ -8,6 +8,12 @@ namespace LiveSplit.OriDE {
 		public SaveManager() {
 			InitializeComponent();
 
+			Assembly asm = Assembly.GetExecutingAssembly();
+			Stream file = asm.GetManifestResourceStream("LiveSplit.OriDE.Manager.Images.kuroBG.png");
+			if (file != null) {
+				flowLayout.BackgroundImage = Image.FromStream(file);
+			}
+
 			GetAllSaves();
 		}
 
@@ -52,6 +58,7 @@ namespace LiveSplit.OriDE {
 				saveLabel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
 				saveLabel.Size = new Size(110, 64);
 				saveLabel.TextAlign = ContentAlignment.MiddleCenter;
+				saveLabel.BackColor = Color.FromArgb(150, 0, 0, 0);
 				saveLabel.Text = name + "\n" +
 					save.Health + "/" + save.MaxHealth + " HP " + save.Energy + "/" + save.MaxEnergy + " EN\n" +
 					"Lvl" + currentLevel + " " + currentXP + " XP " + currentAP + " AP\n" +
@@ -64,10 +71,17 @@ namespace LiveSplit.OriDE {
 				saveLayout.Controls.Add(saveLabel);
 				saveLayout.FlowDirection = FlowDirection.LeftToRight;
 				saveLayout.Name = "layout" + name;
-				saveLayout.ResumeLayout(false);
-				saveLayout.PerformLayout();
-
+				saveLayout.BackColor = Color.Transparent;
+				
 				flowLayout.Controls.Add(saveLayout);
+			}
+
+			foreach(Control c in flowLayout.Controls) {
+				FlowLayoutPanel panel = c as FlowLayoutPanel;
+				if(panel != null) {
+					panel.ResumeLayout(false);
+					panel.PerformLayout();
+				}
 			}
 
 			flowLayout.ResumeLayout(false);

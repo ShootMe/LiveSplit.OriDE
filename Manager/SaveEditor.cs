@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 namespace LiveSplit.OriDE {
 	public partial class SaveEditor : Form {
@@ -15,6 +17,12 @@ namespace LiveSplit.OriDE {
 
 		public SaveEditor() {
 			InitializeComponent();
+
+			Assembly asm = Assembly.GetExecutingAssembly();
+			Stream file = asm.GetManifestResourceStream("LiveSplit.OriDE.Manager.Images.kuroBG.png");
+			if (file != null) {
+				this.BackgroundImage = Image.FromStream(file);
+			}
 		}
 
 		public void UpdateInfo() {
@@ -223,7 +231,7 @@ namespace LiveSplit.OriDE {
 				if (Save.Difficulty == DifficultyMode.OneLife) {
 					Save.WasKilled = deaths > 0;
 				}
-
+				
 				string currentArea = string.Empty;
 				switch (cboArea.Text) {
 					case "Ginso": currentArea = "ginsoTree"; break;
@@ -250,6 +258,8 @@ namespace LiveSplit.OriDE {
 
 				data = Save.Master[GameTimer];
 				data.WriteFloat(0, totalSeconds);
+
+				Save.DebugOn = true;
 
 				Save.Save(Save.FilePath);
 				this.Close();
