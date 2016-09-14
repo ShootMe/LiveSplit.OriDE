@@ -76,10 +76,6 @@ namespace LiveSplit.OriDE {
 							writer.Write(data.ID.GetBytes());
 							data.WriteData(writer);
 						}
-						foreach (SceneData data in current.EmptyObjects.Values) {
-							writer.Write(data.ID.GetBytes());
-							data.WriteData(writer);
-						}
 					}
 				}
 			}
@@ -126,11 +122,7 @@ namespace LiveSplit.OriDE {
 						for (int j = 0; j < num2; j++) {
 							SceneData item = new SceneData() { ID = new SceneID(reader.ReadBytes(16)) };
 							item.ReadData(reader);
-							if (item.Data.Length > 0) {
-								saveScene.Objects.Add(item.ID, item);
-							} else {
-								saveScene.EmptyObjects.Add(item.ID, item);
-							}
+							saveScene.Objects.Add(item.ID, item);
 						}
 					}
 				}
@@ -164,23 +156,19 @@ namespace LiveSplit.OriDE {
 	public class SceneCollection {
 		public SceneID ID;
 		public readonly Dictionary<SceneID, SceneData> Objects = new Dictionary<SceneID, SceneData>();
-		public readonly Dictionary<SceneID, SceneData> EmptyObjects = new Dictionary<SceneID, SceneData>();
 
 		public int Count {
-			get { return Objects.Count + EmptyObjects.Count; }
+			get { return Objects.Count; }
 		}
 		public SceneData this[SceneID id] {
 			get {
 				SceneData data = null;
-				if (Objects.TryGetValue(id, out data)) {
-					return data;
-				}
-				EmptyObjects.TryGetValue(id, out data);
+				Objects.TryGetValue(id, out data);
 				return data;
 			}
 		}
 		public override string ToString() {
-			return "ID: " + ID.ToString() + " Objects: " + (Objects.Count + EmptyObjects.Count);
+			return "ID: " + ID.ToString() + " Objects: " + Objects.Count;
 		}
 	}
 
@@ -321,7 +309,7 @@ namespace LiveSplit.OriDE {
 			return bytes;
 		}
 		public override string ToString() {
-			return string.Concat(Left.ToString("X"), Right.ToString("X"));
+			return string.Concat(Left.ToString("X").PadLeft(16, '0'), Right.ToString("X").PadLeft(16, '0'));
 		}
 	}
 	public enum WorldProgression {

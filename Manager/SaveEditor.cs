@@ -231,7 +231,7 @@ namespace LiveSplit.OriDE {
 				if (Save.Difficulty == DifficultyMode.OneLife) {
 					Save.WasKilled = deaths > 0;
 				}
-				
+
 				string currentArea = string.Empty;
 				switch (cboArea.Text) {
 					case "Ginso": currentArea = "ginsoTree"; break;
