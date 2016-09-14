@@ -397,4 +397,12 @@ namespace LiveSplit.OriDE {
 		Mapstones = 4,
 		SkillpointsPickedUp = 8
 	}
+	public enum SeinHealthController {
+		Amount,
+		MaxHealth = 4
+	}
+	public enum SeinEnergy {
+		Current,
+		Max = 4
+	}
 }

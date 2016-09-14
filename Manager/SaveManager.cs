@@ -58,7 +58,7 @@ namespace LiveSplit.OriDE {
 				saveLabel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
 				saveLabel.Size = new Size(110, 64);
 				saveLabel.TextAlign = ContentAlignment.MiddleCenter;
-				saveLabel.BackColor = Color.FromArgb(150, 0, 0, 0);
+				saveLabel.BackColor = Color.Transparent;
 				saveLabel.Text = name + "\n" +
 					save.Health + "/" + save.MaxHealth + " HP " + save.Energy + "/" + save.MaxEnergy + " EN\n" +
 					"Lvl" + currentLevel + " " + currentXP + " XP " + currentAP + " AP\n" +

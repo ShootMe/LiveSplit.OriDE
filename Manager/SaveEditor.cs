@@ -14,6 +14,8 @@ namespace LiveSplit.OriDE {
 		public static SceneID SeinSoulFlame = new SceneID("4548C1A49142B7E7C26404C530CF0CAC");
 		public static SceneID SeinDeathCounter = new SceneID("48B63153499A49ACEFDD874FE2C88CBC");
 		public static SceneID GameTimer = new SceneID("454EE3A50EB0CBE41EEF281B35EB93A9");
+		public static SceneID SeinHealthInfo = new SceneID("4544D2E4CB117A965E43AAEB8BFE26AA");
+		public static SceneID SeinEnergyInfo = new SceneID("4DE917EC7C3072427FEBCC44A35880B9");
 
 		public SaveEditor() {
 			InitializeComponent();
@@ -34,11 +36,13 @@ namespace LiveSplit.OriDE {
 				txtXP.Text = data.GetInt((int)LevelInfo.Experience).ToString();
 				txtLvl.Text = data.GetInt((int)LevelInfo.CurrentLevel).ToString();
 
-				txtEN.Text = Save.Energy.ToString();
-				txtENMax.Text = Save.MaxEnergy.ToString();
+				data = Save.Master[SeinEnergyInfo];
+				txtEN.Text = data.GetFloat((int)SeinEnergy.Current).ToString("0.##");
+				txtENMax.Text = data.GetFloat((int)SeinEnergy.Max).ToString("0.##");
 
-				txtHP.Text = Save.Health.ToString();
-				txtHPMax.Text = Save.MaxHealth.ToString();
+				data = Save.Master[SeinHealthInfo];
+				txtHP.Text = (data.GetFloat((int)SeinHealthController.Amount) / 4f).ToString("0.##");
+				txtHPMax.Text = (data.GetInt((int)SeinHealthController.MaxHealth) / 4).ToString();
 
 				data = Save.Master[PlatformMovement];
 				txtPosX.Text = data.GetFloat((int)SaveInfo.PosX).ToString("0.0000");
@@ -145,9 +149,16 @@ namespace LiveSplit.OriDE {
 				data.WriteInt((int)LevelInfo.Experience, int.Parse(txtXP.Text));
 				data.WriteInt((int)LevelInfo.AbilityPoints, int.Parse(txtAP.Text));
 
-				Save.Energy = int.Parse(txtEN.Text);
+				data = Save.Master[SeinEnergyInfo];
+				data.WriteFloat((int)SeinEnergy.Current, float.Parse(txtEN.Text));
+				data.WriteFloat((int)SeinEnergy.Max, int.Parse(txtENMax.Text));
+				Save.Energy = (int)float.Parse(txtEN.Text);
 				Save.MaxEnergy = int.Parse(txtENMax.Text);
-				Save.Health = int.Parse(txtHP.Text);
+
+				data = Save.Master[SeinHealthInfo];
+				data.WriteFloat((int)SeinHealthController.Amount, float.Parse(txtHP.Text) * 4f);
+				data.WriteInt((int)SeinHealthController.MaxHealth, int.Parse(txtHPMax.Text) * 4);
+				Save.Health = (int)float.Parse(txtHP.Text);
 				Save.MaxHealth = int.Parse(txtHPMax.Text);
 
 				data = Save.Master[PlatformMovement];
