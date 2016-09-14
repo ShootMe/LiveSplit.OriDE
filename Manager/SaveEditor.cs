@@ -32,76 +32,78 @@ namespace LiveSplit.OriDE {
 
 			try {
 				SceneData data = Save.Master[SeinLevel];
-				txtAP.Text = data.GetInt((int)LevelInfo.AbilityPoints).ToString();
-				txtXP.Text = data.GetInt((int)LevelInfo.Experience).ToString();
-				txtLvl.Text = data.GetInt((int)LevelInfo.CurrentLevel).ToString();
+				txtAP.Text = data?.GetInt((int)LevelInfo.AbilityPoints).ToString();
+				txtXP.Text = data?.GetInt((int)LevelInfo.Experience).ToString();
+				txtLvl.Text = data?.GetInt((int)LevelInfo.CurrentLevel).ToString();
 
 				data = Save.Master[SeinEnergyInfo];
-				txtEN.Text = data.GetFloat((int)SeinEnergy.Current).ToString("0.##");
-				txtENMax.Text = data.GetFloat((int)SeinEnergy.Max).ToString("0.##");
+				txtEN.Text = data?.GetFloat((int)SeinEnergy.Current).ToString("0.##");
+				txtENMax.Text = data?.GetFloat((int)SeinEnergy.Max).ToString("0.##");
 
 				data = Save.Master[SeinHealthInfo];
-				txtHP.Text = (data.GetFloat((int)SeinHealthController.Amount) / 4f).ToString("0.##");
-				txtHPMax.Text = (data.GetInt((int)SeinHealthController.MaxHealth) / 4).ToString();
+				txtHP.Text = ((data?.GetFloat((int)SeinHealthController.Amount)).GetValueOrDefault(0) / 4f).ToString("0.##");
+				txtHPMax.Text = ((data?.GetInt((int)SeinHealthController.MaxHealth)).GetValueOrDefault(0) / 4).ToString();
 
 				data = Save.Master[PlatformMovement];
-				txtPosX.Text = data.GetFloat((int)SaveInfo.PosX).ToString("0.0000");
-				txtPosY.Text = data.GetFloat((int)SaveInfo.PosY).ToString("0.0000");
+				txtPosX.Text = data?.GetFloat((int)SaveInfo.PosX).ToString("0.0000");
+				txtPosY.Text = data?.GetFloat((int)SaveInfo.PosY).ToString("0.0000");
 
-				txtVelocityX.Text = data.GetFloat((int)SaveInfo.SpeedX).ToString("0.0000");
-				txtVelocityY.Text = data.GetFloat((int)SaveInfo.SpeedY).ToString("0.0000");
+				txtVelocityX.Text = data?.GetFloat((int)SaveInfo.SpeedX).ToString("0.0000");
+				txtVelocityY.Text = data?.GetFloat((int)SaveInfo.SpeedY).ToString("0.0000");
 
 				data = Save.Master[PlayerAbilities];
-				chkAbilityMarkers.Checked = data[(int)Abilities.AbilityMarkers] == 1;
-				chkAirDash.Checked = data[(int)Abilities.AirDash] == 1;
-				chkBash.Checked = data[(int)Abilities.Bash] == 1;
-				//chkBashBuff.Checked = data[(int)Abilities.BashBuff] == 1;
-				chkChargeDash.Checked = data[(int)Abilities.ChargeDash] == 1;
-				chkChargeFlame.Checked = data[(int)Abilities.ChargeFlame] == 1;
-				chkChargeFlameBlast.Checked = data[(int)Abilities.ChargeFlameBlast] == 1;
-				chkChargeFlameBurn.Checked = data[(int)Abilities.ChargeFlameBurn] == 1;
-				chkChargeFlameEfficiency.Checked = data[(int)Abilities.ChargeFlameEfficiency] == 1;
-				chkChargeJump.Checked = data[(int)Abilities.ChargeJump] == 1;
-				chkCinderFlame.Checked = data[(int)Abilities.CinderFlame] == 1;
-				chkClimb.Checked = data[(int)Abilities.Climb] == 1;
-				chkDash.Checked = data[(int)Abilities.Dash] == 1;
-				chkDoubleJump.Checked = data[(int)Abilities.DoubleJump] == 1;
-				chkEnergyEfficiency.Checked = data[(int)Abilities.EnergyEfficiency] == 1;
-				chkEnergyMarkers.Checked = data[(int)Abilities.EnergyMarkers] == 1;
-				chkGlide.Checked = data[(int)Abilities.Glide] == 1;
-				chkGrenade.Checked = data[(int)Abilities.Grenade] == 1;
-				//chkGrenadeEfficiency.Checked = data[(int)Abilities.GrenadeEfficiency] == 1;
-				chkLifeEfficiency.Checked = data[(int)Abilities.HealthEfficiency] == 1;
-				chkLifeMarkers.Checked = data[(int)Abilities.HealthMarkers] == 1;
-				chkMagnet.Checked = data[(int)Abilities.Magnet] == 1;
-				chkMapMarkers.Checked = data[(int)Abilities.MapMarkers] == 1;
-				chkQuickFlame.Checked = data[(int)Abilities.QuickFlame] == 1;
-				chkRapidFlame.Checked = data[(int)Abilities.RapidFire] == 1;
-				chkRegroup.Checked = data[(int)Abilities.Regroup] == 1;
-				chkRekindle.Checked = data[(int)Abilities.Rekindle] == 1;
-				chkSense.Checked = data[(int)Abilities.Sense] == 1;
-				chkSoulLinkEfficiency.Checked = data[(int)Abilities.SoulEfficiency] == 1;
-				chkSparkFlame.Checked = data[(int)Abilities.SparkFlame] == 1;
-				chkSpiritEfficiency.Checked = data[(int)Abilities.SoulFlameEfficiency] == 1;
-				chkSpiritFlame.Checked = data[(int)Abilities.SpiritFlame] == 1;
-				chkSplitFlame.Checked = data[(int)Abilities.SplitFlameUpgrade] == 1;
-				chkStomp.Checked = data[(int)Abilities.Stomp] == 1;
-				chkTripleJump.Checked = data[(int)Abilities.DoubleJumpUpgrade] == 1;
-				chkUltraDefense.Checked = data[(int)Abilities.UltraDefense] == 1;
-				chkUltraLightBurst.Checked = data[(int)Abilities.GrenadeUpgrade] == 1;
-				chkUltraMagnet.Checked = data[(int)Abilities.UltraMagnet] == 1;
-				chkUltraSoulLink.Checked = data[(int)Abilities.UltraSoulFlame] == 1;
-				chkUltraSplitFlame.Checked = data[(int)Abilities.UltraSplitFlame] == 1;
-				chkUltraStomp.Checked = data[(int)Abilities.StompUpgrade] == 1;
-				chkWallJump.Checked = data[(int)Abilities.WallJump] == 1;
-				chkWaterBreath.Checked = data[(int)Abilities.WaterBreath] == 1;
+				if (data != null) {
+					chkAbilityMarkers.Checked = data[(int)Abilities.AbilityMarkers] == 1;
+					chkAirDash.Checked = data[(int)Abilities.AirDash] == 1;
+					chkBash.Checked = data[(int)Abilities.Bash] == 1;
+					//chkBashBuff.Checked = data[(int)Abilities.BashBuff] == 1;
+					chkChargeDash.Checked = data[(int)Abilities.ChargeDash] == 1;
+					chkChargeFlame.Checked = data[(int)Abilities.ChargeFlame] == 1;
+					chkChargeFlameBlast.Checked = data[(int)Abilities.ChargeFlameBlast] == 1;
+					chkChargeFlameBurn.Checked = data[(int)Abilities.ChargeFlameBurn] == 1;
+					chkChargeFlameEfficiency.Checked = data[(int)Abilities.ChargeFlameEfficiency] == 1;
+					chkChargeJump.Checked = data[(int)Abilities.ChargeJump] == 1;
+					chkCinderFlame.Checked = data[(int)Abilities.CinderFlame] == 1;
+					chkClimb.Checked = data[(int)Abilities.Climb] == 1;
+					chkDash.Checked = data[(int)Abilities.Dash] == 1;
+					chkDoubleJump.Checked = data[(int)Abilities.DoubleJump] == 1;
+					chkEnergyEfficiency.Checked = data[(int)Abilities.EnergyEfficiency] == 1;
+					chkEnergyMarkers.Checked = data[(int)Abilities.EnergyMarkers] == 1;
+					chkGlide.Checked = data[(int)Abilities.Glide] == 1;
+					chkGrenade.Checked = data[(int)Abilities.Grenade] == 1;
+					//chkGrenadeEfficiency.Checked = data[(int)Abilities.GrenadeEfficiency] == 1;
+					chkLifeEfficiency.Checked = data[(int)Abilities.HealthEfficiency] == 1;
+					chkLifeMarkers.Checked = data[(int)Abilities.HealthMarkers] == 1;
+					chkMagnet.Checked = data[(int)Abilities.Magnet] == 1;
+					chkMapMarkers.Checked = data[(int)Abilities.MapMarkers] == 1;
+					chkQuickFlame.Checked = data[(int)Abilities.QuickFlame] == 1;
+					chkRapidFlame.Checked = data[(int)Abilities.RapidFire] == 1;
+					chkRegroup.Checked = data[(int)Abilities.Regroup] == 1;
+					chkRekindle.Checked = data[(int)Abilities.Rekindle] == 1;
+					chkSense.Checked = data[(int)Abilities.Sense] == 1;
+					chkSoulLinkEfficiency.Checked = data[(int)Abilities.SoulEfficiency] == 1;
+					chkSparkFlame.Checked = data[(int)Abilities.SparkFlame] == 1;
+					chkSpiritEfficiency.Checked = data[(int)Abilities.SoulFlameEfficiency] == 1;
+					chkSpiritFlame.Checked = data[(int)Abilities.SpiritFlame] == 1;
+					chkSplitFlame.Checked = data[(int)Abilities.SplitFlameUpgrade] == 1;
+					chkStomp.Checked = data[(int)Abilities.Stomp] == 1;
+					chkTripleJump.Checked = data[(int)Abilities.DoubleJumpUpgrade] == 1;
+					chkUltraDefense.Checked = data[(int)Abilities.UltraDefense] == 1;
+					chkUltraLightBurst.Checked = data[(int)Abilities.GrenadeUpgrade] == 1;
+					chkUltraMagnet.Checked = data[(int)Abilities.UltraMagnet] == 1;
+					chkUltraSoulLink.Checked = data[(int)Abilities.UltraSoulFlame] == 1;
+					chkUltraSplitFlame.Checked = data[(int)Abilities.UltraSplitFlame] == 1;
+					chkUltraStomp.Checked = data[(int)Abilities.StompUpgrade] == 1;
+					chkWallJump.Checked = data[(int)Abilities.WallJump] == 1;
+					chkWaterBreath.Checked = data[(int)Abilities.WaterBreath] == 1;
+				}
 
 				data = Save.Master[SeinInventory];
-				txtKeystones.Text = data.GetInt((int)InventoryInfo.Keystones).ToString();
-				txtMapstones.Text = data.GetInt((int)InventoryInfo.Mapstones).ToString();
+				txtKeystones.Text = data?.GetInt((int)InventoryInfo.Keystones).ToString();
+				txtMapstones.Text = data?.GetInt((int)InventoryInfo.Mapstones).ToString();
 
 				data = Save.Master[SeinSoulFlame];
-				bool hasSoulFlame = data[(int)SoulFlameInfo.HasSoulFlame] == 1;
+				bool hasSoulFlame = data != null && data[(int)SoulFlameInfo.HasSoulFlame] == 1;
 				if (hasSoulFlame) {
 					txtSoulX.Text = data.GetFloat((int)SoulFlameInfo.SoulX).ToString("0.0000");
 					txtSoulY.Text = data.GetFloat((int)SoulFlameInfo.SoulY).ToString("0.0000");
@@ -111,7 +113,7 @@ namespace LiveSplit.OriDE {
 				}
 
 				data = Save.Master[SeinDeathCounter];
-				txtDeaths.Text = data.GetInt(0).ToString();
+				txtDeaths.Text = data?.GetInt(0).ToString();
 
 				string currentArea = string.Empty;
 				switch (Save.AreaName) {
@@ -130,7 +132,7 @@ namespace LiveSplit.OriDE {
 				cboArea.Text = currentArea;
 
 				data = Save.Master[GameTimer];
-				txtTime.Text = data.GetFloat(0).ToString("0.000");
+				txtTime.Text = data?.GetFloat(0).ToString("0.000");
 
 				this.Text = "Save Editor - " + Path.GetFileNameWithoutExtension(Save.FilePath);
 			} catch (Exception ex) {
