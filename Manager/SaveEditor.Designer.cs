@@ -105,6 +105,7 @@
 			this.txtDeaths = new System.Windows.Forms.TextBox();
 			this.lblTime = new System.Windows.Forms.Label();
 			this.txtTime = new System.Windows.Forms.TextBox();
+			this.btnObjectText = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// txtPosX
@@ -961,6 +962,19 @@
 			this.txtTime.Text = "99999";
 			this.txtTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
+			// btnObjectText
+			// 
+			this.btnObjectText.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+			this.btnObjectText.BackColor = System.Drawing.Color.Black;
+			this.btnObjectText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnObjectText.Location = new System.Drawing.Point(690, 251);
+			this.btnObjectText.Name = "btnObjectText";
+			this.btnObjectText.Size = new System.Drawing.Size(104, 23);
+			this.btnObjectText.TabIndex = 81;
+			this.btnObjectText.Text = "Write Object Text";
+			this.btnObjectText.UseVisualStyleBackColor = false;
+			this.btnObjectText.Click += new System.EventHandler(this.btnObjectText_Click);
+			// 
 			// SaveEditor
 			// 
 			this.AcceptButton = this.btnSave;
@@ -969,6 +983,7 @@
 			this.BackColor = System.Drawing.Color.Black;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.ClientSize = new System.Drawing.Size(835, 286);
+			this.Controls.Add(this.btnObjectText);
 			this.Controls.Add(this.lblTime);
 			this.Controls.Add(this.txtTime);
 			this.Controls.Add(this.lblDeaths);
@@ -1148,5 +1163,6 @@
 		private System.Windows.Forms.TextBox txtDeaths;
 		private System.Windows.Forms.Label lblTime;
 		private System.Windows.Forms.TextBox txtTime;
+		private System.Windows.Forms.Button btnObjectText;
 	}
 }

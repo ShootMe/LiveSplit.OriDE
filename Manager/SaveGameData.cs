@@ -35,9 +35,43 @@ namespace LiveSplit.OriDE {
 
 		public readonly Dictionary<SceneID, SceneCollection> Scenes = new Dictionary<SceneID, SceneCollection>();
 
+		public static Dictionary<SceneID, string> SceneNames = new Dictionary<SceneID, string>();
+		public static SceneID SunkenGladesIntroSplitB = new SceneID("47E4D2DD460CBF8B05F44FD77932CE28");
+		public static SceneID SunkenGladesIntroSplitB_topLeftCreep = new SceneID("4F48E391C0A25D19DD56ADFDDFF8B9A2");
+		public static SceneID SunkenGladesIntroSplitB_topRightCreep = new SceneID("49AE23D67D72B17ADE220F24B3676A88");
+		public static SceneID SunkenGladesIntroSplitB_middleCreep = new SceneID("4D674617516FD7F1B9CB5D26BA6720BF");
+		public static SceneID SunkenGladesIntroSplitB_bottomLeftCreep = new SceneID("431CAE019ED6BE9BD45E3426109CF58C");
+		public static SceneID SunkenGladesIntroSplitB_bottomRightCreep = new SceneID("43076535B1BB2689AC5CA60EE1F7D98B");
+
+		static SaveGameData() {
+			if (File.Exists("guids.txt")) {
+				using (StreamReader reader = new StreamReader("guids.txt")) {
+					string line = null;
+					while ((line = reader.ReadLine()) != null) {
+						string[] splits = line.Split('\t');
+						if (splits.Length != 5) { continue; }
+
+						SceneID id = new SceneID(int.Parse(splits[1]), int.Parse(splits[2]), int.Parse(splits[3]), int.Parse(splits[4]));
+						SceneNames.Add(id, splits[0]);
+					}
+				}
+			}
+		}
 		public SceneCollection Master {
 			get {
 				return this.Insert(SceneID.Empty);
+			}
+		}
+		public void WriteObjectsAsText(string filePath) {
+			File.Delete(filePath);
+			foreach (SceneCollection current in Scenes.Values) {
+				File.AppendAllText(filePath, current.ID.ToString() + " " + current.Count + "\n");
+				File.AppendAllText(filePath, "------------------------------------------------------------------------------\n\n");
+
+				foreach (SceneData data in current.Objects.Values) {
+					File.AppendAllText(filePath, data.ID.ToString() + " " + data.ToString() + "\n");
+				}
+				File.AppendAllText(filePath, "\n------------------------------------------------------------------------------\n\n");
 			}
 		}
 		public void Save(string filePath) {
@@ -120,7 +154,9 @@ namespace LiveSplit.OriDE {
 						this.Scenes.Add(saveScene.ID, saveScene);
 						int num2 = reader.ReadInt32();
 						for (int j = 0; j < num2; j++) {
-							SceneData item = new SceneData() { ID = new SceneID(reader.ReadBytes(16)) };
+							SceneID id = new SceneID(reader.ReadBytes(16));
+							SceneNames.TryGetValue(id, out id.Name);
+							SceneData item = new SceneData() { ID = id };
 							item.ReadData(reader);
 							saveScene.Objects.Add(item.ID, item);
 						}
@@ -228,6 +264,7 @@ namespace LiveSplit.OriDE {
 	}
 	public class SceneID {
 		public static SceneID Empty = new SceneID();
+		public string Name;
 		public readonly long Left, Right;
 
 		private SceneID() {
@@ -309,7 +346,7 @@ namespace LiveSplit.OriDE {
 			return bytes;
 		}
 		public override string ToString() {
-			return string.Concat(Left.ToString("X").PadLeft(16, '0'), Right.ToString("X").PadLeft(16, '0'));
+			return string.Concat(Name, string.IsNullOrEmpty(Name) ? "" : " ", Left.ToString("X").PadLeft(16, '0'), Right.ToString("X").PadLeft(16, '0'));
 		}
 	}
 	public enum WorldProgression {

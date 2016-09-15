@@ -45,11 +45,11 @@ namespace LiveSplit.OriDE {
 				txtHPMax.Text = ((data?.GetInt((int)SeinHealthController.MaxHealth)).GetValueOrDefault(0) / 4).ToString();
 
 				data = Save.Master[PlatformMovement];
-				txtPosX.Text = data?.GetFloat((int)SaveInfo.PosX).ToString("0.0000");
-				txtPosY.Text = data?.GetFloat((int)SaveInfo.PosY).ToString("0.0000");
+				txtPosX.Text = data?.GetFloat((int)SaveInfo.PosX).ToString();
+				txtPosY.Text = data?.GetFloat((int)SaveInfo.PosY).ToString();
 
-				txtVelocityX.Text = data?.GetFloat((int)SaveInfo.SpeedX).ToString("0.0000");
-				txtVelocityY.Text = data?.GetFloat((int)SaveInfo.SpeedY).ToString("0.0000");
+				txtVelocityX.Text = data?.GetFloat((int)SaveInfo.SpeedX).ToString();
+				txtVelocityY.Text = data?.GetFloat((int)SaveInfo.SpeedY).ToString();
 
 				data = Save.Master[PlayerAbilities];
 				if (data != null) {
@@ -105,8 +105,8 @@ namespace LiveSplit.OriDE {
 				data = Save.Master[SeinSoulFlame];
 				bool hasSoulFlame = data != null && data[(int)SoulFlameInfo.HasSoulFlame] == 1;
 				if (hasSoulFlame) {
-					txtSoulX.Text = data.GetFloat((int)SoulFlameInfo.SoulX).ToString("0.0000");
-					txtSoulY.Text = data.GetFloat((int)SoulFlameInfo.SoulY).ToString("0.0000");
+					txtSoulX.Text = data.GetFloat((int)SoulFlameInfo.SoulX).ToString();
+					txtSoulY.Text = data.GetFloat((int)SoulFlameInfo.SoulY).ToString();
 				} else {
 					txtSoulX.Text = string.Empty;
 					txtSoulY.Text = string.Empty;
@@ -304,6 +304,18 @@ namespace LiveSplit.OriDE {
 				if (chk != null) {
 					chk.Checked = false;
 				}
+			}
+		}
+		private void btnObjectText_Click(object sender, EventArgs e) {
+			try {
+				int i = 1;
+				while (File.Exists(Path.GetFileNameWithoutExtension(Save.FilePath) + "-Objects" + i + ".txt")) {
+					i++;
+				}
+				Save.WriteObjectsAsText(Path.GetFileNameWithoutExtension(Save.FilePath) + "-Objects" + i + ".txt");
+				MessageBox.Show("Wrote object data to " + Path.GetFileNameWithoutExtension(Save.FilePath) + "-Objects" + i + ".txt");
+			} catch (Exception ex) {
+				MessageBox.Show("Failed to write file: " + ex.ToString());
 			}
 		}
 	}
