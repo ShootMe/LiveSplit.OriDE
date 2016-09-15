@@ -313,7 +313,8 @@ namespace LiveSplit.OriDE {
 					i++;
 				}
 				Save.WriteObjectsAsText(Path.GetFileNameWithoutExtension(Save.FilePath) + "-Objects" + i + ".txt");
-				MessageBox.Show("Wrote object data to " + Path.GetFileNameWithoutExtension(Save.FilePath) + "-Objects" + i + ".txt");
+				string fullPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Path.GetFileNameWithoutExtension(Save.FilePath) + "-Objects" + i + ".txt");
+				MessageBox.Show("Wrote object data to " + fullPath);
 			} catch (Exception ex) {
 				MessageBox.Show("Failed to write file: " + ex.ToString());
 			}

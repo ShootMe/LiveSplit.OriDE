@@ -64,14 +64,23 @@ namespace LiveSplit.OriDE {
 		}
 		public void WriteObjectsAsText(string filePath) {
 			File.Delete(filePath);
-			foreach (SceneCollection current in Scenes.Values) {
-				File.AppendAllText(filePath, current.ID.ToString() + " " + current.Count + "\n");
-				File.AppendAllText(filePath, "------------------------------------------------------------------------------\n\n");
+			Encoding win = Encoding.GetEncoding(1252);
+			byte[] seperator = win.GetBytes("------------------------------------------------------------------------------\n\n");
 
-				foreach (SceneData data in current.Objects.Values) {
-					File.AppendAllText(filePath, data.ID.ToString() + " " + data.ToString() + "\n");
+			using (FileStream fs = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
+				using (BinaryWriter writer = new BinaryWriter(fs)) {
+					foreach (SceneCollection current in Scenes.Values) {
+						byte[] output = win.GetBytes(current.ID.ToString() + " " + current.Count + "\n");
+						writer.Write(output);
+						writer.Write(seperator);
+
+						foreach (SceneData data in current.Objects.Values) {
+							output = win.GetBytes(data.ID.ToString() + " " + data.ToString() + "\n");
+							writer.Write(output);
+						}
+						writer.Write(seperator);
+					}
 				}
-				File.AppendAllText(filePath, "\n------------------------------------------------------------------------------\n\n");
 			}
 		}
 		public void Save(string filePath) {
