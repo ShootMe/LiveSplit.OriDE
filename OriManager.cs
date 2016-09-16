@@ -49,7 +49,7 @@ namespace LiveSplit.OriDE {
 			} else if (e.Control && e.KeyCode == Keys.F) {
 				extraFast = !extraFast;
 			} else if (e.Control && e.KeyCode == Keys.S) {
-				using(SaveManager saveManager = new SaveManager()) {
+				using (SaveManager saveManager = new SaveManager()) {
 					saveManager.ShowDialog(this);
 				}
 			} else if (e.Control && e.KeyCode == Keys.T) {
@@ -133,8 +133,17 @@ namespace LiveSplit.OriDE {
 					total /= areas.Count;
 				}
 
+				List<Scene> scenes = Memory.GetScenes();
+				string currentScene = string.Empty;
+				for (int i = 0; i < scenes.Count; i++) {
+					Scene scene = scenes[i];
+					if (scene.State == SceneState.Loaded) {
+						currentScene = scene.Name;
+						break;
+					}
+				}
 				lblArea.Text = "Area: " + (string.IsNullOrEmpty(currentArea.Name) ? "N/A" : currentArea.Name + " - " + currentArea.Progress.ToString("0.00") + "%");
-				lblMap.Text = "Total: " + total.ToString("0.00") + "%";
+				lblMap.Text = "Total: " + total.ToString("0.00") + "% Scene: " + currentScene;
 				lblPos.Text = "Pos: " + pos.X.ToString("0.000") + ", " + pos.Y.ToString("0.000");
 				lblSpeed.Text = (extraFast ? "Insane Speed: " : "Speed: ") + currentSpeed.X.ToString("0.000") + ", " + currentSpeed.Y.ToString("0.000") + " (" + Math.Sqrt(currentSpeed.X * currentSpeed.X + currentSpeed.Y * currentSpeed.Y).ToString("0.000") + ")";
 				PointF cursor = Memory.GetCursorPosition();
