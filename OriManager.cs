@@ -105,7 +105,7 @@ namespace LiveSplit.OriDE {
 				bool isInGameWorld = CheckInGameWorld(gameState);
 				bool isStartingGame = CheckStartingNewGame(gameState);
 				PointF currentSpeed = Memory.CurrentSpeed();
-				PointF pos = Memory.GetCameraTargetPosition();
+				PointF pos = Memory.HasTAS() ? Memory.GetTASOriPositon() : Memory.GetCameraTargetPosition();
 				HitBox ori = new HitBox(pos, 0.68f, 1.15f, true);
 				HitBox hitBox = new HitBox("145,580,20,40");
 				HitBox hitBox2 = new HitBox("170,580,130,140");

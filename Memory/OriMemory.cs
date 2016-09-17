@@ -288,6 +288,16 @@ namespace LiveSplit.OriDE.Memory {
 		public string GetTASExtraInfo() {
 			return tas.ReadString(0xc);
 		}
+		public PointF GetTASOriPositon() {
+			if (!IsHooked) { return new PointF(0, 0); }
+
+			float px = tas.Read<float>(0x20);
+			float py = tas.Read<float>(0x24);
+			return new PointF(px, py);
+		}
+		public bool HasTAS() {
+			return tas.Value != IntPtr.Zero;
+		}
 
 		public bool HookProcess() {
 			if (Program == null || Program.HasExited) {
