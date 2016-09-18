@@ -1,0 +1,19 @@
+﻿<Window x:Class="OriMap.MarkerEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OriMap"
+        mc:Ignorable="d"
+        Title="MarkerEditor" Height="167.308" Width="550" Topmost="True" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Border x:Name="colorBorder" HorizontalAlignment="Left" Margin="10,36,0,35" Width="151" BorderThickness="2" CornerRadius="3" BorderBrush="Black"/>
+        <Button x:Name="changeColorButton" Content="Change Color" HorizontalAlignment="Left" Margin="10,0,0,10" Width="151" Click="changeColorButton_Click" Height="20" VerticalAlignment="Bottom"/>
+        <Label Content="Color:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="Name:" HorizontalAlignment="Left" Margin="170,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="nameTextBox" HorizontalAlignment="Left" Height="23" Margin="170,36,0,0" TextWrapping="Wrap" Text="Marker" VerticalAlignment="Top" Width="362" VerticalContentAlignment="Center" TextChanged="nameTextBox_TextChanged"/>
+        <Button x:Name="saveButton" Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="61" Click="saveButton_Click"/>
+        <Label x:Name="positionLabel" Content="Position: 0, 0" HorizontalAlignment="Left" Margin="170,0,0,7" VerticalAlignment="Bottom"/>
+
+    </Grid>
+</Window>

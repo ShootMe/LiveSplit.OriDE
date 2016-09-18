@@ -73,7 +73,7 @@ namespace LiveSplit.OriDE {
 					lblTASStates.Visible = true;
 				}
 			} else if (e.Control && e.KeyCode == Keys.M) {
-                if (this.mapWindow == null) {
+                if (this.mapWindow == null || !this.mapWindow.IsLoaded) {
                     this.mapWindow = new OriMapWindow();
                     this.mapWindow.Show();
                 } else if (this.mapWindow.IsVisible) {

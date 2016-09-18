@@ -37,6 +37,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -51,6 +52,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MapCalc.cs" />
+    <Compile Include="Marker.cs" />
+    <Compile Include="UIMarker.xaml.cs">
+      <DependentUpon>UIMarker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MarkerEditor.xaml.cs">
+      <DependentUpon>MarkerEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OriMapWindow.xaml.cs">
       <DependentUpon>OriMapWindow.xaml</DependentUpon>
     </Compile>
@@ -78,6 +87,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UIMarker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MarkerEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="OriMapWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
