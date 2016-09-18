@@ -7,6 +7,7 @@ namespace LiveSplit.OriDE.Memory {
 		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameStateMachine, rainbowDash, gameController, tas, coreInput;
 		public Process Program { get; set; }
 		public bool IsHooked { get; set; } = false;
+        public bool IsTASEnabled { get; set; } = false;
 
 		public OriMemory() {
 			gameWorld = new ProgramPointer(this, "GameWorld") { IsStatic = true };
@@ -296,7 +297,7 @@ namespace LiveSplit.OriDE.Memory {
 			return new PointF(px, py);
 		}
 		public bool HasTAS() {
-			return tas.Value != IntPtr.Zero;
+			return this.IsTASEnabled ? tas.Value != IntPtr.Zero : false;
 		}
 
 		public bool HookProcess() {
@@ -314,7 +315,7 @@ namespace LiveSplit.OriDE.Memory {
 			return IsHooked;
 		}
 		public string GetPointer(string name) {
-			switch (name) {
+            switch (name) {
 				case "GameWorld": return gameWorld.Value.ToString("X");
 				case "GameplayCamera": return gameplayCamera.Value.ToString("X");
 				case "WorldEvents": return worldEvents.Value.ToString("X");
@@ -467,7 +468,7 @@ namespace LiveSplit.OriDE.Memory {
 			return Memory.Program.GetString(p);
 		}
 		private void GetPointer(ref IntPtr ptr, string name) {
-			if (Memory.IsHooked) {
+            if (Memory.IsHooked) {
 				if (Memory.Program.Id != lastID) {
 					ptr = IntPtr.Zero;
 					lastID = Memory.Program.Id;
@@ -486,7 +487,7 @@ namespace LiveSplit.OriDE.Memory {
 					}
 				}
 			}
-		}
+        }
 		public IntPtr GetVersionedFunctionPointer(string name) {
 			foreach (string version in versions) {
 				if (funcPatterns[version].ContainsKey(name)) {

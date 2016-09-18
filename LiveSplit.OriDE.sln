@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveSplit.OriDE", "LiveSpli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OriDEManager", "Manager\OriDEManager.csproj", "{2F4D5496-5CB2-4E6C-A66C-2CAA6C5398D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OriMap", "OriMap\OriMap.csproj", "{93171783-6CC8-4E56-8E87-F29C5A5BC320}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2F4D5496-5CB2-4E6C-A66C-2CAA6C5398D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F4D5496-5CB2-4E6C-A66C-2CAA6C5398D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F4D5496-5CB2-4E6C-A66C-2CAA6C5398D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93171783-6CC8-4E56-8E87-F29C5A5BC320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93171783-6CC8-4E56-8E87-F29C5A5BC320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93171783-6CC8-4E56-8E87-F29C5A5BC320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93171783-6CC8-4E56-8E87-F29C5A5BC320}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
