@@ -1,0 +1,23 @@
+﻿<Window x:Class="OriMap.OriMapWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OriMap"
+        mc:Ignorable="d"
+        Title="OriMap" Height="410.87" Width="659.627" Topmost="True">
+    <Grid Background="White">
+        <Image x:Name="mapImage" HorizontalAlignment="Left" Height="6257" VerticalAlignment="Top" Width="8357" Source="/OriMap;Component/Images/map.png" RenderTransformOrigin="0.5,0.5" Margin="0,0,-7703.4,-5875.4">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="-0.5"/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Ellipse Fill="#FFF4F4F5" HorizontalAlignment="Center" Height="10" Margin="0" Stroke="Black" VerticalAlignment="Center" Width="10"/>
+
+    </Grid>
+</Window>
