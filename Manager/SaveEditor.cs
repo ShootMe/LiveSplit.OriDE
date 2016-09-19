@@ -124,6 +124,20 @@ namespace LiveSplit.OriDE {
 				data = Save.Master[MasterAssets.GameTimer];
 				txtTime.Text = data?.GetFloat(0).ToString("0.000");
 
+				data = Save.Master[MasterAssets.SavePedestals];
+				chkBlackRoot.Checked = data[(int)Pedestals.BlackRoot] == 1;
+				chkForlornRuins.Checked = data[(int)Pedestals.Forlorn] == 1;
+				chkGinso.Checked = data[(int)Pedestals.GinsoTree] == 1;
+				chkGrotto.Checked = data[(int)Pedestals.Grotto] == 1;
+				chkHollowGrove.Checked = data[(int)Pedestals.HollowGrove] == 1;
+				chkHoruFields.Checked = data[(int)Pedestals.HoruFields] == 1;
+				chkLostGrove.Checked = data[(int)Pedestals.LostGrove] == 1;
+				chkMountHoru.Checked = data[(int)Pedestals.MountHoru] == 1;
+				chkSorrowPass.Checked = data[(int)Pedestals.SorrowPass] == 1;
+				chkSunkenGlades.Checked = data[(int)Pedestals.SunkenGlades] == 1;
+				chkSwamp.Checked = data[(int)Pedestals.Swamp] == 1;
+				chkValleyOfTheWind.Checked = data[(int)Pedestals.Valley] == 1;
+
 				this.Text = "Save Editor - " + Path.GetFileNameWithoutExtension(Save.FilePath);
 			} catch (Exception ex) {
 				MessageBox.Show("Failed to load save: " + ex.ToString());
@@ -263,6 +277,20 @@ namespace LiveSplit.OriDE {
 				data.WriteFloat(0, totalSeconds);
 
 				Save.DebugOn = true;
+
+				data = Save.Master[MasterAssets.SavePedestals];
+				data[(int)Pedestals.BlackRoot] = (byte)(chkBlackRoot.Checked ? 1 : 0);
+				data[(int)Pedestals.Forlorn] = (byte)(chkForlornRuins.Checked ? 1 : 0);
+				data[(int)Pedestals.GinsoTree] = (byte)(chkGinso.Checked ? 1 : 0);
+				data[(int)Pedestals.Grotto] = (byte)(chkGrotto.Checked ? 1 : 0);
+				data[(int)Pedestals.HollowGrove] = (byte)(chkHollowGrove.Checked ? 1 : 0);
+				data[(int)Pedestals.HoruFields] = (byte)(chkHoruFields.Checked ? 1 : 0);
+				data[(int)Pedestals.LostGrove] = (byte)(chkLostGrove.Checked ? 1 : 0);
+				data[(int)Pedestals.MountHoru] = (byte)(chkMountHoru.Checked ? 1 : 0);
+				data[(int)Pedestals.SorrowPass] = (byte)(chkSorrowPass.Checked ? 1 : 0);
+				data[(int)Pedestals.SunkenGlades] = (byte)(chkSunkenGlades.Checked ? 1 : 0);
+				data[(int)Pedestals.Swamp] = (byte)(chkSwamp.Checked ? 1 : 0);
+				data[(int)Pedestals.Valley] = (byte)(chkValleyOfTheWind.Checked ? 1 : 0);
 
 				Save.Save(Save.FilePath);
 				this.Close();

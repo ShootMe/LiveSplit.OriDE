@@ -553,18 +553,18 @@ namespace LiveSplit.OriDE {
 		Max = 4
 	}
 	public enum Pedestals {
-		One,
-		Two,
-		Three,
-		Four,
-		Five,
-		Six,
-		Seven,
-		Eight,
-		Nine,
+		Forlorn,
+		GinsoTree,
+		HoruFields,
+		BlackRoot,
+		LostGrove,
+		Grotto,
+		MountHoru,
+		Valley,
+		HollowGrove,
 		SunkenGlades,
-		Eleven,
-		Twelve
+		Swamp,
+		SorrowPass
 	}
 	public enum Door {
 		SlotsPending,
