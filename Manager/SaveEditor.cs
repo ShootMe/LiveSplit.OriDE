@@ -209,7 +209,7 @@ namespace LiveSplit.OriDE {
 
 				this.Text = "Save Editor - " + Path.GetFileNameWithoutExtension(Save.FilePath);
 			} catch (Exception ex) {
-				MessageBox.Show("Failed to load save: " + ex.ToString());
+				MessageBox.Show(this, "Failed to load save: " + ex.ToString());
 			}
 		}
 
@@ -403,7 +403,7 @@ namespace LiveSplit.OriDE {
 							data[(int)Pickup.Collected] = (byte)(child.Checked ? 0 : 1);
 						} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
 							data.WriteInt((int)Door.CurrentState, child.Checked ? 0 : 2);
-							if(child.Checked) {
+							if (child.Checked) {
 								data.WriteInt((int)Door.AmountOfItemsUsed, 0);
 								data.WriteInt((int)Door.SlotsFilled, 0);
 								data.WriteInt((int)Door.AmountOfItemsUsed, 0);
@@ -416,7 +416,7 @@ namespace LiveSplit.OriDE {
 				Save.Save(Save.FilePath);
 				this.Close();
 			} catch (Exception ex) {
-				MessageBox.Show("Failed to save file: " + ex.ToString());
+				MessageBox.Show(this, "Failed to save file: " + ex.ToString());
 			}
 		}
 		private void btnDelete_Click(object sender, EventArgs e) {
@@ -426,7 +426,7 @@ namespace LiveSplit.OriDE {
 				}
 				this.Close();
 			} catch (Exception ex) {
-				MessageBox.Show("Failed to delete save: " + ex.ToString());
+				MessageBox.Show(this, "Failed to delete save: " + ex.ToString());
 			}
 		}
 		private void btnAll_Click(object sender, EventArgs e) {
@@ -453,35 +453,48 @@ namespace LiveSplit.OriDE {
 				}
 				Save.WriteObjectsAsText(Path.GetFileNameWithoutExtension(Save.FilePath) + "-Objects" + i + ".txt");
 				string fullPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Path.GetFileNameWithoutExtension(Save.FilePath) + "-Objects" + i + ".txt");
-				MessageBox.Show("Wrote object data to " + fullPath);
+				MessageBox.Show(this, "Wrote object data to " + fullPath);
 			} catch (Exception ex) {
-				MessageBox.Show("Failed to write file: " + ex.ToString());
+				MessageBox.Show(this, "Failed to write file: " + ex.ToString());
 			}
 		}
 		private void btnCopy_Click(object sender, EventArgs e) {
 			btnCopy.Visible = false;
+			txtCopy.Text = null;
 			txtCopy.Visible = true;
+			AcceptButton = null;
 			txtCopy.Focus();
 		}
 		private void txtCopy_KeyDown(object sender, KeyEventArgs e) {
 			if (e.KeyCode == Keys.Enter) {
 				btnSave.Focus();
+			} else if (e.KeyCode == Keys.Escape) {
+				txtCopy.Visible = false;
+				btnCopy.Visible = true;
 			}
 		}
 		private void txtCopy_Validated(object sender, EventArgs e) {
 			try {
+				if (!txtCopy.Visible) { return; }
+
 				txtCopy.Visible = false;
 				btnCopy.Visible = true;
 
+				if (string.IsNullOrEmpty(txtCopy.Text)) { return; }
+
 				string copyFilePath = Path.Combine(Path.GetDirectoryName(Save.FilePath), "saveFile" + int.Parse(txtCopy.Text) + ".sav");
 				if (File.Exists(copyFilePath)) {
-					if (MessageBox.Show(Path.GetFileName(copyFilePath) + " already exists. Do you want to overwrite?", "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes) {
+					if (MessageBox.Show(this, Path.GetFileName(copyFilePath) + " already exists. Do you want to overwrite?", "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes) {
 						return;
 					}
 				}
 				Save.Save(copyFilePath);
+
+				MessageBox.Show(this, "Copied save to " + Path.GetFileName(copyFilePath));
 			} catch (Exception ex) {
-				MessageBox.Show("Failed to write file: " + ex.ToString());
+				MessageBox.Show(this, "Failed to write file: " + ex.ToString());
+			} finally {
+				AcceptButton = btnSave;
 			}
 		}
 	}
