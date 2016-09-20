@@ -171,7 +171,7 @@ namespace LiveSplit.OriDE {
 
 							data = Save.Find(sceneValue);
 							if (data != null) {
-								if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 ||
+								if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
 									fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
 									if (data.GetFloat((int)EntityDamage.Health) > 0) {
 										childNode.Checked = true;
@@ -397,15 +397,17 @@ namespace LiveSplit.OriDE {
 
 						data = Save.Find(sceneValue);
 
-						if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 ||
+						if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
 								fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
-							data.WriteFloat((int)EntityDamage.Health, child.Checked ? data.GetFloat((int)EntityDamage.MaxHealth) : -1f);
+							float currentHP = data.GetFloat((int)EntityDamage.Health);
+							data.WriteFloat((int)EntityDamage.Health, child.Checked ? (currentHP > 0 ? currentHP : data.GetFloat((int)EntityDamage.MaxHealth)) : -1f);
 						} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
 							data[(int)Collectible.Collected] = (byte)(child.Checked ? 0 : 1);
 						} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0) {
 							data[(int)Pickup.Collected] = (byte)(child.Checked ? 0 : 1);
 						} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
-							data.WriteInt((int)Door.CurrentState, child.Checked ? 0 : 2);
+							int currentState = data.GetInt((int)Door.CurrentState);
+							data.WriteInt((int)Door.CurrentState, child.Checked ? 0 : (currentState == 0 ? 2 : currentState));
 							if (child.Checked) {
 								data.WriteInt((int)Door.AmountOfItemsUsed, 0);
 								data.WriteInt((int)Door.SlotsFilled, 0);
