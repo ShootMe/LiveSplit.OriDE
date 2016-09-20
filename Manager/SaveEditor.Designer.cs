@@ -118,6 +118,21 @@
 			this.chkHollowGrove = new System.Windows.Forms.CheckBox();
 			this.chkSunkenGlades = new System.Windows.Forms.CheckBox();
 			this.chkMountHoru = new System.Windows.Forms.CheckBox();
+			this.treeObjects = new System.Windows.Forms.TreeView();
+			this.chkDarknessLifted = new System.Windows.Forms.CheckBox();
+			this.chkMistLifted = new System.Windows.Forms.CheckBox();
+			this.chkGinsoEntered = new System.Windows.Forms.CheckBox();
+			this.chkWarmth = new System.Windows.Forms.CheckBox();
+			this.chkGravityActivated = new System.Windows.Forms.CheckBox();
+			this.chkWindRestored = new System.Windows.Forms.CheckBox();
+			this.chkGumoFree = new System.Windows.Forms.CheckBox();
+			this.chkSpiritTree = new System.Windows.Forms.CheckBox();
+			this.chkCleanWater = new System.Windows.Forms.CheckBox();
+			this.chkHoruKey = new System.Windows.Forms.CheckBox();
+			this.chkForlornKey = new System.Windows.Forms.CheckBox();
+			this.chkGinsoKey = new System.Windows.Forms.CheckBox();
+			this.btnCopy = new System.Windows.Forms.Button();
+			this.txtCopy = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// txtPosX
@@ -334,9 +349,9 @@
 			this.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.btnSave.BackColor = System.Drawing.Color.Black;
 			this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnSave.Location = new System.Drawing.Point(328, 319);
+			this.btnSave.Location = new System.Drawing.Point(568, 502);
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size(50, 23);
+			this.btnSave.Size = new System.Drawing.Size(50, 25);
 			this.btnSave.TabIndex = 79;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = false;
@@ -798,9 +813,9 @@
 			this.btnDelete.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.btnDelete.BackColor = System.Drawing.Color.Black;
 			this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnDelete.Location = new System.Drawing.Point(442, 319);
+			this.btnDelete.Location = new System.Drawing.Point(703, 502);
 			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(50, 23);
+			this.btnDelete.Size = new System.Drawing.Size(50, 25);
 			this.btnDelete.TabIndex = 80;
 			this.btnDelete.Text = "Delete";
 			this.btnDelete.UseVisualStyleBackColor = false;
@@ -979,11 +994,11 @@
 			this.btnObjectText.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.btnObjectText.BackColor = System.Drawing.Color.Black;
 			this.btnObjectText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnObjectText.Location = new System.Drawing.Point(690, 319);
+			this.btnObjectText.Location = new System.Drawing.Point(762, 502);
 			this.btnObjectText.Name = "btnObjectText";
-			this.btnObjectText.Size = new System.Drawing.Size(104, 23);
+			this.btnObjectText.Size = new System.Drawing.Size(82, 25);
 			this.btnObjectText.TabIndex = 81;
-			this.btnObjectText.Text = "Write Object Text";
+			this.btnObjectText.Text = "Write Objects";
 			this.btnObjectText.UseVisualStyleBackColor = false;
 			this.btnObjectText.Click += new System.EventHandler(this.btnObjectText_Click);
 			// 
@@ -991,7 +1006,7 @@
 			// 
 			this.chkValleyOfTheWind.AutoSize = true;
 			this.chkValleyOfTheWind.BackColor = System.Drawing.Color.Transparent;
-			this.chkValleyOfTheWind.Location = new System.Drawing.Point(568, 261);
+			this.chkValleyOfTheWind.Location = new System.Drawing.Point(690, 266);
 			this.chkValleyOfTheWind.Name = "chkValleyOfTheWind";
 			this.chkValleyOfTheWind.Size = new System.Drawing.Size(118, 17);
 			this.chkValleyOfTheWind.TabIndex = 89;
@@ -1002,7 +1017,7 @@
 			// 
 			this.chkBlackRoot.AutoSize = true;
 			this.chkBlackRoot.BackColor = System.Drawing.Color.Transparent;
-			this.chkBlackRoot.Location = new System.Drawing.Point(442, 242);
+			this.chkBlackRoot.Location = new System.Drawing.Point(568, 304);
 			this.chkBlackRoot.Name = "chkBlackRoot";
 			this.chkBlackRoot.Size = new System.Drawing.Size(79, 17);
 			this.chkBlackRoot.TabIndex = 85;
@@ -1013,7 +1028,7 @@
 			// 
 			this.chkHoruFields.AutoSize = true;
 			this.chkHoruFields.BackColor = System.Drawing.Color.Transparent;
-			this.chkHoruFields.Location = new System.Drawing.Point(690, 261);
+			this.chkHoruFields.Location = new System.Drawing.Point(690, 323);
 			this.chkHoruFields.Name = "chkHoruFields";
 			this.chkHoruFields.Size = new System.Drawing.Size(79, 17);
 			this.chkHoruFields.TabIndex = 92;
@@ -1024,7 +1039,7 @@
 			// 
 			this.chkSorrowPass.AutoSize = true;
 			this.chkSorrowPass.BackColor = System.Drawing.Color.Transparent;
-			this.chkSorrowPass.Location = new System.Drawing.Point(690, 242);
+			this.chkSorrowPass.Location = new System.Drawing.Point(690, 304);
 			this.chkSorrowPass.Name = "chkSorrowPass";
 			this.chkSorrowPass.Size = new System.Drawing.Size(85, 17);
 			this.chkSorrowPass.TabIndex = 91;
@@ -1035,7 +1050,7 @@
 			// 
 			this.chkForlornRuins.AutoSize = true;
 			this.chkForlornRuins.BackColor = System.Drawing.Color.Transparent;
-			this.chkForlornRuins.Location = new System.Drawing.Point(568, 280);
+			this.chkForlornRuins.Location = new System.Drawing.Point(690, 285);
 			this.chkForlornRuins.Name = "chkForlornRuins";
 			this.chkForlornRuins.Size = new System.Drawing.Size(88, 17);
 			this.chkForlornRuins.TabIndex = 90;
@@ -1046,7 +1061,7 @@
 			// 
 			this.chkLostGrove.AutoSize = true;
 			this.chkLostGrove.BackColor = System.Drawing.Color.Transparent;
-			this.chkLostGrove.Location = new System.Drawing.Point(568, 242);
+			this.chkLostGrove.Location = new System.Drawing.Point(690, 247);
 			this.chkLostGrove.Name = "chkLostGrove";
 			this.chkLostGrove.Size = new System.Drawing.Size(78, 17);
 			this.chkLostGrove.TabIndex = 88;
@@ -1057,7 +1072,7 @@
 			// 
 			this.chkGinso.AutoSize = true;
 			this.chkGinso.BackColor = System.Drawing.Color.Transparent;
-			this.chkGinso.Location = new System.Drawing.Point(442, 280);
+			this.chkGinso.Location = new System.Drawing.Point(568, 342);
 			this.chkGinso.Name = "chkGinso";
 			this.chkGinso.Size = new System.Drawing.Size(78, 17);
 			this.chkGinso.TabIndex = 87;
@@ -1068,7 +1083,7 @@
 			// 
 			this.chkSwamp.AutoSize = true;
 			this.chkSwamp.BackColor = System.Drawing.Color.Transparent;
-			this.chkSwamp.Location = new System.Drawing.Point(442, 261);
+			this.chkSwamp.Location = new System.Drawing.Point(568, 323);
 			this.chkSwamp.Name = "chkSwamp";
 			this.chkSwamp.Size = new System.Drawing.Size(106, 17);
 			this.chkSwamp.TabIndex = 86;
@@ -1079,7 +1094,7 @@
 			// 
 			this.chkGrotto.AutoSize = true;
 			this.chkGrotto.BackColor = System.Drawing.Color.Transparent;
-			this.chkGrotto.Location = new System.Drawing.Point(327, 280);
+			this.chkGrotto.Location = new System.Drawing.Point(568, 285);
 			this.chkGrotto.Name = "chkGrotto";
 			this.chkGrotto.Size = new System.Drawing.Size(85, 17);
 			this.chkGrotto.TabIndex = 84;
@@ -1090,7 +1105,7 @@
 			// 
 			this.chkHollowGrove.AutoSize = true;
 			this.chkHollowGrove.BackColor = System.Drawing.Color.Transparent;
-			this.chkHollowGrove.Location = new System.Drawing.Point(327, 261);
+			this.chkHollowGrove.Location = new System.Drawing.Point(568, 266);
 			this.chkHollowGrove.Name = "chkHollowGrove";
 			this.chkHollowGrove.Size = new System.Drawing.Size(90, 17);
 			this.chkHollowGrove.TabIndex = 83;
@@ -1101,7 +1116,7 @@
 			// 
 			this.chkSunkenGlades.AutoSize = true;
 			this.chkSunkenGlades.BackColor = System.Drawing.Color.Transparent;
-			this.chkSunkenGlades.Location = new System.Drawing.Point(327, 242);
+			this.chkSunkenGlades.Location = new System.Drawing.Point(568, 247);
 			this.chkSunkenGlades.Name = "chkSunkenGlades";
 			this.chkSunkenGlades.Size = new System.Drawing.Size(99, 17);
 			this.chkSunkenGlades.TabIndex = 82;
@@ -1112,12 +1127,179 @@
 			// 
 			this.chkMountHoru.AutoSize = true;
 			this.chkMountHoru.BackColor = System.Drawing.Color.Transparent;
-			this.chkMountHoru.Location = new System.Drawing.Point(690, 280);
+			this.chkMountHoru.Location = new System.Drawing.Point(690, 342);
 			this.chkMountHoru.Name = "chkMountHoru";
 			this.chkMountHoru.Size = new System.Drawing.Size(82, 17);
 			this.chkMountHoru.TabIndex = 93;
 			this.chkMountHoru.Text = "Mount Horu";
 			this.chkMountHoru.UseVisualStyleBackColor = false;
+			// 
+			// treeObjects
+			// 
+			this.treeObjects.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+			this.treeObjects.CheckBoxes = true;
+			this.treeObjects.Location = new System.Drawing.Point(69, 247);
+			this.treeObjects.Name = "treeObjects";
+			this.treeObjects.Size = new System.Drawing.Size(474, 280);
+			this.treeObjects.TabIndex = 94;
+			// 
+			// chkDarknessLifted
+			// 
+			this.chkDarknessLifted.AutoSize = true;
+			this.chkDarknessLifted.BackColor = System.Drawing.Color.Transparent;
+			this.chkDarknessLifted.Location = new System.Drawing.Point(690, 474);
+			this.chkDarknessLifted.Name = "chkDarknessLifted";
+			this.chkDarknessLifted.Size = new System.Drawing.Size(100, 17);
+			this.chkDarknessLifted.TabIndex = 106;
+			this.chkDarknessLifted.Text = "Darkness Lifted";
+			this.chkDarknessLifted.UseVisualStyleBackColor = false;
+			// 
+			// chkMistLifted
+			// 
+			this.chkMistLifted.AutoSize = true;
+			this.chkMistLifted.BackColor = System.Drawing.Color.Transparent;
+			this.chkMistLifted.Location = new System.Drawing.Point(690, 398);
+			this.chkMistLifted.Name = "chkMistLifted";
+			this.chkMistLifted.Size = new System.Drawing.Size(74, 17);
+			this.chkMistLifted.TabIndex = 102;
+			this.chkMistLifted.Text = "Mist Lifted";
+			this.chkMistLifted.UseVisualStyleBackColor = false;
+			// 
+			// chkGinsoEntered
+			// 
+			this.chkGinsoEntered.AutoSize = true;
+			this.chkGinsoEntered.BackColor = System.Drawing.Color.Transparent;
+			this.chkGinsoEntered.Location = new System.Drawing.Point(568, 436);
+			this.chkGinsoEntered.Name = "chkGinsoEntered";
+			this.chkGinsoEntered.Size = new System.Drawing.Size(93, 17);
+			this.chkGinsoEntered.TabIndex = 98;
+			this.chkGinsoEntered.Text = "Ginso Entered";
+			this.chkGinsoEntered.UseVisualStyleBackColor = false;
+			// 
+			// chkWarmth
+			// 
+			this.chkWarmth.AutoSize = true;
+			this.chkWarmth.BackColor = System.Drawing.Color.Transparent;
+			this.chkWarmth.Location = new System.Drawing.Point(690, 455);
+			this.chkWarmth.Name = "chkWarmth";
+			this.chkWarmth.Size = new System.Drawing.Size(63, 17);
+			this.chkWarmth.TabIndex = 105;
+			this.chkWarmth.Text = "Warmth";
+			this.chkWarmth.UseVisualStyleBackColor = false;
+			// 
+			// chkGravityActivated
+			// 
+			this.chkGravityActivated.AutoSize = true;
+			this.chkGravityActivated.BackColor = System.Drawing.Color.Transparent;
+			this.chkGravityActivated.Location = new System.Drawing.Point(690, 436);
+			this.chkGravityActivated.Name = "chkGravityActivated";
+			this.chkGravityActivated.Size = new System.Drawing.Size(107, 17);
+			this.chkGravityActivated.TabIndex = 104;
+			this.chkGravityActivated.Text = "Gravity Activated";
+			this.chkGravityActivated.UseVisualStyleBackColor = false;
+			// 
+			// chkWindRestored
+			// 
+			this.chkWindRestored.AutoSize = true;
+			this.chkWindRestored.BackColor = System.Drawing.Color.Transparent;
+			this.chkWindRestored.Location = new System.Drawing.Point(690, 417);
+			this.chkWindRestored.Name = "chkWindRestored";
+			this.chkWindRestored.Size = new System.Drawing.Size(97, 17);
+			this.chkWindRestored.TabIndex = 103;
+			this.chkWindRestored.Text = "Wind Restored";
+			this.chkWindRestored.UseVisualStyleBackColor = false;
+			// 
+			// chkGumoFree
+			// 
+			this.chkGumoFree.AutoSize = true;
+			this.chkGumoFree.BackColor = System.Drawing.Color.Transparent;
+			this.chkGumoFree.Location = new System.Drawing.Point(690, 379);
+			this.chkGumoFree.Name = "chkGumoFree";
+			this.chkGumoFree.Size = new System.Drawing.Size(78, 17);
+			this.chkGumoFree.TabIndex = 101;
+			this.chkGumoFree.Text = "Gumo Free";
+			this.chkGumoFree.UseVisualStyleBackColor = false;
+			// 
+			// chkSpiritTree
+			// 
+			this.chkSpiritTree.AutoSize = true;
+			this.chkSpiritTree.BackColor = System.Drawing.Color.Transparent;
+			this.chkSpiritTree.Location = new System.Drawing.Point(568, 474);
+			this.chkSpiritTree.Name = "chkSpiritTree";
+			this.chkSpiritTree.Size = new System.Drawing.Size(74, 17);
+			this.chkSpiritTree.TabIndex = 100;
+			this.chkSpiritTree.Text = "Spirit Tree";
+			this.chkSpiritTree.UseVisualStyleBackColor = false;
+			// 
+			// chkCleanWater
+			// 
+			this.chkCleanWater.AutoSize = true;
+			this.chkCleanWater.BackColor = System.Drawing.Color.Transparent;
+			this.chkCleanWater.Location = new System.Drawing.Point(568, 455);
+			this.chkCleanWater.Name = "chkCleanWater";
+			this.chkCleanWater.Size = new System.Drawing.Size(101, 17);
+			this.chkCleanWater.TabIndex = 99;
+			this.chkCleanWater.Text = "Water Restored";
+			this.chkCleanWater.UseVisualStyleBackColor = false;
+			// 
+			// chkHoruKey
+			// 
+			this.chkHoruKey.AutoSize = true;
+			this.chkHoruKey.BackColor = System.Drawing.Color.Transparent;
+			this.chkHoruKey.Location = new System.Drawing.Point(568, 417);
+			this.chkHoruKey.Name = "chkHoruKey";
+			this.chkHoruKey.Size = new System.Drawing.Size(71, 17);
+			this.chkHoruKey.TabIndex = 97;
+			this.chkHoruKey.Text = "Sunstone";
+			this.chkHoruKey.UseVisualStyleBackColor = false;
+			// 
+			// chkForlornKey
+			// 
+			this.chkForlornKey.AutoSize = true;
+			this.chkForlornKey.BackColor = System.Drawing.Color.Transparent;
+			this.chkForlornKey.Location = new System.Drawing.Point(568, 398);
+			this.chkForlornKey.Name = "chkForlornKey";
+			this.chkForlornKey.Size = new System.Drawing.Size(84, 17);
+			this.chkForlornKey.TabIndex = 96;
+			this.chkForlornKey.Text = "Gumon Seal";
+			this.chkForlornKey.UseVisualStyleBackColor = false;
+			// 
+			// chkGinsoKey
+			// 
+			this.chkGinsoKey.AutoSize = true;
+			this.chkGinsoKey.BackColor = System.Drawing.Color.Transparent;
+			this.chkGinsoKey.Location = new System.Drawing.Point(568, 379);
+			this.chkGinsoKey.Name = "chkGinsoKey";
+			this.chkGinsoKey.Size = new System.Drawing.Size(79, 17);
+			this.chkGinsoKey.TabIndex = 95;
+			this.chkGinsoKey.Text = "Water Vein";
+			this.chkGinsoKey.UseVisualStyleBackColor = false;
+			// 
+			// btnCopy
+			// 
+			this.btnCopy.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+			this.btnCopy.BackColor = System.Drawing.Color.Black;
+			this.btnCopy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btnCopy.Location = new System.Drawing.Point(626, 502);
+			this.btnCopy.Name = "btnCopy";
+			this.btnCopy.Size = new System.Drawing.Size(50, 25);
+			this.btnCopy.TabIndex = 107;
+			this.btnCopy.Text = "Copy";
+			this.btnCopy.UseVisualStyleBackColor = false;
+			this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+			// 
+			// txtCopy
+			// 
+			this.txtCopy.Location = new System.Drawing.Point(627, 505);
+			this.txtCopy.Name = "txtCopy";
+			this.txtCopy.Size = new System.Drawing.Size(48, 20);
+			this.txtCopy.TabIndex = 108;
+			this.txtCopy.Text = "1";
+			this.txtCopy.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.txtCopy.Visible = false;
+			this.txtCopy.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtCopy_KeyDown);
+			this.txtCopy.Validated += new System.EventHandler(this.txtCopy_Validated);
 			// 
 			// SaveEditor
 			// 
@@ -1125,8 +1307,23 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.Black;
-			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.ClientSize = new System.Drawing.Size(835, 354);
+			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+			this.ClientSize = new System.Drawing.Size(856, 536);
+			this.Controls.Add(this.txtCopy);
+			this.Controls.Add(this.btnCopy);
+			this.Controls.Add(this.chkDarknessLifted);
+			this.Controls.Add(this.chkMistLifted);
+			this.Controls.Add(this.chkGinsoEntered);
+			this.Controls.Add(this.chkWarmth);
+			this.Controls.Add(this.chkGravityActivated);
+			this.Controls.Add(this.chkWindRestored);
+			this.Controls.Add(this.chkGumoFree);
+			this.Controls.Add(this.chkSpiritTree);
+			this.Controls.Add(this.chkCleanWater);
+			this.Controls.Add(this.chkHoruKey);
+			this.Controls.Add(this.chkForlornKey);
+			this.Controls.Add(this.chkGinsoKey);
+			this.Controls.Add(this.treeObjects);
 			this.Controls.Add(this.chkMountHoru);
 			this.Controls.Add(this.chkValleyOfTheWind);
 			this.Controls.Add(this.chkBlackRoot);
@@ -1332,5 +1529,20 @@
 		private System.Windows.Forms.CheckBox chkHollowGrove;
 		private System.Windows.Forms.CheckBox chkSunkenGlades;
 		private System.Windows.Forms.CheckBox chkMountHoru;
+		private System.Windows.Forms.TreeView treeObjects;
+		private System.Windows.Forms.CheckBox chkDarknessLifted;
+		private System.Windows.Forms.CheckBox chkMistLifted;
+		private System.Windows.Forms.CheckBox chkGinsoEntered;
+		private System.Windows.Forms.CheckBox chkWarmth;
+		private System.Windows.Forms.CheckBox chkGravityActivated;
+		private System.Windows.Forms.CheckBox chkWindRestored;
+		private System.Windows.Forms.CheckBox chkGumoFree;
+		private System.Windows.Forms.CheckBox chkSpiritTree;
+		private System.Windows.Forms.CheckBox chkCleanWater;
+		private System.Windows.Forms.CheckBox chkHoruKey;
+		private System.Windows.Forms.CheckBox chkForlornKey;
+		private System.Windows.Forms.CheckBox chkGinsoKey;
+		private System.Windows.Forms.Button btnCopy;
+		private System.Windows.Forms.TextBox txtCopy;
 	}
 }

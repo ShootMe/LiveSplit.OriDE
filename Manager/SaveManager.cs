@@ -9,7 +9,7 @@ namespace LiveSplit.OriDE {
 			InitializeComponent();
 
 			Assembly asm = Assembly.GetExecutingAssembly();
-			Stream file = asm.GetManifestResourceStream("LiveSplit.OriDE.Manager.Images.kuroBG.png");
+			Stream file = asm.GetManifestResourceStream("LiveSplit.OriDE.Images.kuroBG.png");
 			if (file != null) {
 				flowLayout.BackgroundImage = Image.FromStream(file);
 			}
@@ -49,7 +49,7 @@ namespace LiveSplit.OriDE {
 					saveImage.Click += SaveImage_Click;
 					saveImage.Tag = save;
 
-					Stream file = asm.GetManifestResourceStream("LiveSplit.OriDE.Manager.Images." + save.AreaName + ".png");
+					Stream file = asm.GetManifestResourceStream("LiveSplit.OriDE.Images." + save.AreaName + ".png");
 					if (file != null) {
 						saveImage.Image = Image.FromStream(file);
 					}

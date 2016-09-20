@@ -11,7 +11,7 @@ namespace LiveSplit.OriDE {
 			InitializeComponent();
 
 			Assembly asm = Assembly.GetExecutingAssembly();
-			Stream file = asm.GetManifestResourceStream("LiveSplit.OriDE.Manager.Images.kuroBG.png");
+			Stream file = asm.GetManifestResourceStream("LiveSplit.OriDE.Images.kuroBG.png");
 			if (file != null) {
 				this.BackgroundImage = Image.FromStream(file);
 			}
@@ -138,6 +138,75 @@ namespace LiveSplit.OriDE {
 				chkSwamp.Checked = data[(int)Pedestals.Swamp] == 1;
 				chkValleyOfTheWind.Checked = data[(int)Pedestals.Valley] == 1;
 
+				data = Save.Master[MasterAssets.WorldEvents];
+				chkCleanWater.Checked = data[(int)WorldEvents.CleanWater] == 1;
+				chkDarknessLifted.Checked = data[(int)WorldEvents.DarknessLifted] == 1;
+				chkForlornKey.Checked = data[(int)WorldEvents.ForlornRuinsKey] == 1;
+				chkGinsoEntered.Checked = data[(int)WorldEvents.GinsoTreeEntered] == 1;
+				chkGinsoKey.Checked = data[(int)WorldEvents.GinsoTreeKey] == 1;
+				chkGravityActivated.Checked = data[(int)WorldEvents.GravityActivated] == 1;
+				chkGumoFree.Checked = data[(int)WorldEvents.GumoFree] == 1;
+				chkMistLifted.Checked = data[(int)WorldEvents.MistLifted] == 1;
+				chkHoruKey.Checked = data[(int)WorldEvents.MountHoruKey] == 1;
+				chkSpiritTree.Checked = data[(int)WorldEvents.SpiritTreeReached] == 1;
+				chkWarmth.Checked = data[(int)WorldEvents.WarmthReturned] == 1;
+				chkWindRestored.Checked = data[(int)WorldEvents.WindRestored] == 1;
+
+				treeObjects.SuspendLayout();
+				Type[] types = typeof(SceneID).Assembly.GetTypes();
+				for (int i = 0; i < types.Length; i++) {
+					Type asmType = types[i];
+					if (asmType != typeof(SceneID) && asmType != typeof(MasterAssets) && typeof(SceneID).IsAssignableFrom(asmType)) {
+						TreeNode parentNode = treeObjects.Nodes.Add(asmType.Name);
+
+						FieldInfo[] fields = asmType.GetFields(BindingFlags.Static | BindingFlags.Public);
+						bool addedChildren = false;
+						for (int j = 0; j < fields.Length; j++) {
+							string fieldName = fields[j].Name;
+							if (fieldName.IndexOf("VisibleOnMap") >= 0) { continue; }
+
+							TreeNode childNode = new TreeNode(fieldName);
+							SceneID sceneValue = (SceneID)fields[j].GetValue(null);
+							childNode.Tag = sceneValue;
+
+							data = Save.Find(sceneValue);
+							if (data != null) {
+								if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 ||
+									fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
+									if (data.GetFloat((int)EntityDamage.Health) > 0) {
+										childNode.Checked = true;
+									}
+								} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
+									if (data[(int)Collectible.Collected] == 0) {
+										childNode.Checked = true;
+									}
+								} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0) {
+									if (data[(int)Pickup.Collected] == 0) {
+										childNode.Checked = true;
+									}
+								} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
+									if (data.GetInt((int)Door.CurrentState) != 2) {
+										childNode.Checked = true;
+									}
+								} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
+									if (data[0] == 1) {
+										childNode.Checked = true;
+									}
+								}
+
+								parentNode.Nodes.Add(childNode);
+								addedChildren = true;
+							}
+						}
+
+						if (!addedChildren) {
+							treeObjects.Nodes.Remove(parentNode);
+						}
+					}
+				}
+				treeObjects.ExpandAll();
+				treeObjects.ResumeLayout(true);
+
 				this.Text = "Save Editor - " + Path.GetFileNameWithoutExtension(Save.FilePath);
 			} catch (Exception ex) {
 				MessageBox.Show("Failed to load save: " + ex.ToString());
@@ -218,9 +287,18 @@ namespace LiveSplit.OriDE {
 				data[(int)Abilities.WallJump] = (byte)(chkWallJump.Checked ? 1 : 0);
 				data[(int)Abilities.WaterBreath] = (byte)(chkWaterBreath.Checked ? 1 : 0);
 
+				int pointsUsed = (chkQuickFlame.Checked ? 1 : 0) + (chkSparkFlame.Checked ? 1 : 0) + (chkChargeFlameBurn.Checked ? 1 : 0) + (chkSplitFlame.Checked ? 1 : 0) +
+					(chkUltraLightBurst.Checked ? 2 : 0) + (chkCinderFlame.Checked ? 2 : 0) + (chkUltraStomp.Checked ? 2 : 0) + (chkRapidFlame.Checked ? 2 : 0) +
+					(chkChargeFlameBlast.Checked ? 3 : 0) + (chkUltraSplitFlame.Checked ? 3 : 0) + (chkMagnet.Checked ? 1 : 0) + (chkMapMarkers.Checked ? 1 : 0) +
+					(chkLifeEfficiency.Checked ? 1 : 0) + (chkUltraMagnet.Checked ? 1 : 0) + (chkEnergyEfficiency.Checked ? 2 : 0) + (chkAbilityMarkers.Checked ? 2 : 0) +
+					(chkSpiritEfficiency.Checked ? 2 : 0) + (chkLifeMarkers.Checked ? 2 : 0) + (chkEnergyMarkers.Checked ? 2 : 0) + (chkSense.Checked ? 3 : 0) +
+					(chkRekindle.Checked ? 1 : 0) + (chkRegroup.Checked ? 1 : 0) + (chkChargeFlameEfficiency.Checked ? 1 : 0) + (chkAirDash.Checked ? 2 : 0) +
+					(chkUltraSoulLink.Checked ? 2 : 0) + (chkChargeDash.Checked ? 2 : 0) + (chkWaterBreath.Checked ? 2 : 0) + (chkSoulLinkEfficiency.Checked ? 2 : 0) +
+					(chkTripleJump.Checked ? 3 : 0) + (chkUltraDefense.Checked ? 3 : 0);
 				data = Save.Master[MasterAssets.SeinInventory];
 				data.WriteInt((int)InventoryInfo.Keystones, int.Parse(txtKeystones.Text));
 				data.WriteInt((int)InventoryInfo.Mapstones, int.Parse(txtMapstones.Text));
+				data.WriteInt((int)InventoryInfo.SkillpointsPickedUp, pointsUsed - int.Parse(txtLvl.Text) + int.Parse(txtAP.Text));
 
 				data = Save.Master[MasterAssets.SeinSoulFlame];
 				bool hasSoulFlame = !string.IsNullOrEmpty(txtSoulX.Text);
@@ -292,6 +370,49 @@ namespace LiveSplit.OriDE {
 				data[(int)Pedestals.Swamp] = (byte)(chkSwamp.Checked ? 1 : 0);
 				data[(int)Pedestals.Valley] = (byte)(chkValleyOfTheWind.Checked ? 1 : 0);
 
+				data = Save.Master[MasterAssets.WorldEvents];
+				data[(int)WorldEvents.CleanWater] = (byte)(chkCleanWater.Checked ? 1 : 0);
+				data[(int)WorldEvents.DarknessLifted] = (byte)(chkDarknessLifted.Checked ? 1 : 0);
+				data[(int)WorldEvents.ForlornRuinsKey] = (byte)(chkForlornKey.Checked ? 1 : 0);
+				data[(int)WorldEvents.GinsoTreeEntered] = (byte)(chkGinsoEntered.Checked ? 1 : 0);
+				data[(int)WorldEvents.GinsoTreeKey] = (byte)(chkGinsoKey.Checked ? 1 : 0);
+				data[(int)WorldEvents.GravityActivated] = (byte)(chkGravityActivated.Checked ? 1 : 0);
+				data[(int)WorldEvents.GumoFree] = (byte)(chkGumoFree.Checked ? 1 : 0);
+				data[(int)WorldEvents.MistLifted] = (byte)(chkMistLifted.Checked ? 1 : 0);
+				data[(int)WorldEvents.MountHoruKey] = (byte)(chkHoruKey.Checked ? 1 : 0);
+				data[(int)WorldEvents.SpiritTreeReached] = (byte)(chkSpiritTree.Checked ? 1 : 0);
+				data[(int)WorldEvents.WarmthReturned] = (byte)(chkWarmth.Checked ? 1 : 0);
+				data[(int)WorldEvents.WindRestored] = (byte)(chkWindRestored.Checked ? 1 : 0);
+
+				for (int i = 0; i < treeObjects.Nodes.Count; i++) {
+					TreeNode node = treeObjects.Nodes[i];
+
+					for (int j = 0; j < node.Nodes.Count; j++) {
+						TreeNode child = node.Nodes[j];
+						SceneID sceneValue = (SceneID)child.Tag;
+						string fieldName = child.Text;
+
+						data = Save.Find(sceneValue);
+
+						if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 ||
+								fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
+							data.WriteFloat((int)EntityDamage.Health, child.Checked ? data.GetFloat((int)EntityDamage.MaxHealth) : -1f);
+						} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
+							data[(int)Collectible.Collected] = (byte)(child.Checked ? 0 : 1);
+						} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0) {
+							data[(int)Pickup.Collected] = (byte)(child.Checked ? 0 : 1);
+						} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
+							data.WriteInt((int)Door.CurrentState, child.Checked ? 0 : 2);
+							if(child.Checked) {
+								data.WriteInt((int)Door.AmountOfItemsUsed, 0);
+								data.WriteInt((int)Door.SlotsFilled, 0);
+								data.WriteInt((int)Door.AmountOfItemsUsed, 0);
+							}
+						} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
+							data[0] = (byte)(child.Checked ? 1 : 0);
+						}
+					}
+				}
 				Save.Save(Save.FilePath);
 				this.Close();
 			} catch (Exception ex) {
@@ -333,6 +454,32 @@ namespace LiveSplit.OriDE {
 				Save.WriteObjectsAsText(Path.GetFileNameWithoutExtension(Save.FilePath) + "-Objects" + i + ".txt");
 				string fullPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Path.GetFileNameWithoutExtension(Save.FilePath) + "-Objects" + i + ".txt");
 				MessageBox.Show("Wrote object data to " + fullPath);
+			} catch (Exception ex) {
+				MessageBox.Show("Failed to write file: " + ex.ToString());
+			}
+		}
+		private void btnCopy_Click(object sender, EventArgs e) {
+			btnCopy.Visible = false;
+			txtCopy.Visible = true;
+			txtCopy.Focus();
+		}
+		private void txtCopy_KeyDown(object sender, KeyEventArgs e) {
+			if (e.KeyCode == Keys.Enter) {
+				btnSave.Focus();
+			}
+		}
+		private void txtCopy_Validated(object sender, EventArgs e) {
+			try {
+				txtCopy.Visible = false;
+				btnCopy.Visible = true;
+
+				string copyFilePath = Path.Combine(Path.GetDirectoryName(Save.FilePath), "saveFile" + int.Parse(txtCopy.Text) + ".sav");
+				if (File.Exists(copyFilePath)) {
+					if (MessageBox.Show(Path.GetFileName(copyFilePath) + " already exists. Do you want to overwrite?", "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes) {
+						return;
+					}
+				}
+				Save.Save(copyFilePath);
 			} catch (Exception ex) {
 				MessageBox.Show("Failed to write file: " + ex.ToString());
 			}
