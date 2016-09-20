@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 namespace LiveSplit.OriDE {
@@ -10,6 +9,8 @@ namespace LiveSplit.OriDE {
 		public OriMemory Memory { get; set; }
 		private bool useLivesplitColors = true, extraFast = false, goingFast = false;
 		private KeyboardHook kbHook;
+		private SaveManager saveManager;
+
 		public OriManager() {
 			this.DoubleBuffered = true;
 			kbHook = new KeyboardHook(KeyboardHook.Parameters.PassAllKeysToNextApp);
@@ -22,6 +23,7 @@ namespace LiveSplit.OriDE {
 		}
 		~OriManager() {
 			kbHook.Dispose();
+			if (saveManager != null) { saveManager.Dispose(); }
 		}
 
 		private void KeyhookPress(KeyboardHook.KeyboardHookEventArgs e) {
@@ -49,9 +51,8 @@ namespace LiveSplit.OriDE {
 			} else if (e.Control && e.KeyCode == Keys.F) {
 				extraFast = !extraFast;
 			} else if (e.Control && e.KeyCode == Keys.S) {
-				using (SaveManager saveManager = new SaveManager()) {
-					saveManager.ShowDialog(this);
-				}
+				saveManager = new SaveManager();
+				saveManager.Show(this);
 			} else if (e.Control && e.KeyCode == Keys.T) {
 				if (this.Width == 650) {
 					this.Width = 380;

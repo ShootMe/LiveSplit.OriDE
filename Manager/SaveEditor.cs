@@ -206,6 +206,7 @@ namespace LiveSplit.OriDE {
 				}
 				treeObjects.ExpandAll();
 				treeObjects.ResumeLayout(true);
+				treeObjects.SelectedNode = treeObjects.Nodes[0];
 
 				this.Text = "Save Editor - " + Path.GetFileNameWithoutExtension(Save.FilePath);
 			} catch (Exception ex) {
@@ -214,7 +215,9 @@ namespace LiveSplit.OriDE {
 		}
 
 		private void SaveEditor_Shown(object sender, EventArgs e) {
+			SuspendUpdate.Suspend(this);
 			UpdateInfo();
+			SuspendUpdate.Resume(this);
 		}
 
 		private void btnSave_Click(object sender, EventArgs e) {
