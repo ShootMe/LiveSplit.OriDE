@@ -138,7 +138,7 @@ namespace LiveSplit.OriDE {
 				string currentScene = string.Empty;
 				for (int i = 0; i < scenes.Count; i++) {
 					Scene scene = scenes[i];
-					if (scene.State == SceneState.Loaded) {
+					if (scene.Active) {
 						currentScene = scene.Name;
 						break;
 					}

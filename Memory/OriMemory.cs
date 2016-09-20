@@ -217,19 +217,43 @@ namespace LiveSplit.OriDE.Memory {
 			area.Current = false;
 			return area;
 		}
-		public List<Scene> GetScenes() {
+		public List<Scene> GetScenes(PointF currentPos = default(PointF)) {
 			IntPtr activeScenesHead = scenesManager.Read<IntPtr>(0x14);
-			int listSize = Program.Read<int>(activeScenesHead, 0x0C);
+			int listSize = Program.Read<int>(activeScenesHead, 0x0c);
+
+			if (currentPos == default(PointF)) {
+				currentPos = GetCameraTargetPosition();
+			}
+			HitBox cameraBox = new HitBox(currentPos, 0f, 0f, true);
+			bool foundActive = false;
 
 			List<Scene> scenes = new List<Scene>();
-			for (var i = 0; i < listSize; i++) {
+			for (int i = 0; i < listSize; i++) {
 				IntPtr sceneManagerHead = Program.Read<IntPtr>(activeScenesHead, 0x08, 0x10 + (i * 4));
-				IntPtr runtimeSceneHead = Program.Read<IntPtr>(sceneManagerHead, 0x0c, 0x08);
+				IntPtr runtimeSceneHead = Program.Read<IntPtr>(sceneManagerHead, 0x0c);
 
 				Scene scene = new Scene();
-				scene.Name = Program.GetString(runtimeSceneHead);
-				scene.Started = Program.Read<bool>(sceneManagerHead, 0x10);
+				scene.Name = Program.GetString(Program.Read<IntPtr>(runtimeSceneHead, 0x08));
 				scene.State = (SceneState)Program.Read<int>(sceneManagerHead, 0x14);
+				bool dependantScene = Program.Read<bool>(runtimeSceneHead, 0x34);
+
+				if (!foundActive && !dependantScene) {
+					runtimeSceneHead = Program.Read<IntPtr>(runtimeSceneHead, 0x14);
+					int boundaryCount = Program.Read<int>(runtimeSceneHead, 0x0c);
+					for (int j = 0; j < boundaryCount; j++) {
+						float bx = Program.Read<float>(runtimeSceneHead, 0x08, 0x10 + (j * 16));
+						float by = Program.Read<float>(runtimeSceneHead, 0x08, 0x14 + (j * 16));
+						float bw = Program.Read<float>(runtimeSceneHead, 0x08, 0x18 + (j * 16));
+						float bh = Program.Read<float>(runtimeSceneHead, 0x08, 0x1c + (j * 16));
+						HitBox rect = new HitBox(new PointF(bx, by + bh), bw, bh, false);
+						if (rect.Intersects(cameraBox)) {
+							scene.Active = true;
+							foundActive = true;
+							break;
+						}
+					}
+				}
+
 				scenes.Add(scene);
 			}
 

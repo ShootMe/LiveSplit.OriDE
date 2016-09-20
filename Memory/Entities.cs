@@ -3,7 +3,7 @@ using System.Globalization;
 namespace LiveSplit.OriDE.Memory {
 	public struct Scene {
 		public string Name { get; set; }
-		public bool Started { get; set; }
+		public bool Active { get; set; }
 		public SceneState State { get; set; }
 
 		public override string ToString() {
