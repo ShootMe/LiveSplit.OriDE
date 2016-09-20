@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -22,7 +23,14 @@ namespace LiveSplit.OriDE {
 				Assembly asm = Assembly.GetExecutingAssembly();
 
 				string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Ori and the Blind Forest DE\");
-				string[] files = Directory.GetFiles(savePath, "*.sav", SearchOption.TopDirectoryOnly);
+				List<string> files = new List<string>(Directory.GetFiles(savePath, "*.sav", SearchOption.TopDirectoryOnly));
+				files.Sort(delegate (string file1, string file2) {
+					int f1 = 0;
+					int.TryParse(Path.GetFileNameWithoutExtension(file1).Substring(8), out f1);
+					int f2 = 0;
+					int.TryParse(Path.GetFileNameWithoutExtension(file2).Substring(8), out f2);
+					return f1 > f2 ? 1 : f1 < f2 ? -1 : 0;
+				});
 
 				bool shouldSuspend = this.Visible;
 				if (shouldSuspend) { SuspendUpdate.Suspend(this); }
@@ -46,7 +54,7 @@ namespace LiveSplit.OriDE {
 				flowLayout.Controls.Clear();
 
 				int count = 0;
-				for (int i = 0; i < files.Length; i++) {
+				for (int i = 0; i < files.Count; i++) {
 					string name = Path.GetFileNameWithoutExtension(files[i]);
 
 					if (name.IndexOf("bkup", StringComparison.OrdinalIgnoreCase) >= 0) { continue; }
