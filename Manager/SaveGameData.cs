@@ -316,7 +316,7 @@ namespace LiveSplit.OriDE {
 		public static SceneID Assets = new MasterAssets();
 		public static Dictionary<SceneID, string> SceneNames = new Dictionary<SceneID, string>();
 		public SceneID Parent;
-		public List<SceneID> HitBoxes;
+		public List<SceneID> Children;
 		public string Name;
 		public readonly long Left, Right;
 

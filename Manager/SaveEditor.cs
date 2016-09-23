@@ -162,8 +162,6 @@ namespace LiveSplit.OriDE {
 						FieldInfo[] fields = asmType.GetFields(BindingFlags.Static | BindingFlags.Public);
 						for (int j = 0; j < fields.Length; j++) {
 							string fieldName = fields[j].Name;
-							if (fieldName.IndexOf("VisibleOnMap") >= 0) { continue; }
-
 							TreeNode childNode = new TreeNode(fieldName);
 							SceneID sceneValue = (SceneID)fields[j].GetValue(null);
 							childNode.Tag = sceneValue;
@@ -189,6 +187,10 @@ namespace LiveSplit.OriDE {
 									}
 								} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
 									if (data[0] == 1) {
+										childNode.Checked = true;
+									}
+								} else if (fieldName.IndexOf("Torch") >= 0) {
+									if (data[0] == 0) {
 										childNode.Checked = true;
 									}
 								}
@@ -398,9 +400,9 @@ namespace LiveSplit.OriDE {
 								float currentHP = data.GetFloat((int)EntityDamage.Health);
 								data.WriteFloat((int)EntityDamage.Health, child.Checked ? (currentHP > 0 ? currentHP : data.GetFloat((int)EntityDamage.MaxHealth)) : -1f);
 
-								if (sceneValue.HitBoxes != null) {
-									foreach (SceneID hitbox in sceneValue.HitBoxes) {
-										SetHitBox(sceneValue.Parent, hitbox, child.Checked);
+								if (sceneValue.Children != null) {
+									foreach (SceneID extra in sceneValue.Children) {
+										SetChildScene(sceneValue.Parent, extra, child.Checked);
 									}
 								}
 							} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
@@ -417,6 +419,14 @@ namespace LiveSplit.OriDE {
 								}
 							} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
 								data[0] = (byte)(child.Checked ? 1 : 0);
+							} else if (fieldName.IndexOf("Torch") >= 0) {
+								data[0] = (byte)(child.Checked ? 0 : 1);
+
+								if (sceneValue.Children != null) {
+									foreach (SceneID extra in sceneValue.Children) {
+										SetChildScene(sceneValue.Parent, extra, !child.Checked);
+									}
+								}
 							}
 						} else if (!child.Checked) {
 							SceneCollection collection = Save.Insert(sceneValue.Parent);
@@ -437,9 +447,9 @@ namespace LiveSplit.OriDE {
 									data.WriteFloat((int)EntityDamage.MaxHealth, 4);
 								}
 
-								if (sceneValue.HitBoxes != null) {
-									foreach (SceneID hitbox in sceneValue.HitBoxes) {
-										SetHitBox(sceneValue.Parent, hitbox, child.Checked);
+								if (sceneValue.Children != null) {
+									foreach (SceneID extra in sceneValue.Children) {
+										SetChildScene(sceneValue.Parent, extra, child.Checked);
 									}
 								}
 							} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
@@ -455,6 +465,15 @@ namespace LiveSplit.OriDE {
 							} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
 								data.Data = new byte[1];
 								data[0] = 0;
+							} else if (fieldName.IndexOf("Torch") >= 0) {
+								data.Data = new byte[1];
+								data[0] = 1;
+
+								if (sceneValue.Children != null) {
+									foreach (SceneID extra in sceneValue.Children) {
+										SetChildScene(sceneValue.Parent, extra, !child.Checked);
+									}
+								}
 							}
 						}
 					}
@@ -465,15 +484,27 @@ namespace LiveSplit.OriDE {
 				MessageBox.Show(this, "Failed to save file: " + ex.ToString());
 			}
 		}
-		public void SetHitBox(SceneID parent, SceneID id, bool enabled) {
+		public void SetChildScene(SceneID parent, SceneID id, bool enabled) {
 			SceneData data = Save.Find(id);
 			if (data != null) {
-				data.WriteFloat(0, enabled ? 1f : 0f);
+				if (string.IsNullOrEmpty(id.Name)) {
+					data.WriteFloat(0, enabled ? 100f : 0f);
+				} else if (id.Name.IndexOf("Activator") >= 0) {
+					data[0] = (byte)(enabled ? 1 : 0);
+				} else if (id.Name.IndexOf("Animator") >= 0) {
+					data.WriteFloat(1, enabled ? 100f : 0f);
+				}
 			} else if (!enabled) {
 				SceneCollection collection = Save.Insert(parent);
 				data = collection.Add(id);
 
-				data.Data = new byte[6];
+				if (string.IsNullOrEmpty(id.Name)) {
+					data.Data = new byte[6];
+				} else if (id.Name.IndexOf("Activator") >= 0) {
+					data.Data = new byte[1];
+				} else if (id.Name.IndexOf("Animator") >= 0) {
+					data.Data = new byte[5];
+				}
 			}
 		}
 		private void btnDelete_Click(object sender, EventArgs e) {
