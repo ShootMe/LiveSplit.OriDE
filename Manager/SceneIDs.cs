@@ -312,10 +312,21 @@ namespace LiveSplit.OriDE {
 	public class MangroveFallsChargeDashIntroL : SceneID {
 		public static SceneID NaruStorySetupB_Trigger = new SceneID("4AD3C463B39B2936C12982567190F1B8");
 		public static SceneID NaruStorySetupB_DeactivateRestrictZones = new SceneID("4E8852CD64408C3E4FE0D2BDAD1E66AD");
+		public static SceneID SpiritTorch = new SceneID("4A4E7677690F1017CDBF24A4C87FCE86") {
+			Children = new List<SceneID>() { new SceneID("4DA616708722C547FA4A851A531207A7") { Name = "Animator" },
+											 new SceneID("445CD56056F5B60DE1138552C2E7E4A2") { Name = "Activator" },
+											 new SceneID("47809624D56E51D87DAA0CA3868AD493"),
+											 new SceneID("44F54129683D3E84FD9CFAA686DEC29A") { Name = "Deactivate" } }
+		};
 	}
 	public class MangroveFallsChargeDashIntroR : SceneID {
 		public static SceneID ExpOrb100 = new SceneID("4B903DE1983B2612F826AC3E71F528B3");
 		public static SceneID Creep = new SceneID("4BC4081426FAE1F86838184DB7250792");
+		public static SceneID SpiritTorch = new SceneID("495D0B9C160AEF2AFB4865708F611696") {
+			Children = new List<SceneID>() { new SceneID("474ABE51334B21884C7275F79AA88881") { Name = "Animator" },
+											 new SceneID("47B8ACE6DB107BD1BCD05265C1D439BB") { Name = "Activator" },
+											 new SceneID("4A9D8ADDDE12A92E2B5F5D253C39528A") }
+		};
 	}
 	public class MangroveFallsDashEscalation : SceneID {
 		public static SceneID BoulderSetup_BoulderStompableAfterChase_Trigger = new SceneID("4EBD0CA60B9D6214E61F2670B8A0608F");
@@ -330,6 +341,16 @@ namespace LiveSplit.OriDE {
 	}
 	public class MangroveFallsGetGrenade : SceneID {
 		public static SceneID PlatformOnRopeEfficient_Trigger = new SceneID("40FB94911E8415BBB0204902ED96B7AC");
+		public static SceneID ObjectiveSetup_Trigger = new SceneID("4BB7A220821C5A23413E05083BB4739A");
+		public static SceneID SpiritTorchLeft = new SceneID("4622C811A878CEAD1FD2C31C53BAABAA") {
+			Children = new List<SceneID>() { new SceneID("458EE6D9BB129E23F800DA060C35689A") { Name = "Animator" },
+											 new SceneID("453F12FE28DC666F14CE64885BAE948D") }
+		};
+		public static SceneID SpiritTorchRight = new SceneID("4265A675B87CACAE095674E8803D6DBC") {
+			Children = new List<SceneID>() { new SceneID("4C9F71A8CA5CD5544FBCDBB9A13309A2") { Name = "Animator" },
+											 new SceneID("43D22019F4514232809ED10FE043BBA1") { Name = "Activator" },
+											 new SceneID("476803236D49E36ED99578F83115A1A6") }
+		};
 	}
 	public class MangroveFallsGrenadeEscalation : SceneID {
 		public static SceneID BlockPlayer_activateCollider_Trigger = new SceneID("4F0E415EC46F0494E0EECF9A9C9195A4");
@@ -341,13 +362,31 @@ namespace LiveSplit.OriDE {
 		public static SceneID Creep4 = new SceneID("49C2E7222F34CD678F9C66C72423BCAA");
 		public static SceneID Creep5 = new SceneID("4D80E21C3120BBF14D1734281C82E3A2");
 		public static SceneID AbilityCell = new SceneID("404DCACB5B373D3EEED67B85BC1C899C");
+		public static SceneID SpiritTorch = new SceneID("40EE167248A244819889EBD67D47FA90") {
+			Children = new List<SceneID>() { new SceneID("4830ADF437255ED9A92483DFDF6A6680") { Name = "Animator" },
+											 new SceneID("4ED662F0BF8780B7B53BAE36ADE346B3") { Name = "Activator" },
+											 new SceneID("4E1EFDA98E5BDC58F0ECFC95FFD9DBA9") }
+		};
 	}
 	public class MangroveFallsGrenadeEscalationR : SceneID {
 		public static SceneID ExpOrb100 = new SceneID("48DAAB8E48E39D5EF1C2A0F5E7874382");
 		public static SceneID AbilityCell = new SceneID("4FE7D425F40AE03F1A9EBCCDB548E6B1");
+		public static SceneID FightRoomDoor_Animator = new SceneID("4F4A648B33B530658E0278EF3678A2BF");
+		public static SceneID SpiritTorch = new SceneID("454C4BC731FD5BB75DB5C8596BD5F8A0") {
+			Children = new List<SceneID>() { new SceneID("45239B746C82E6629E9C8DCBE24AB388") { Name = "Animator" },
+											 new SceneID("49B546D4743E5024B5EE206EF76371B2") { Name = "Activator" },
+											 new SceneID("490E03EB3D5ED802815270B98D398882") }
+		};
 	}
 	public class MistyWoodsCeilingClimbing : SceneID {
 		public static SceneID Keystone = new SceneID("4642E0EA40FFFB0261A6D3BCB29C4FB4");
+	}
+	public class MistyWoodsDocks : SceneID {
+		public static SceneID SpiritTorch = new SceneID("419A299D7FD16DD1DF90609B6D8939A6") {
+			Children = new List<SceneID>() { new SceneID("4E50F025A7FF80132A472D715208FF84") { Name = "Animator" },
+											 new SceneID("4E36760CD297214EB68E9C1177FA37B4") { Name = "Activator" },
+											 new SceneID("41FF7D2BD4ADAB7C3D5B707B89D67E8F") }
+		};
 	}
 	public class MistyWoodsDocksB : SceneID {
 		public static SceneID Keystone = new SceneID("458A35FED26F356DBD946E9591FD918D");
@@ -680,6 +719,7 @@ namespace LiveSplit.OriDE {
 		public static SceneID SeinAbilityRestrictZone = new SceneID("4ECA00B78E22CCE6F62C0F5C311B1291");
 		public static SceneID ReachSpiritTree_Trigger = new SceneID("4A3F38030FD183F194680077E2ADEBBF");
 		public static SceneID ChargeFlameWall = new SceneID("4115596F69D3F2637BDAB047E17011AA");
+		public static SceneID ExpOrb100Pickup = new SceneID("44CF75D30AEAEE9C3DECC7394F35DF84");
 	}
 	public class SunkenGladesBackgroundB : SceneID {
 		public static SceneID ExpOrb15 = new SceneID("49B35E8028EED6921FBB100D9890D79E");
@@ -705,6 +745,11 @@ namespace LiveSplit.OriDE {
 		public static SceneID ExpOrb100_2 = new SceneID("4100B81D8EEA0DDA06B2395595D418AC");
 		public static SceneID RedBulb1 = new SceneID("4BA945C49F3F3E80CE5DE35201F132AF");
 		public static SceneID RedBulb2 = new SceneID("4621647E2C2208B7D3EE05DA7706FF94");
+		public static SceneID SpiritTorch = new SceneID("4910D2B7359FA9753E1A14B2333041A3") {
+			Children = new List<SceneID>() { new SceneID("4007104696780731EC7A610C7A9227AF") { Name = "Animator" },
+											 new SceneID("430E6410B3947A79AE78FE1A7CDE1FB3") { Name = "Activator" },
+											 new SceneID("4C4FA4BE865ABDF9A575E980D6DECFAE") }
+		};
 	}
 	public class SunkenGladesIntroSplitB : SceneID {
 		public static SceneID SpiritWellHintSetup_Trigger = new SceneID("46D7E4D3B94C4FC71184C8B1ED93D5B3");
@@ -730,6 +775,11 @@ namespace LiveSplit.OriDE {
 		public static SceneID CreepTopM = new SceneID("4D674617516FD7F1B9CB5D26BA6720BF");
 		public static SceneID CreepTopTL = new SceneID("4F48E391C0A25D19DD56ADFDDFF8B9A2");
 		public static SceneID CreepTopTR = new SceneID("49AE23D67D72B17ADE220F24B3676A88");
+		public static SceneID SpiritTorch = new SceneID("4ED420D50E9D6353624A57DAF192599B") {
+			Children = new List<SceneID>() { new SceneID("46A3AE3181F1F2AD9920351DA3102E9C") { Name = "Animator" },
+											 new SceneID("4FF1B4C4EE19D5659D9AB365091500B7") { Name = "Activator" },
+											 new SceneID("48FE6D5E16471832708BD065AA9598A1") }
+		};
 	}
 	public class SunkenGladesObstaclesIntroductionStreamlined : SceneID {
 		public static SceneID CreepHanging = new SceneID("4F27BCE613DF87839D9F0F0E21084E8A");
@@ -834,6 +884,11 @@ namespace LiveSplit.OriDE {
 		public static SceneID StompableFloor = new SceneID("4AE910D126629EAED3B4289435DDE6BE");
 		public static SceneID StompablePlatform1 = new SceneID("4E85A29784E45BD8E0D131225257C1AA");
 		public static SceneID StompablePlatform2 = new SceneID("4ACE01F6BFBF86945695623023FD3F94");
+		public static SceneID SpiritTorch = new SceneID("4E38451EABD405F2AB8B38AD77DFDC94") {
+			Children = new List<SceneID>() { new SceneID("487BF5682E813612AA2859F6B900F5A2") { Name = "Animator" },
+											 new SceneID("4CDEF1D1AB0FE18489AADFEF49DB009F") { Name = "Activator" },
+											 new SceneID("42672E78F4AC3CD03D142226007DA5BF") }
+		};
 	}
 	public class ThornfeltSwampActTwoStart : SceneID {
 		public static SceneID GumoSavesSein_Trigger = new SceneID("48B2F8E4920795969FF6A17EB4C231A6");
@@ -889,9 +944,19 @@ namespace LiveSplit.OriDE {
 		public static SceneID ExpOrb100 = new SceneID("4CDFD856E3037E9FEB86DD3EB87B2194");
 		public static SceneID StompableFloor1 = new SceneID("4330564FAE4D0AF80A0732CBE07AB196");
 		public static SceneID StompableFloor2 = new SceneID("425BDB54D34087006358158DC48DFEBE");
+		public static SceneID SpiritTorch = new SceneID("4F3895A4BE5021A5D1F1864B2E9D4E93") {
+			Children = new List<SceneID>() { new SceneID("4D319BBAE5C041873F03FB1FA02B74BF") { Name = "Animator" },
+											 new SceneID("4BD121E6B705716AE42B1D7024295F84") { Name = "Activator" },
+											 new SceneID("4D32C9FC6C400B3FED4DABEA5CFA309B") }
+		};
 	}
 	public class UpperGladesBelowSpiritTree : SceneID {
 		public static SceneID AbilityCell = new SceneID("4E824E85883A5597885054584D11B4B7");
+		public static SceneID SpiritTorch = new SceneID("4DB6AFBD2C0BA1F17DBCC83A8E590FAA") {
+			Children = new List<SceneID>() { new SceneID("4CA2042D28167C3BE01430356B03A6B2") { Name = "Animator" },
+											 new SceneID("44362CB1679345553B7DA498E6E95A9D") { Name = "Activator" },
+											 new SceneID("475004292AF59ED1BDF661C8CC57CE82") }
+		};
 	}
 	public class UpperGladesHollowTreeSplitA : SceneID {
 		public static SceneID RedBulb = new SceneID("41BF28FB570ED79F4A2970FC3D394B8B");
@@ -934,6 +999,11 @@ namespace LiveSplit.OriDE {
 		public static SceneID HealthCell2 = new SceneID("4A1C5290047EE40156D373A4C0C53390");
 		public static SceneID RedBulb = new SceneID("4A47763454E7C5E6F3A4C92EDA2FD7A4");
 		public static SceneID AbilityCell = new SceneID("47EE6A8EAF3DBD5873AED47CA6A31C99");
+		public static SceneID SpiritTorch = new SceneID("4D6D8014E4DA2119945DA74AE2C963BE") {
+			Children = new List<SceneID>() { new SceneID("45A95BD246FE6E378B8DD1A7FFCC1EBF") { Name = "Animator" },
+											 new SceneID("457FBD4ED8AE8768F502D059F2068FB8") { Name = "Activator" },
+											 new SceneID("425ED43BDC51622FF3B330737B9CE594") }
+		};
 	}
 	public class UpperGladesSpiderIntroduction : SceneID {
 		public static SceneID ExpOrb100 = new SceneID("4AD7DED1B01C125BC864531E8317F48E");
@@ -945,6 +1015,11 @@ namespace LiveSplit.OriDE {
 	public class UpperGladesSpiderIntroductionB : SceneID {
 		public static SceneID Wall = new SceneID("40A0ECE9E585D7C7F14428C995775B86");
 		public static SceneID ExpOrb200 = new SceneID("4DFB6102C4B53F9CD2509D282D2D668B");
+		public static SceneID SpiritTorch = new SceneID("4830C2F5E0D72182570ECE19F0531589") {
+			Children = new List<SceneID>() { new SceneID("41BF00F2954E46010DE5B407B559058E") { Name = "Animator" },
+											 new SceneID("4615F03867229AD142BF1B3CF8D19088") { Name = "Activator" },
+											 new SceneID("47A82ABEF1132C3A7AF60B8BE87CDCBE") }
+		};
 	}
 	public class UpperGladesSwampCliffs : SceneID {
 		public static SceneID GumoFG_Setup_Trigger = new SceneID("4E58844CCE29FBBB61675BF8CFFB0EBC");
@@ -1016,6 +1091,11 @@ namespace LiveSplit.OriDE {
 		public static SceneID PetrifiedPlant = new SceneID("499640255358D7E38405256165923A98");
 		public static SceneID StompableFloor1 = new SceneID("46B3D9D4BF34736FC168398FE7CAAE9C");
 		public static SceneID StompableFloor2 = new SceneID("4CAAC05BFE56735191CDA3632A38498C");
+		public static SceneID SpiritTorch = new SceneID("4808EAF182AA07328708ADEAC1C502AC") {
+			Children = new List<SceneID>() { new SceneID("43DA6966C292C63BDFB2DDB337B6A8A9") { Name = "Animator" },
+											 new SceneID("4D25D1B24A083466B1AFA38394776492") { Name = "Activator" },
+											 new SceneID("462954853E0F6C4180C594E34A105883") }
+		};
 	}
 	public class ValleyOfTheWindLaserShaft : SceneID {
 		public static SceneID DoorWithFourSlots = new SceneID("4BEB1F1C57C884E210B499F824BFD4AD");
@@ -1063,6 +1143,11 @@ namespace LiveSplit.OriDE {
 		public static SceneID ExpOrb100 = new SceneID("421D22BC4422FD5A28E6BDB1A95DE287");
 		public static SceneID PetrifiedPlant = new SceneID("4552C7FDC2F07721EFEAC56DD954B08E");
 		public static SceneID StompableFloor = new SceneID("4E350923F9E82E4B18635BD62153FC97");
+		public static SceneID SpiritTorch = new SceneID("458EBE133957C5CDEDF131EEC479C7B6") {
+			Children = new List<SceneID>() { new SceneID("47467843CB3E8745808401AAFE0D4882") { Name = "Animator" },
+											 new SceneID("4A9D68F248E63636660C357B84D7A5AD") { Name = "Activator" },
+											 new SceneID("40EDCA2B3E7D2B00AD6EFC59C07CA1A3") }
+		};
 	}
 	public class WestGladesRollingSootIntroduction : SceneID {
 		public static SceneID Wall1 = new SceneID("473DE2B5BD5ACC5EDE709BE3C8D3688A");
@@ -1070,6 +1155,11 @@ namespace LiveSplit.OriDE {
 		public static SceneID Wall3 = new SceneID("4F0569E875222C59772F199A41502CB0");
 		public static SceneID Mapstone = new SceneID("40E7C38FA4D03B35991EC746B24B7E83");
 		public static SceneID AbilityCell = new SceneID("42C0FC641D28A90DE733A9667EA5A7B9");
+		public static SceneID SpiritTorch = new SceneID("408F8AFE27AE03FEEB84D987AB3F74B0") {
+			Children = new List<SceneID>() { new SceneID("4445C5E32320288DFC36BE0371F2D883") { Name = "Animator" },
+											 new SceneID("458BE7A3E8597B5D3CE72987297A50AE") { Name = "Activator" },
+											 new SceneID("4D49D2B2FB6432781E6B38CEE0126CBA") }
+		};
 	}
 	public class WestGladesSorrowEntranceAB : SceneID {
 		public static SceneID AbilityCell = new SceneID("4A64D41817EC14A86D4098A9F8079695");

@@ -168,17 +168,21 @@ namespace LiveSplit.OriDE {
 
 							data = Save.Find(sceneValue);
 							if (data != null) {
-								if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
-									fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
+								if (fieldName.IndexOf("Animator") >= 0) {
+									if (data.GetFloat(0) == 0) {
+										childNode.Checked = true;
+									}
+								} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
+									  fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
 									if (data.GetFloat((int)EntityDamage.Health) > 0) {
+										childNode.Checked = true;
+									}
+								} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
+									if (data[(int)Pickup.Collected] == 0) {
 										childNode.Checked = true;
 									}
 								} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
 									if (data[(int)Collectible.Collected] == 0) {
-										childNode.Checked = true;
-									}
-								} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0) {
-									if (data[(int)Pickup.Collected] == 0) {
 										childNode.Checked = true;
 									}
 								} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
@@ -395,7 +399,9 @@ namespace LiveSplit.OriDE {
 						data = Save.Find(sceneValue);
 
 						if (data != null) {
-							if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
+							if (fieldName.IndexOf("Animator") >= 0) {
+								data.WriteFloat(0, child.Checked ? 0 : 100f);
+							} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
 									fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
 								float currentHP = data.GetFloat((int)EntityDamage.Health);
 								data.WriteFloat((int)EntityDamage.Health, child.Checked ? (currentHP > 0 ? currentHP : data.GetFloat((int)EntityDamage.MaxHealth)) : -1f);
@@ -405,10 +411,10 @@ namespace LiveSplit.OriDE {
 										SetChildScene(sceneValue.Parent, extra, child.Checked);
 									}
 								}
+							} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
+								data[(int)Pickup.Collected] = (byte)(child.Checked ? 0 : 1);
 							} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
 								data[(int)Collectible.Collected] = (byte)(child.Checked ? 0 : 1);
-							} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0) {
-								data[(int)Pickup.Collected] = (byte)(child.Checked ? 0 : 1);
 							} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
 								int currentState = data.GetInt((int)Door.CurrentState);
 								data.WriteInt((int)Door.CurrentState, child.Checked ? 0 : (currentState == 0 ? 2 : currentState));
@@ -432,8 +438,11 @@ namespace LiveSplit.OriDE {
 							SceneCollection collection = Save.Insert(sceneValue.Parent);
 							data = collection.Add(sceneValue);
 
-							if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
-									  fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
+							if (fieldName.IndexOf("Animator") >= 0) {
+								data.Data = new byte[6];
+								data.WriteFloat(0, 100f);
+							} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
+										fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
 								data.Data = new byte[8];
 
 								if (fieldName.IndexOf("PetrifiedPlant") >= 0) {
@@ -452,12 +461,12 @@ namespace LiveSplit.OriDE {
 										SetChildScene(sceneValue.Parent, extra, child.Checked);
 									}
 								}
+							} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
+								data.Data = new byte[5];
+								data[(int)Pickup.Collected] = 1;
 							} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
 								data.Data = new byte[1];
 								data[(int)Collectible.Collected] = 1;
-							} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0) {
-								data.Data = new byte[5];
-								data[(int)Pickup.Collected] = 1;
 							} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
 								data.Data = new byte[16];
 								data.WriteInt((int)Door.CurrentState, 2);
@@ -491,6 +500,8 @@ namespace LiveSplit.OriDE {
 					data.WriteFloat(0, enabled ? 100f : 0f);
 				} else if (id.Name.IndexOf("Activator") >= 0) {
 					data[0] = (byte)(enabled ? 1 : 0);
+				} else if (id.Name.IndexOf("Deactivate") >= 0) {
+					data[0] = (byte)(enabled ? 0 : 1);
 				} else if (id.Name.IndexOf("Animator") >= 0) {
 					data.WriteFloat(1, enabled ? 100f : 0f);
 				}
@@ -502,6 +513,9 @@ namespace LiveSplit.OriDE {
 					data.Data = new byte[6];
 				} else if (id.Name.IndexOf("Activator") >= 0) {
 					data.Data = new byte[1];
+				} else if (id.Name.IndexOf("Deactivate") >= 0) {
+					data.Data = new byte[1];
+					data[0] = 1;
 				} else if (id.Name.IndexOf("Animator") >= 0) {
 					data.Data = new byte[5];
 				}
