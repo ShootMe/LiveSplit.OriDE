@@ -172,6 +172,14 @@ namespace LiveSplit.OriDE {
 									if (data.GetFloat(0) == 0) {
 										childNode.Checked = true;
 									}
+								} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
+									if (data[0] == 1) {
+										childNode.Checked = true;
+									}
+								} else if (fieldName.IndexOf("Torch") >= 0) {
+									if (data[0] == 0) {
+										childNode.Checked = true;
+									}
 								} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
 									  fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
 									if (data.GetFloat((int)EntityDamage.Health) > 0) {
@@ -187,14 +195,6 @@ namespace LiveSplit.OriDE {
 									}
 								} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
 									if (data.GetInt((int)Door.CurrentState) != 2) {
-										childNode.Checked = true;
-									}
-								} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
-									if (data[0] == 1) {
-										childNode.Checked = true;
-									}
-								} else if (fieldName.IndexOf("Torch") >= 0) {
-									if (data[0] == 0) {
 										childNode.Checked = true;
 									}
 								}
@@ -401,6 +401,16 @@ namespace LiveSplit.OriDE {
 						if (data != null) {
 							if (fieldName.IndexOf("Animator") >= 0) {
 								data.WriteFloat(0, child.Checked ? 0 : 100f);
+							} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
+								data[0] = (byte)(child.Checked ? 1 : 0);
+							} else if (fieldName.IndexOf("Torch") >= 0) {
+								data[0] = (byte)(child.Checked ? 0 : 1);
+
+								if (sceneValue.Children != null) {
+									foreach (SceneID extra in sceneValue.Children) {
+										SetChildScene(sceneValue.Parent, extra, !child.Checked);
+									}
+								}
 							} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
 									fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
 								float currentHP = data.GetFloat((int)EntityDamage.Health);
@@ -423,16 +433,6 @@ namespace LiveSplit.OriDE {
 									data.WriteInt((int)Door.SlotsFilled, 0);
 									data.WriteInt((int)Door.AmountOfItemsUsed, 0);
 								}
-							} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
-								data[0] = (byte)(child.Checked ? 1 : 0);
-							} else if (fieldName.IndexOf("Torch") >= 0) {
-								data[0] = (byte)(child.Checked ? 0 : 1);
-
-								if (sceneValue.Children != null) {
-									foreach (SceneID extra in sceneValue.Children) {
-										SetChildScene(sceneValue.Parent, extra, !child.Checked);
-									}
-								}
 							}
 						} else if (!child.Checked) {
 							SceneCollection collection = Save.Insert(sceneValue.Parent);
@@ -441,6 +441,18 @@ namespace LiveSplit.OriDE {
 							if (fieldName.IndexOf("Animator") >= 0) {
 								data.Data = new byte[6];
 								data.WriteFloat(0, 100f);
+							} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
+								data.Data = new byte[1];
+								data[0] = 0;
+							} else if (fieldName.IndexOf("Torch") >= 0) {
+								data.Data = new byte[1];
+								data[0] = 1;
+
+								if (sceneValue.Children != null) {
+									foreach (SceneID extra in sceneValue.Children) {
+										SetChildScene(sceneValue.Parent, extra, !child.Checked);
+									}
+								}
 							} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
 										fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
 								data.Data = new byte[8];
@@ -471,18 +483,6 @@ namespace LiveSplit.OriDE {
 								data.Data = new byte[16];
 								data.WriteInt((int)Door.CurrentState, 2);
 								data.WriteInt((int)Door.AmountOfItemsUsed, fieldName.IndexOf("Two") >= 0 ? 2 : 4);
-							} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
-								data.Data = new byte[1];
-								data[0] = 0;
-							} else if (fieldName.IndexOf("Torch") >= 0) {
-								data.Data = new byte[1];
-								data[0] = 1;
-
-								if (sceneValue.Children != null) {
-									foreach (SceneID extra in sceneValue.Children) {
-										SetChildScene(sceneValue.Parent, extra, !child.Checked);
-									}
-								}
 							}
 						}
 					}
