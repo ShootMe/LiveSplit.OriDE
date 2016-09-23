@@ -1,4 +1,6 @@
-﻿namespace LiveSplit.OriDE {
+﻿using System.Collections.Generic;
+
+namespace LiveSplit.OriDE {
 	public class MasterAssets : SceneID {
 		public MasterAssets() : base() { Name = "MasterAssets"; }
 		public static SceneID SeinInventory = new SceneID("444B746E7F7A0AE0CC208C40DE7CD9B1");
@@ -715,13 +717,10 @@
 	public class NorthMangroveFallsLanternIntro : SceneID {
 		public static SceneID NaruStorySetupA_Trigger = new SceneID("4514363815022B283FCD29E51E9C9184");
 		public static SceneID ExpOrb100 = new SceneID("414B482DD0EEA4603D7DF4F096DB8A9C");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4F69FB8EFAC86702D354C0A45C87109C");
 	}
 	public class SorrowPassEntranceA : SceneID {
 		public static SceneID Mapstone = new SceneID("4C2462967B837BEF4120188E8123E4A0");
-		public static SceneID Mapstone_VisibleOnMap = new SceneID("4A00818DED79B633415B74D28F994E84");
 		public static SceneID ExpOrb100 = new SceneID("41A7D0E6797703125363E0B69E0FB9BD");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4448497209B3AC6143262256BC936B99");
 		public static SceneID PetrifiedPlant = new SceneID("4474246BF2BBA6CDB6BA2D921FC3CA9E");
 		public static SceneID StompablePlatform = new SceneID("4BC58372169CE4D3AAD57366DFA0379C");
 	}
@@ -733,9 +732,7 @@
 		public static SceneID StorySetup_LiftFogSequence_Trigger = new SceneID("44EDD6D1EF1CE8B27E3F2A16AAD1FC9F");
 		public static SceneID DeactivateJumpHigherHint_Trigger = new SceneID("427C7A47D9973C4EE9A294D91E0F868E");
 		public static SceneID ExpOrb100 = new SceneID("4C7FE1CA6C74597A85112FBD03A599A7");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4A66168F2F9B859035101A8BCE4F4395");
 		public static SceneID StompableFloor = new SceneID("4784D1BCECCB14CA412E470880C32497");
-		public static SceneID StompableFloor_VisibleOnMap = new SceneID("43F5EEFE4A975A1A9401891EEA993292");
 	}
 	public class SorrowPassValleyD : SceneID {
 		public static SceneID RedBulb1 = new SceneID("45F748B1099159EE34A90D938010DB88");
@@ -743,95 +740,98 @@
 		public static SceneID RedBulb3 = new SceneID("4FC9C30094486B422E71B37711034598");
 		public static SceneID RedBulb4 = new SceneID("4EF8DFA104573D50788F9881360F7784");
 		public static SceneID ExpOrb2001 = new SceneID("46429465AB154DC5386F078A1E5DE08D");
-		public static SceneID ExpOrb2001_VisibleOnMap = new SceneID("447F1245A7EC42F92BC182A2F12A4CB1");
 		public static SceneID ExpOrb2002 = new SceneID("4CADE1E964DB442709CA07235095AFAA");
-		public static SceneID ExpOrb2002_VisibleOnMap = new SceneID("4294F30CE870000001C6490541512D9A");
 		public static SceneID AbilityCell = new SceneID("4FA12B71C803368DE9571DBB3831BC9A");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("4CF1C65CE601DD92B76A1E96CFAC42B4");
 	}
 	public class SouthMangroveFallsGrenadeEscalationBR : SceneID {
 		public static SceneID ChargeFlameWall = new SceneID("4A3528D1ABAF5F961D70171BFA9B75B6");
-		public static SceneID ChargeFlameWall_VisibleOnMap = new SceneID("483FA98657DF22595736FAF069C90EA9");
 		public static SceneID ExpOrb100 = new SceneID("420150217B6725DBB2BCAAE8156AE78B");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4C67B01AC06B2949B8EB76942CAE4FA4");
 		public static SceneID AbilityCell1 = new SceneID("4D47A520A301E7FAED0A6A9761192789");
-		public static SceneID AbilityCell1_VisibleOnMap = new SceneID("49E44147B4F9A33654C19364D483A68E");
 		public static SceneID AbilityCell2 = new SceneID("47C3390AE9E2FA9E82FE6F9201795CB0");
-		public static SceneID AbilityCell2_VisibleOnMap = new SceneID("431553311A3B17D1F427E512A0C45C88");
 	}
 	public class SouthMangroveFallsStoryRoomA : SceneID {
 		public static SceneID ObjectiveSetupAction_DeactivateRestrictZones = new SceneID("4A6E3C3306EEB663BE3DCB418537AA80");
 		public static SceneID ObjectiveSetupAction_Trigger = new SceneID("4E0B20EB53F38A03AD3ACB89B4937197");
 		public static SceneID ExpOrb100 = new SceneID("449B2FB08DBF35CBF7F870F007B248B7");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("456FA4ABAA4EE768816CCA33744D388C");
 	}
 	//Add 100xp entity
 	public class SpiritTreeRefined : SceneID {
 		public static SceneID SeinAbilityRestrictZone = new SceneID("4ECA00B78E22CCE6F62C0F5C311B1291");
 		public static SceneID ReachSpiritTree_Trigger = new SceneID("4A3F38030FD183F194680077E2ADEBBF");
 		public static SceneID ChargeFlameWall = new SceneID("4115596F69D3F2637BDAB047E17011AA");
-		public static SceneID ChargeFlameWall_VisibleOnMap = new SceneID("48239A1DD76269A9E2158C3B5B415CA3");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4CA00A029887F949E9EC690540FE4D97");
 	}
 	public class SunkenGladesBackgroundB : SceneID {
 		public static SceneID ExpOrb15 = new SceneID("49B35E8028EED6921FBB100D9890D79E");
-		public static SceneID ExpOrb15_VisibleOnMap = new SceneID("47F26DD16BB0CAFC150EA6B36785DD85");
 	}
 	public class SunkenGladesEnemyIntroductionC : SceneID {
 		public static SceneID MapHints_Trigger = new SceneID("4A35CE25BAB38C6931F2D825F69CDE83");
 		public static SceneID EnergyCell = new SceneID("439ED3AA504548A0D99342DB969A4FBE");
-		public static SceneID EnergyCell_VisibleOnMap = new SceneID("4A2B9449946296AA044E35C98D9D718D");
 		public static SceneID RedBulb1 = new SceneID("43DA0771B81B3C1A4D4B044930319D96");
 		public static SceneID RedBulb2 = new SceneID("4AE289C2337B10CA9F7309C2F353F0A8");
 	}
 	public class SunkenGladesIntroSplitA : SceneID {
 		public static SceneID Keystone = new SceneID("4C475939548601B0FB9966635678B0BC");
-		public static SceneID Keystone_VisibleOnMap = new SceneID("4594E566E06E9D7A9CA860E6B887A9AB");
 		public static SceneID ChargeFlameWall = new SceneID("4A419C9D7853E50BC9CC3A4C65B31989");
-		public static SceneID ChargeFlameWall_VisibleOnMap = new SceneID("4B30DB025D571A0BCC8DC21812B357BF");
-		public static SceneID Creep = new SceneID("4ED390C049094115F50E3AF57DE268B5");
+		public static SceneID Creep = new SceneID("4ED390C049094115F50E3AF57DE268B5") {
+			HitBoxes = new List<SceneID>() { new SceneID("46DDB853903454624370C0606D092BBE"),
+											 new SceneID("45C860CA7972BAD29A1715CBB12841A0"),
+											 new SceneID("42E4C62429D88A15EDF28B3F567DAC8C"),
+											 new SceneID("439724044EA7CF08A4A2183C9CD9D89B") }
+		};
 		public static SceneID DoorWithTwoSlots = new SceneID("45669AABB68ED164A1373739CE27BFBE");
-		public static SceneID DoorWithTwoSlots_VisibleOnMap = new SceneID("4E995516B0252D223880B350517F91A6");
 		public static SceneID ExpOrb200 = new SceneID("492756A0419BBF912F9E9B27BDB73EB8");
-		public static SceneID ExpOrb200_VisibleOnMap = new SceneID("48947AE78DA3969BE734167A72490188");
 		public static SceneID ExpOrb100_1 = new SceneID("45C40E763E5E308C3587F4DA5A01E48B");
-		public static SceneID ExpOrb100_1_VisibleOnMap = new SceneID("449B1C8BF648EEF0ABFF65BA608287BF");
 		public static SceneID ExpOrb100_2 = new SceneID("4100B81D8EEA0DDA06B2395595D418AC");
-		public static SceneID ExpOrb100_2_VisibleOnMap = new SceneID("4BB3BA5531CE962512E5A750439DC087");
 		public static SceneID RedBulb1 = new SceneID("4BA945C49F3F3E80CE5DE35201F132AF");
 		public static SceneID RedBulb2 = new SceneID("4621647E2C2208B7D3EE05DA7706FF94");
 	}
 	public class SunkenGladesIntroSplitB : SceneID {
 		public static SceneID SpiritWellHintSetup_Trigger = new SceneID("46D7E4D3B94C4FC71184C8B1ED93D5B3");
 		public static SceneID Keystone = new SceneID("4FFCE57D9489DB41C6B81037ECEBB6BA");
-		public static SceneID Keystone_VisibleOnMap = new SceneID("460EE278BC6B3F8DCE36E293CE7EB686");
 		public static SceneID NaruStatueHintSetup_Trigger = new SceneID("40C8354D4F6DC7A009171549D5A33E8B");
 		public static SceneID NaruStorySetup_DeactivateRestrictZones = new SceneID("4C4C003EBAA5C1E2960451E349F8E895");
 		public static SceneID NaruStorySetup_Trigger = new SceneID("48BA9B844D681969E8554943BCF35897");
 		public static SceneID AbilityCell = new SceneID("4DEBD90CDA7ABF939560FD6B83DF049F");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("477EDE47096FB36F0A92A8F4B97BA285");
 		public static SceneID ExpOrb15 = new SceneID("4DF41D6CE1D7DDE31E001F93B159D986");
-		public static SceneID ExpOrb15_VisibleOnMap = new SceneID("477442B1A63780B00919BE6098E0299B");
-		public static SceneID SpringCreep = new SceneID("4A48F32F439A6A00AB7504A5E62736B5");
-		public static SceneID Creep1A = new SceneID("4D97D2584572ED74A14E6FC4576F838F");
-		public static SceneID Creep2A = new SceneID("4D674617516FD7F1B9CB5D26BA6720BF");
-		public static SceneID Creep3A = new SceneID("40F89FC252E52AA6376A13D735375B82");
-		public static SceneID Creep4A = new SceneID("431CAE019ED6BE9BD45E3426109CF58C");
-		public static SceneID Creep5A = new SceneID("4F48E391C0A25D19DD56ADFDDFF8B9A2");
-		public static SceneID Creep1B = new SceneID("43076535B1BB2689AC5CA60EE1F7D98B");
-		public static SceneID Creep2B = new SceneID("448757C955AA6E73DF888533A454CA9B");
-		public static SceneID Creep3B = new SceneID("49A5CBF49FBBF56E2D9FCAA430B2BAA3");
-		public static SceneID Creep4B = new SceneID("49AE23D67D72B17ADE220F24B3676A88");
-		public static SceneID Creep5B = new SceneID("4A0444CC36337745E3B97C046F6A5B88");
+		public static SceneID SpringCreep = new SceneID("4A48F32F439A6A00AB7504A5E62736B5") {
+			HitBoxes = new List<SceneID>() { new SceneID("408B254B2572EA735132F38717E5B691"),
+											 new SceneID("4A5EAE76B87A6F03E4F079655E5B2DA5"),
+											 new SceneID("456F7A4AD8C3DCFD0A23A49DDEEEC68E"),
+											 new SceneID("421078ADBAC1BA556F4EC72782FAB582") }
+		};
+		public static SceneID CreepBottomBL = new SceneID("4D97D2584572ED74A14E6FC4576F838F");
+		public static SceneID CreepBottomBR = new SceneID("4A0444CC36337745E3B97C046F6A5B88");
+		public static SceneID CreepBottomM = new SceneID("40F89FC252E52AA6376A13D735375B82");
+		public static SceneID CreepBottomTL = new SceneID("49A5CBF49FBBF56E2D9FCAA430B2BAA3");
+		public static SceneID CreepBottomTR = new SceneID("448757C955AA6E73DF888533A454CA9B");
+		public static SceneID CreepTopBL = new SceneID("431CAE019ED6BE9BD45E3426109CF58C");
+		public static SceneID CreepTopBR = new SceneID("43076535B1BB2689AC5CA60EE1F7D98B");
+		public static SceneID CreepTopM = new SceneID("4D674617516FD7F1B9CB5D26BA6720BF");
+		public static SceneID CreepTopTL = new SceneID("4F48E391C0A25D19DD56ADFDDFF8B9A2");
+		public static SceneID CreepTopTR = new SceneID("49AE23D67D72B17ADE220F24B3676A88");
 	}
 	public class SunkenGladesObstaclesIntroductionStreamlined : SceneID {
-		public static SceneID HangingCreep = new SceneID("4F27BCE613DF87839D9F0F0E21084E8A");
-		public static SceneID Creep1A = new SceneID("47A6F829D65D745A97D5D61FC7F1E2BA");
-		public static SceneID Creep2A = new SceneID("4D3AACC6C56ED164140B50BD373388A5");
-		public static SceneID Creep3A = new SceneID("45B34EED3F75B756F24F689921DE9F85");
-		public static SceneID Creep4A = new SceneID("4271F32BD4D4A13DD35BD91A2D8C4183");
+		public static SceneID CreepHanging = new SceneID("4F27BCE613DF87839D9F0F0E21084E8A");
+		public static SceneID CreepBelowHanging = new SceneID("47A6F829D65D745A97D5D61FC7F1E2BA") {
+			HitBoxes = new List<SceneID>() { new SceneID("420348969DE59897098E462899315CA4"),
+											 new SceneID("407C2825A106716674BBC9D9D37272A9"),
+											 new SceneID("4CBA319983D3DBEFA4110AA0DF69C889"),
+											 new SceneID("494AA06A2884DA5F8F083F063FE6E184") }
+		};
+		public static SceneID CreepTopGround = new SceneID("4D3AACC6C56ED164140B50BD373388A5") {
+			HitBoxes = new List<SceneID>() { new SceneID("46DCE0DCB1316A3F545C896B48F7B8A7"),
+											 new SceneID("4069087E523F01C50015473A891C8AAB"),
+											 new SceneID("48822C256E8F94B7036BE62ADEC48A90"),
+											 new SceneID("4A93A1347797B654BA6BBF3029D5C5BD") }
+		};
+		public static SceneID CreepMiddleGround = new SceneID("45B34EED3F75B756F24F689921DE9F85") {
+			HitBoxes = new List<SceneID>() { new SceneID("48C3C7B74939BB1543AF4147207BDEAD"),
+											 new SceneID("4DD52EF4A745AFF5A534EC6EEB7AF294"),
+											 new SceneID("424EC19830820A11BC74A52E5F36F6B2"),
+											 new SceneID("4204E8FBA96FED917AF801D8F62B8A9E") }
+		};
+		public static SceneID CreepMiddleTop = new SceneID("4271F32BD4D4A13DD35BD91A2D8C4183");
 		public static SceneID DoorWithTwoSlots = new SceneID("4F42A3632371D15EFE5F6B669A612B98");
-		public static SceneID DoorWithTwoSlots_VisibleOnMap = new SceneID("42A406E43DE09D1B04B72AAFCCD642A3");
 		public static SceneID Creep1B = new SceneID("4C3268B25C746B6F272CD95C5C812EA2");
 		public static SceneID Creep2B = new SceneID("41D5B05C86D98EA225DADF9B1BDC09B8");
 		public static SceneID Creep3B = new SceneID("4C729FFB86E80F6200F70B584B4DB286");
@@ -845,30 +845,20 @@
 	public class SunkenGladesRunaway : SceneID {
 		public static SceneID ObjectiveSetup_Trigger = new SceneID("403F1AEB7A6119AD9D64112614E9B385");
 		public static SceneID EnergyDoorFourSlots = new SceneID("43A40D50BE779223A2A26CD46B5628BB");
-		public static SceneID EnergyDoorFourSlots_VisibleOnMap = new SceneID("415EF3C7044267B1B6E1368ECFB47FAE");
 		public static SceneID ExpOrb200 = new SceneID("4C26AFB84C5D17FB807A3F242B52489A");
-		public static SceneID ExpOrb200_VisibleOnMap = new SceneID("4A32A213AEC98A28824A29AD89914991");
 	}
 	public class SunkenGladesRunning : SceneID {
 		public static SceneID AbilityCell = new SceneID("43829312910BDAD8598A0AB8D33812AC");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("49C001D64319A75B829AC5F5101DAC9B");
 	}
 	public class SunkenGladesSpiritCavernB : SceneID {
 		public static SceneID ObjectiveSetup_Trigger = new SceneID("44528D039AA97EDEB4E631351A9E5A89");
 		public static SceneID DoorWithFourSlots = new SceneID("4C5CFAC66B0A41074D8A4178841D5EB2");
-		public static SceneID DoorWithFourSlots_VisibleOnMap = new SceneID("4B5849963F67E6642BB47EA0A25E3580");
 		public static SceneID Keystone1 = new SceneID("405D07E8C42CAD4C1FF5E6A8B576D397");
-		public static SceneID Keystone1_VisibleOnMap = new SceneID("42B37D949F4F6208F386F14FA67FC0A9");
 		public static SceneID Keystone2 = new SceneID("4BDBE390B91BFA61794AA22C819FE5A8");
-		public static SceneID Keystone2_VisibleOnMap = new SceneID("462F8DAF927CD88FC496FC86585F0F8E");
 		public static SceneID Keystone3 = new SceneID("4CA70349A5209BD0BAF15FA76B5AD283");
-		public static SceneID Keystone3_VisibleOnMap = new SceneID("45CAD9C09135C75EFB75BE4BACE4059B");
 		public static SceneID Keystone4 = new SceneID("4FB7A39D9BE844F58B26591ABD597E85");
-		public static SceneID Keystone4_VisibleOnMap = new SceneID("40ABD469D61613B490CE38D4FFD5E7AF");
 		public static SceneID Mapstone = new SceneID("498A9179FF77BCB9BD2E4818DF0770B0");
-		public static SceneID Mapstone_VisibleOnMap = new SceneID("468B9EB539F08F0C8B35DF25F3A132A1");
 		public static SceneID AbilityCell = new SceneID("46B4969FCEB745703602FBFAE0A467B2");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("460668DE3D70C596F62140AC32C12E8F");
 		public static SceneID RedBulb = new SceneID("4E44EA678FA1CEECBB40B9C0CAF62682");
 		public static SceneID Creep1A = new SceneID("488989A85C039D87D8B278614D99A1BF");
 		public static SceneID Creep2A = new SceneID("4D65A16E6B745EA43DA3E866B76AC3BC");
@@ -883,27 +873,19 @@
 	}
 	public class SunkenGladesSpiritCavernLaser : SceneID {
 		public static SceneID StompableFloor = new SceneID("45FD715F48CE32E33691E284BB3AEE94");
-		public static SceneID StompableFloor_VisibleOnMap = new SceneID("4E6DF55103D21B2F2945D838702B04B7");
 		public static SceneID EnergyDoorFourSlots = new SceneID("443F707AEF7433D76AEDC8C3C7060BA6");
-		public static SceneID EnergyDoorFourSlots_VisibleOnMap = new SceneID("4A6B522345864C9E9652D7B6515DC9B9");
 		public static SceneID EnergyCell = new SceneID("42D22E6D340FEFCDD46F13ECD5F6FA85");
-		public static SceneID EnergyCell_VisibleOnMap = new SceneID("48AEA894B905425D531BB1E2210B279C");
 	}
 	public class SunkenGladesSpiritCavernSaveRoomB : SceneID {
 		public static SceneID ObjectiveSetup_Trigger = new SceneID("4EB8BB129C3C5859BCD31954F4B816A7");
 		public static SceneID Keystone = new SceneID("4FCA0C2B06F2341D2CBFD7D3271DF2AE");
-		public static SceneID Keystone_VisibleOnMap = new SceneID("44B76985B4D6891B9AEBC0A207728AA3");
 		public static SceneID EnergyCell = new SceneID("4B2A9B64A596B52D22D6F732A74946B8");
-		public static SceneID EnergyCell_VisibleOnMap = new SceneID("410F1DAB5C65DCA873A2B3ACCDA63AA0");
 	}
 	public class SunkenGladesSpiritCavernsPushBlockIntroduction : SceneID {
 		public static SceneID GumoFG_Setup_Trigger = new SceneID("4A0B5824C938E34AC1C9FF6C6FBFC78A");
 		public static SceneID Keystone = new SceneID("4E6531353A113E270A285B3B6AFC8CB2");
-		public static SceneID Keystone_VisibleOnMap = new SceneID("47C13FB60E87E1D6B0F5DD2944E596A9");
 		public static SceneID ExpOrb15_1 = new SceneID("477E93371AD2ED468633046D72E9238C");
-		public static SceneID ExpOrb15_1_VisibleOnMap = new SceneID("461D9EF632CC39875DBB88328FF36AAE");
 		public static SceneID ExpOrb15_2 = new SceneID("42A782A405BBF4FB4E920152B3FEFDA4");
-		public static SceneID ExpOrb15_2_VisibleOnMap = new SceneID("4E4A375D3923D0257EB4950BBEB465AB");
 		public static SceneID Creep1 = new SceneID("4B221356931E63D52EEB4657AFC87393");
 		public static SceneID Creep2 = new SceneID("45C711456E495EAD8BC4DF69FE5232B1");
 		public static SceneID Creep3 = new SceneID("496641944468BFB767252713B25F63BA");
@@ -918,39 +900,27 @@
 		public static SceneID StoryLines_thatNight_Trigger = new SceneID("4E2596FA425D81FB0A52F9AC5EFA55A2");
 		public static SceneID StorySetups_storyTextWith_Trigger = new SceneID("401529B74107F5DDA52D191CE9C50381");
 		public static SceneID EnergyCell = new SceneID("4E9AB5B6CC78DAE03360041CDD845D91");
-		public static SceneID EnergyCell_VisibleOnMap = new SceneID("441070CF15E6E704E1749E9EEE0045AE");
 		public static SceneID ExpOrb200 = new SceneID("4D662761912CC1AF2F61CAAF0113CF99");
-		public static SceneID ExpOrb200_VisibleOnMap = new SceneID("42EFBB5420AECFE4D2D2D21B5F3608B1");
 	}
 	public class SunkenGladesWaterhole : SceneID {
 		public static SceneID HealthCell = new SceneID("4F96320A10D65D38D0BDF5FD808B0787");
-		public static SceneID HealthCell_VisibleOnMap = new SceneID("4820CA335D7A61076CD133B29D0ACFA7");
 	}
 	public class ThornfeltSwampA : SceneID {
 		public static SceneID Setup_group_Trigger = new SceneID("462507887960517396B4B68091E337B9");
 		public static SceneID HealthCell = new SceneID("45CA41DDC04D0698E4BA5452DA42F987");
-		public static SceneID HealthCell_VisibleOnMap = new SceneID("404094F4C7978AB37A01034D250DA6B4");
 		public static SceneID ExpOrb200 = new SceneID("4B1FBC37A90C1795369F306D22C3E7AF");
-		public static SceneID ExpOrb200_VisibleOnMap = new SceneID("40F4451C308487D693FFA4A71E63A286");
 		public static SceneID ExpOrb100 = new SceneID("43D651531028C4BD6773C33BAE2A95A7");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4AC686C15E0FF4FA5BC90E4B7394D3AF");
 		public static SceneID StompableFloor = new SceneID("4AE910D126629EAED3B4289435DDE6BE");
-		public static SceneID StompableFloor_VisibleOnMap = new SceneID("44823CE5ED0F317DE4918DD0EBEC04A5");
 		public static SceneID StompablePlatform1 = new SceneID("4E85A29784E45BD8E0D131225257C1AA");
 		public static SceneID StompablePlatform2 = new SceneID("4ACE01F6BFBF86945695623023FD3F94");
 	}
 	public class ThornfeltSwampActTwoStart : SceneID {
 		public static SceneID GumoSavesSein_Trigger = new SceneID("48B2F8E4920795969FF6A17EB4C231A6");
 		public static SceneID BombableWall = new SceneID("418310C0D072DDDAA973C5C04FACB987");
-		public static SceneID BombableWall_VisibleOnMap = new SceneID("4FA58CA51EB943EA5F37340F3D3EBAB9");
 		public static SceneID DoorWithTwoSlots = new SceneID("43FCE880FF50CFC4DB70A2CA188F27A2");
-		public static SceneID DoorWithTwoSlots_VisibleOnMap = new SceneID("4D7D8F4E0216FCD12263B2DC6B86159F");
 		public static SceneID EnergyCell = new SceneID("4D97DF30EC4DC1DBA29E989E54169282");
-		public static SceneID EnergyCell_VisibleOnMap = new SceneID("4EC04E552DA844E9B0E1D6ABC6B01AA7");
 		public static SceneID ExpOrb100 = new SceneID("4EBE6F98F9486C22DEDE7E43EA0CF096");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4654678DEBE89D18A23118FE94CAA284");
 		public static SceneID AbilityCell = new SceneID("4AC2C4EFE8B3DEFDC5E78CD9FC63D597");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("488A6C9F6E75862E9E2FA2CA0D76CFB4");
 	}
 	public class ThornfeltSwampB : SceneID {
 		public static SceneID GumoMortarsSetup_BombableWall = new SceneID("4C55BF10CD44357931E3116DC46F03BC");
@@ -963,16 +933,12 @@
 		public static SceneID RedBulb2 = new SceneID("45DF22B0EF21F4B54508FA2706FD77B2");
 		public static SceneID RedBulb3 = new SceneID("48611624142B651CEC4EB030494985A0");
 		public static SceneID AbilityCell = new SceneID("4B82D550F04E11388658FFAC5EDEFD85");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("43370852CB8E6952732B2ECADB4AAC84");
 		public static SceneID PetrifiedPlant = new SceneID("4901D3E6979A9535315A72AA8190D498");
 	}
 	public class ThornfeltSwampBackgroundA : SceneID {
 		public static SceneID ExpOrb200_1 = new SceneID("476DE62D7E1F72798FC5FD244E134AB3");
-		public static SceneID ExpOrb200_1_VisibleOnMap = new SceneID("4FDA7D4356A4B631B9CA4B451DAC5F9D");
 		public static SceneID ExpOrb200_2 = new SceneID("4BB17FE7D3D7B587777D06FF60B5EE96");
-		public static SceneID ExpOrb200_2_VisibleOnMap = new SceneID("40DB4871195E0DD844E9842691A86A9C");
 		public static SceneID ExpOrb100 = new SceneID("4F2F0832E2D60D349004F34915884EB6");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("44DD1050D1F5B054D30D433DCC5377BD");
 	}
 	public class ThornfeltSwampE : SceneID {
 		public static SceneID Creep1 = new SceneID("44FBFA384D8144FA046348685F10D6A4");
@@ -984,54 +950,36 @@
 		public static SceneID Creep7 = new SceneID("47F2E341C96A1DF29F04DC75F3C63F84");
 		public static SceneID Creep8 = new SceneID("47C6C737C6F811B37C2969F18671FEB5");
 		public static SceneID Keystone1 = new SceneID("4A410CADDFE1BF6BFDC193C44994C7A1");
-		public static SceneID Keystone1_VisibleOnMap = new SceneID("42AB3B73F7C585E338A2857AA1566486");
 		public static SceneID Keystone2 = new SceneID("48D73C6E2840C9A7A468441B97BDE99D");
-		public static SceneID Keystone2_VisibleOnMap = new SceneID("4163FC0F0CC53366BC5107AEE2EC2190");
 		public static SceneID Mapstone = new SceneID("431480F97E4713F2263FBE795FBA9DBD");
-		public static SceneID Mapstone_VisibleOnMap = new SceneID("4FF30DB9A976FB6D987E8EB98CFDCBBE");
 	}
 	public class ThornfeltSwampMoonGrottoTransition : SceneID {
 		public static SceneID ChargeFlameWall = new SceneID("4A870713127EF76B49A77E0B9FE54ABA");
-		public static SceneID ChargeFlameWall_VisibleOnMap = new SceneID("49CBBA9BE22338691BAA4533DBD9B689");
 		public static SceneID ExpOrb100 = new SceneID("4822305A7D5E8DF7546A3BE8C2B1BABF");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4D51990BD1306CE270769257552EE3BC");
 		public static SceneID AbilityCell = new SceneID("4D3A934B3094682177D56FBC1570508F");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("4ED4BA71D903D308E35012C0D127A8A5");
 		public static SceneID PetrifiedPlant = new SceneID("475AC7B0385E2B284F12793E0D914284");
 		public static SceneID StompableFloorSwamps1 = new SceneID("4BEFDAA23FE36DC1FC14623F07DEC89A");
-		public static SceneID StompableFloorSwamps1_VisibleOnMap = new SceneID("4FD627644AFBAB764284A935F61837AD");
 		public static SceneID StompableFloorSwamps2 = new SceneID("4605D46C1517C3F9C87D4D03C149D396");
-		public static SceneID StompableFloorSwamps2_VisibleOnMap = new SceneID("4F3F21B3F54E95FA56DC6940EB81DFB0");
 		public static SceneID StompableFloorSwamps3 = new SceneID("4F44A3FC1E4EDEB1E93987A8602EA793");
-		public static SceneID StompableFloorSwamps3_VisibleOnMap = new SceneID("4089F9D37D34FD1689F7C974550DD4BB");
 		public static SceneID StompableFloorSwamps4 = new SceneID("4D44B430C706892D2A9B7D31C3A7CFA8");
-		public static SceneID StompableFloorSwamps4_VisibleOnMap = new SceneID("41F56619E1DB540F4006D5E673673CB0");
 	}
 	public class ThornfeltSwampStompAbility : SceneID {
 		public static SceneID ExpOrb200 = new SceneID("488F9D27B7A9DAFEAA67CA2183AD8996");
-		public static SceneID ExpOrb200_VisibleOnMap = new SceneID("4E8CF64908EDAF56D7077572AB0FE68E");
 		public static SceneID ExpOrb100 = new SceneID("4CDFD856E3037E9FEB86DD3EB87B2194");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4943FC539F0907C3BFC997F1CE790E91");
 		public static SceneID StompableFloor1 = new SceneID("4330564FAE4D0AF80A0732CBE07AB196");
-		public static SceneID StompableFloor1_VisibleOnMap = new SceneID("45673D9118120DC4FB45CC22E7E1DB82");
 		public static SceneID StompableFloor2 = new SceneID("425BDB54D34087006358158DC48DFEBE");
-		public static SceneID StompableFloor2_VisibleOnMap = new SceneID("48108209CD833B6EC6CFFECFE458D5B9");
 	}
 	public class UpperGladesBelowSpiritTree : SceneID {
 		public static SceneID AbilityCell = new SceneID("4E824E85883A5597885054584D11B4B7");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("43854B83FEBEB52A46F663A8C3C8F2B0");
 	}
 	public class UpperGladesHollowTreeSplitA : SceneID {
 		public static SceneID RedBulb = new SceneID("41BF28FB570ED79F4A2970FC3D394B8B");
 		public static SceneID StompableFloor = new SceneID("4BDBF6AA8E0242361BE16E37F0FFB6A7");
-		public static SceneID StompableFloor_VisibleOnMap = new SceneID("41191EB861422084AFFC94CC9CCF0FA5");
 	}
 	public class UpperGladesHollowTreeSplitB : SceneID {
 		public static SceneID KuroAct2_Trigger = new SceneID("461B1FC73041EB78F953348BDB11CC87");
 		public static SceneID ExpOrb100 = new SceneID("458AB879FDCE654D0E68931444EE2682");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4BAD1E7B45D1F68E8A8CFE345F18208F");
 		public static SceneID AbilityCell = new SceneID("468CDCA4E8FDD30D3B6E824884E6A5BD");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("4DBF8BE4FFB8AC3D07D297C9CEC737AA");
 		public static SceneID PetrifiedPlant1 = new SceneID("477E4F4DEE891A3F30024494A8921180");
 		public static SceneID PetrifiedPlant2 = new SceneID("4B40ECC50597F6DC926C73AC50945BBC");
 	}
@@ -1045,14 +993,11 @@
 		public static SceneID TopOfTreeSetup_Creep4 = new SceneID("4593051375987C3AD55DF2D17083EC88");
 		public static SceneID TopOfTreeSetup_Creep5 = new SceneID("480D96F88D574405E354A56DF53D0998");
 		public static SceneID EnergyCell = new SceneID("4C14714E9A98C14039302DD495230799");
-		public static SceneID EnergyCell_VisibleOnMap = new SceneID("4D76D03601216F37B02121B9365097AB");
 		public static SceneID HealthCell = new SceneID("4451EEE78B67A002D819704E88761CAB");
-		public static SceneID HealthCell_VisibleOnMap = new SceneID("41BD58C84570A95AF1EC1C8D9413B3B5");
 		public static SceneID RedBulb1 = new SceneID("4EAB086594097098BC774FFDDBB48BBF");
 		public static SceneID RedBulb2 = new SceneID("4B4E35598A0E120185CC436017F5CCBE");
 		public static SceneID RedBulb3 = new SceneID("4CD6DAB3ECB04EE64478CB6730FDBF84");
 		public static SceneID Mapstone = new SceneID("4E4B0B8C428D6D8BF90488F7C68FAE8D");
-		public static SceneID Mapstone_VisibleOnMap = new SceneID("4A0E0911F1D27BAC9E90BB8269620189");
 		public static SceneID Creep1 = new SceneID("4A7A722CECE437476B56ED372D7345BB");
 		public static SceneID Creep2 = new SceneID("42022039CB4E6F5D61F9F497F5C8B69A");
 		public static SceneID Creep3 = new SceneID("48BB62CFA80482F7D0C8BEEF21AF098D");
@@ -1062,22 +1007,15 @@
 		public static SceneID GumoFG_Setup_Trigger = new SceneID("4FC9FC78D8AEA993446831D08D2D7692");
 		public static SceneID LogSetup_EggHint_Trigger = new SceneID("4E31D001BA870065BF627A33E6DB43B0");
 		public static SceneID ChargeFlameWall1 = new SceneID("44AA711B879B23EEA5E3A5F1A5C9B4B1");
-		public static SceneID ChargeFlameWall1_VisibleOnMap = new SceneID("4CCD6B32203A36C915FEAAB3B333F69E");
 		public static SceneID ChargeFlameWall2 = new SceneID("46672E935214EBEC977B9033E776CB82");
-		public static SceneID ChargeFlameWall2_VisibleOnMap = new SceneID("4EA841C6C02A54FB819DC9B8E9A6E693");
 		public static SceneID EnergyDoorFourSlots = new SceneID("4CBDF729E87B3317D590F401BA6C4092");
-		public static SceneID EnergyDoorFourSlots_VisibleOnMap = new SceneID("4C75EA4186C8A850D78CA47C4011B383");
 		public static SceneID HealthCell1 = new SceneID("451B8EE047188BEED905E16E08A7C380");
-		public static SceneID HealthCell1_VisibleOnMap = new SceneID("4A62B52441D64105F88F450C4EA4FD85");
 		public static SceneID HealthCell2 = new SceneID("4A1C5290047EE40156D373A4C0C53390");
-		public static SceneID HealthCell2_VisibleOnMap = new SceneID("44A301E979CF7FCE7DEBBA43B2F26885");
 		public static SceneID RedBulb = new SceneID("4A47763454E7C5E6F3A4C92EDA2FD7A4");
 		public static SceneID AbilityCell = new SceneID("47EE6A8EAF3DBD5873AED47CA6A31C99");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("4BFAEC3682E91575B54C68C37FE850B0");
 	}
 	public class UpperGladesSpiderIntroduction : SceneID {
 		public static SceneID ExpOrb100 = new SceneID("4AD7DED1B01C125BC864531E8317F48E");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("49D69B11111C6AA1C7C8F097AF800EB2");
 		public static SceneID Creep1 = new SceneID("475819CF96474ED276F71D9F2720A283");
 		public static SceneID Creep2 = new SceneID("47B3B3151BA88034305F32BF6B6603B2");
 		public static SceneID Creep3 = new SceneID("4DBDB786A65DC62EBEEF4B8B2CBA418E");
@@ -1085,32 +1023,23 @@
 	}
 	public class UpperGladesSpiderIntroductionB : SceneID {
 		public static SceneID Wall = new SceneID("40A0ECE9E585D7C7F14428C995775B86");
-		public static SceneID Wall_VisibleOnMap = new SceneID("48D48ED967B68ED0AC9D4405319C78A4");
 		public static SceneID ExpOrb200 = new SceneID("4DFB6102C4B53F9CD2509D282D2D668B");
-		public static SceneID ExpOrb200_VisibleOnMap = new SceneID("40978AB6A36910B8BC2EBCD44835188F");
 	}
 	public class UpperGladesSwampCliffs : SceneID {
 		public static SceneID GumoFG_Setup_Trigger = new SceneID("4E58844CCE29FBBB61675BF8CFFB0EBC");
 		public static SceneID AbilityCell = new SceneID("417BDDBAEFA5D0135D35A368746CB69D");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("438714603DC121CDAB7DD900C788D8AA");
 	}
 	public class UpperGladesSwarmIntroduction : SceneID {
 		public static SceneID ChargeFlameWall1 = new SceneID("4A8A7E90D533216053316AA6106DDDA7");
-		public static SceneID ChargeFlameWall1_VisibleOnMap = new SceneID("4F8F819BCA67AFD52EA8230D55409281");
 		public static SceneID ChargeFlameWall2 = new SceneID("4A4D2ED8AF6EB42A58D22095F19F7C81");
-		public static SceneID ChargeFlameWall2_VisibleOnMap = new SceneID("4BF7387EC9F4E57C6478831CB7494396");
 		public static SceneID RedBulb1 = new SceneID("4419AFD09FCCD0D3C56E3C81819C8296");
 		public static SceneID RedBulb2 = new SceneID("4F411D670E948CDA8267E5515FE613A9");
 		public static SceneID RedBulb3 = new SceneID("492AD70320DC24D10C9FF1CBE4A6AB91");
 		public static SceneID EnergyCell = new SceneID("4004F3A22188912C776C0B0F2112009F");
-		public static SceneID EnergyCell_VisibleOnMap = new SceneID("4F7409EDE03C5CCC38F5D65D3382A29A");
 		public static SceneID ExpOrb100 = new SceneID("44A217C475F7DA896B025BFEAE62C2AF");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4144C1CB7BBD835D3568E7D7F35D49BE");
 		public static SceneID AbilityCell = new SceneID("448F4F814E4D70F1E4B1665914BDB29A");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("4BEFD2549A078C113649229A8C9B3F82");
 		public static SceneID PetrifiedPlant = new SceneID("4D5E19E5FE65600F9736E906FE28BF82");
 		public static SceneID StompableFloor = new SceneID("45974815C5321D695B4119D19DDA4FB9");
-		public static SceneID StompableFloor_VisibleOnMap = new SceneID("4A731FD0ED03CDA83B9BE4B9816AD99A");
 	}
 	public class ValleyOfTheWindBackground : SceneID {
 		public static SceneID FeatherPickup_Trigger = new SceneID("42E0D18A660AE74E12A82C9772B4569B");
@@ -1118,18 +1047,18 @@
 	}
 	public class ValleyOfTheWindEArt : SceneID {
 		public static SceneID Mapstone = new SceneID("4B7C23CA9D54696A563CA6B3FAD2E2BE");
-		public static SceneID Mapstone_VisibleOnMap = new SceneID("4BC9B83E917C444E5E69EED8E293E6B7");
 		public static SceneID StompableFloor = new SceneID("450CE11F270206BDAF648697E5448292");
-		public static SceneID StompableFloor_VisibleOnMap = new SceneID("46AF6131AC873B6D5B929D7C1F8680A3");
 	}
 	public class ValleyOfTheWindGauntlet : SceneID {
-		public static SceneID Creep = new SceneID("41C7E68BB7EDBCB6BE2E4B16B5ABF194");
+		public static SceneID Creep = new SceneID("41C7E68BB7EDBCB6BE2E4B16B5ABF194") {
+			HitBoxes = new List<SceneID>() { new SceneID("40E0B0198E3B4DC02472B6D707F76392"),
+											 new SceneID("4F1B1CD7CF1D731D5ED4A52AA57A849B"),
+											 new SceneID("4F9299518C31878C6EF0EE78DCA97AAD"),
+											 new SceneID("47AD56F2FC363735615E5ED3D22C0283") }
+		};
 		public static SceneID StompableFloor1 = new SceneID("4892C34A3FEAF90428B089547C3EB8B0");
-		public static SceneID StompableFloor1_VisibleOnMap = new SceneID("46E232307103785CF2DEC26446115FA9");
 		public static SceneID StompableFloor2 = new SceneID("4B3E88C15463F9D540730049984DC49C");
-		public static SceneID StompableFloor2_VisibleOnMap = new SceneID("4D8547430F34FFEB0952A778826AF692");
 		public static SceneID StompableFloor3 = new SceneID("44B4ECEB586F0A0385601F7F002D0AB3");
-		public static SceneID StompableFloor3_VisibleOnMap = new SceneID("4153F37F258204C63ABF08E7DDCA4599");
 	}
 	public class ValleyOfTheWindGetChargeJump : SceneID {
 		public static SceneID RedBulb1 = new SceneID("4D96979500A7CACA9CF75A2D06CFEAA5");
@@ -1138,68 +1067,42 @@
 		public static SceneID RedBulb4 = new SceneID("43A44B7FD638DB7A701F424E80FCB0B3");
 		public static SceneID RedBulb5 = new SceneID("4244834DCF560AFAA24A1DFFCEDE2EA9");
 		public static SceneID AbilityCell = new SceneID("4357AD0B8196635E2D25F6E37CBC2395");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("45963616CE467C66ABAE9D6BA33A52B0");
 		public static SceneID StompableFloor1 = new SceneID("401F3DBABEEB7866189E854AAAE5299D");
-		public static SceneID StompableFloor1_VisibleOnMap = new SceneID("49305929FE37F4C10E542FC599C3B18A");
 		public static SceneID StompableFloor2 = new SceneID("4050DB8A0F8FE5844358011D7540DDAD");
-		public static SceneID StompableFloor2_VisibleOnMap = new SceneID("4A40B67DFA0B80A142EA95BA06EDFB81");
 		public static SceneID StompableFloor3 = new SceneID("4180BB3C6E295028BF5B86BB599B8DA7");
-		public static SceneID StompableFloor3_VisibleOnMap = new SceneID("4AD6C49E1B8E6E62CBA0A2E8A5E4CBB2");
 	}
 	public class ValleyOfTheWindHubIceLaserB : SceneID {
 		public static SceneID Keystone = new SceneID("4ABD026227E72095FAF76754CC6B8283");
-		public static SceneID Keystone_VisibleOnMap = new SceneID("42D9B896910DCE6F71E4A92BEFE564B7");
 		public static SceneID StompableFloor1 = new SceneID("416103D6ABB2F1E8C088AA8A5AF80182");
-		public static SceneID StompableFloor1_VisibleOnMap = new SceneID("4724E46FA3E2772967C1337397F5E689");
 		public static SceneID StompableFloor2 = new SceneID("428A6DC3269E4544A996A9546900CE84");
-		public static SceneID StompableFloor2_VisibleOnMap = new SceneID("42427618E4A103E89184126EF007BD9F");
 	}
 	public class ValleyOfTheWindHubL : SceneID {
-		public static SceneID DoorWithFourSlots_VisibleOnMap = new SceneID("4A10894D35E70865A7A0797C3F19A786");
 		public static SceneID DoorWithFourSlots = new SceneID("4573055875AAC1EF083603EF0721D1BA");
 		public static SceneID StompableFloor1 = new SceneID("4B4F739F6086461290B6176E197E539E");
-		public static SceneID StompableFloor1_VisibleOnMap = new SceneID("4E907BA6C07EEC6E0C0A0FFC8024D2B7");
 		public static SceneID StompableFloor2 = new SceneID("4E87315D6761C070BC1D3DCCE94868A1");
-		public static SceneID StompableFloor2_VisibleOnMap = new SceneID("445F7ECDD9755C17CCE776758A287A99");
 	}
 	public class ValleyOfTheWindHubR : SceneID {
 		public static SceneID EnergyDoorFourSlots = new SceneID("4D36CEFFE027D65BAA571CDE352EC097");
-		public static SceneID EnergyDoorFourSlots_VisibleOnMap = new SceneID("46E6D4AB4C1487EE13CAEF01FC375D86");
 		public static SceneID Keystone1 = new SceneID("4AE80FF308AEA3889EEB9689610F80BA");
-		public static SceneID Keystone1_VisibleOnMap = new SceneID("447E1BD46C13ACEDFB4201A573C37DA5");
 		public static SceneID Keystone2 = new SceneID("4A8A2F6120B4843476CC28E71A8D30B4");
-		public static SceneID Keystone2_VisibleOnMap = new SceneID("443ED585109197287C1F1653AF862D8E");
 		public static SceneID StompableFloor = new SceneID("41770942A21E73629C6015E64E7139BA");
-		public static SceneID StompableFloor_VisibleOnMap = new SceneID("404AC40D584CC30927E36489C0AAB085");
 	}
 	public class ValleyOfTheWindIcePuzzle : SceneID {
 		public static SceneID HealthCell = new SceneID("41A5F6CCECA081C3D4BD682F90BE5E81");
-		public static SceneID HealthCell_VisibleOnMap = new SceneID("465813FD125253968E07AC7BF58DC3A7");
 		public static SceneID Keystone = new SceneID("4BA4EF5130BE7EF8CD8435B2B59C1BB0");
-		public static SceneID Keystone_VisibleOnMap = new SceneID("4221882EFF0EDBB1E3116613E3BFE0A5");
 		public static SceneID ExpOrb200 = new SceneID("404910483B9AD6C089C5DBD18598AEB2");
-		public static SceneID ExpOrb200_VisibleOnMap = new SceneID("4594695AB31BF78C67F7429B2F82D6AA");
 		public static SceneID AbilityCell = new SceneID("4BD622C9D5966D58FDAD90B3B5D4B49E");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("4B55351DEAE7B2E1367D304BA09F928B");
 		public static SceneID PetrifiedPlant = new SceneID("499640255358D7E38405256165923A98");
 		public static SceneID StompableFloor1 = new SceneID("46B3D9D4BF34736FC168398FE7CAAE9C");
-		public static SceneID StompableFloor1_VisibleOnMap = new SceneID("44895251BFF95D098C56977BDF2E9EAE");
 		public static SceneID StompableFloor2 = new SceneID("4CAAC05BFE56735191CDA3632A38498C");
-		public static SceneID StompableFloor2_VisibleOnMap = new SceneID("47FDB1C5620B9500B0065DAE3CC4C28A");
 	}
 	public class ValleyOfTheWindLaserShaft : SceneID {
 		public static SceneID DoorWithFourSlots = new SceneID("4BEB1F1C57C884E210B499F824BFD4AD");
-		public static SceneID DoorWithFourSlots_VisibleOnMap = new SceneID("4F76AF37A865DCA21E5C1A496D351D94");
 		public static SceneID Keystone1 = new SceneID("4CEDAEC6C028B0DCE220A307DD21DA80");
-		public static SceneID Keystone1_VisibleOnMap = new SceneID("4A3E4A68A296680B3C89C9F6950A64B6");
 		public static SceneID Keystone2 = new SceneID("4012C4C3BC7A14BA736E67E8CC801E96");
-		public static SceneID Keystone2_VisibleOnMap = new SceneID("43829A5D69616E29808774A8176DFB89");
 		public static SceneID Keystone3 = new SceneID("4C3334181834D53844AA846615BC1BB2");
-		public static SceneID Keystone3_VisibleOnMap = new SceneID("488A8F340EADCDDE7AB2A28125B1EFB6");
 		public static SceneID Keystone4 = new SceneID("49CCEA241F06E2E96F60A527ECF78C88");
-		public static SceneID Keystone4_VisibleOnMap = new SceneID("4148DC692C561421C705534C264A5EA6");
 		public static SceneID EnergyCell = new SceneID("489771BF596CEC123644A80FA3086AB0");
-		public static SceneID EnergyCell_VisibleOnMap = new SceneID("43B23ABDE9CA98584298852935235E8F");
 	}
 	public class ValleyOfTheWindShaft : SceneID {
 		public static SceneID StompablePlatform = new SceneID("4FD6402E7747D97382B3127793A6F78B");
@@ -1213,76 +1116,51 @@
 	}
 	public class ValleyOfTheWindWideLeft : SceneID {
 		public static SceneID DoorWithFourSlots = new SceneID("455E2F358E27DC22597326CA6EC15891");
-		public static SceneID DoorWithFourSlots_VisibleOnMap = new SceneID("41C5DEFB36E5A28FA19470A4BC3B4689");
 		public static SceneID Keystone = new SceneID("431F353DA11D0365E4FA90C5D51CF3B1");
-		public static SceneID Keystone_VisibleOnMap = new SceneID("461BD06D8395174A2B32EE97DDB937BA");
 		public static SceneID ExpOrb100 = new SceneID("485EE1D8C80CB4B5F9249AC34C226C9D");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4E155721D5B980710DBE46E3FD62A4B2");
 	}
 	public class ValleyOfTheWindWideMid : SceneID {
 		public static SceneID Keystone1 = new SceneID("49124F593D197976788DCD28F07F5D98");
-		public static SceneID Keystone1_VisibleOnMap = new SceneID("43227B0B46F35914B78A9C1DFA3F1D8C");
 		public static SceneID Keystone2 = new SceneID("4D12E69D08C894761AB5979CFCE80ABF");
-		public static SceneID Keystone2_VisibleOnMap = new SceneID("474C8D78E8E623732052FD4C24762EBC");
 		public static SceneID StompableFloor = new SceneID("4F970A1E3EAED13C57D050A1ACBA8DBC");
-		public static SceneID StompableFloor_VisibleOnMap = new SceneID("40B7300ACC7C1432F8EC9D3B17F11689");
 	}
 	public class ValleyOfTheWindWideRight : SceneID {
 		public static SceneID Keystone = new SceneID("4C9DB21366770AC81B6C76CF2842D495");
-		public static SceneID Keystone_VisibleOnMap = new SceneID("4138811DDE067109E3EC17F236485698");
 	}
 	public class WestGladesBashCave : SceneID {
 		public static SceneID ExpOrb100 = new SceneID("4B1CE9ADD140DD7E2DF173913BE0DCB3");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("42CCE931A550B330E73E1436CA500CB0");
 	}
 	public class WestGladesCliffsC : SceneID {
 		public static SceneID ExpOrb100 = new SceneID("42A203627B9C9BD34712BB581A2AD799");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4C25BFEB4CA2A5DD077DC3B0E661A295");
 		public static SceneID AbilityCell = new SceneID("4055F33347674B4DC0C86E6DACAAB7AE");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("45EF3A57DCB47A2B2B9761288AA5C780");
 	}
 	public class WestGladesFireflyAreaA : SceneID {
 		public static SceneID AbilityCell = new SceneID("403DA9A46B9BEC410D5B4A5D502A6DBA");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("40352662A306B326714AF859442C979C");
 	}
 	public class WestGladesOverworldForestA : SceneID {
 		public static SceneID AbilityCell = new SceneID("47F09A1A943D1E3C4CB5EAC0EC2B80AB");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("452C4AF7956197D9D23534F3452C1A93");
 		public static SceneID ExpOrb100 = new SceneID("421D22BC4422FD5A28E6BDB1A95DE287");
-		public static SceneID ExpOrb100_VisibleOnMap = new SceneID("4A0A0153F39AC23126B6AF6DCBEB97B8");
 		public static SceneID PetrifiedPlant = new SceneID("4552C7FDC2F07721EFEAC56DD954B08E");
 		public static SceneID StompableFloor = new SceneID("4E350923F9E82E4B18635BD62153FC97");
-		public static SceneID StompableFloor_VisibleOnMap = new SceneID("4468EC04E28F946BA19FD6F169F9ADB1");
 	}
 	public class WestGladesRollingSootIntroduction : SceneID {
 		public static SceneID Wall1 = new SceneID("473DE2B5BD5ACC5EDE709BE3C8D3688A");
-		public static SceneID Wall1_VisibleOnMap = new SceneID("481C2C05E71DF576710BA075DD7B889E");
 		public static SceneID Wall2 = new SceneID("405CA9D973CC8D0BA38263CB89BDCA85");
-		public static SceneID Wall2_VisibleOnMap = new SceneID("4CC85D41D76CA14C4FA62E06711BFD98");
 		public static SceneID Wall3 = new SceneID("4F0569E875222C59772F199A41502CB0");
-		public static SceneID Wall3_VisibleOnMap = new SceneID("46657577CA81CED99E2FBBA65445C6A7");
 		public static SceneID Mapstone = new SceneID("40E7C38FA4D03B35991EC746B24B7E83");
-		public static SceneID Mapstone_VisibleOnMap = new SceneID("43CC9C363C59543FEAE9CA59D869AB9A");
 		public static SceneID AbilityCell = new SceneID("42C0FC641D28A90DE733A9667EA5A7B9");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("4D51D736467CDD0A6F06EE84E8EE19AF");
 	}
 	public class WestGladesSorrowEntranceAB : SceneID {
 		public static SceneID AbilityCell = new SceneID("4A64D41817EC14A86D4098A9F8079695");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("44CC0F52C3044298F02E82B26D39E7A4");
 		public static SceneID StompableFloor1 = new SceneID("46055F15087D717B6BF3F32663BFFDB3");
-		public static SceneID StompableFloor1_VisibleOnMap = new SceneID("4D1F79F02F07283DD6EA883F43704398");
 		public static SceneID StompableFloor2 = new SceneID("47568B339962A16E55F0DFED99669C95");
-		public static SceneID StompableFloor2_VisibleOnMap = new SceneID("4B8EF0DBFCF1FE6692DEF38D8D58978A");
 		public static SceneID StompablePlatform = new SceneID("4046F6B5B01D187CEC5D2E04B7187D88");
 	}
 	public class WestGladesTIntersectionB : SceneID {
 		public static SceneID Wall = new SceneID("46AC6CD2D75C2B1462D20312DC790084");
-		public static SceneID Wall_VisibleOnMap = new SceneID("4AAB72BB911D93D354FF4FCD31B68F9F");
 		public static SceneID AbilityCell = new SceneID("4CAA16EBC422986FA87018CCBDFD7786");
-		public static SceneID AbilityCell_VisibleOnMap = new SceneID("402E69A33C8775CE98B8DA2985E79F86");
 	}
 	public class WestGladesWaterStomp : SceneID {
 		public static SceneID EnergyCell = new SceneID("40686D854A745D02856F30FBD4D4D8BF");
-		public static SceneID EnergyCell_VisibleOnMap = new SceneID("4923A50CCD85689AF9763A445A132186");
 	}
 }

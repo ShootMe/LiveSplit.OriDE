@@ -128,6 +128,7 @@ namespace LiveSplit.OriDE {
 			try {
 				using (SaveEditor editor = new SaveEditor()) {
 					editor.Save = (SaveGameData)((PictureBox)sender).Tag;
+					editor.Save.Load(editor.Save.FilePath);
 					editor.ShowDialog(this);
 				}
 

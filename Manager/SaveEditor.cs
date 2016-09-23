@@ -397,6 +397,12 @@ namespace LiveSplit.OriDE {
 									fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
 								float currentHP = data.GetFloat((int)EntityDamage.Health);
 								data.WriteFloat((int)EntityDamage.Health, child.Checked ? (currentHP > 0 ? currentHP : data.GetFloat((int)EntityDamage.MaxHealth)) : -1f);
+
+								if (sceneValue.HitBoxes != null) {
+									foreach (SceneID hitbox in sceneValue.HitBoxes) {
+										SetHitBox(sceneValue.Parent, hitbox, child.Checked);
+									}
+								}
 							} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
 								data[(int)Collectible.Collected] = (byte)(child.Checked ? 0 : 1);
 							} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0) {
@@ -417,7 +423,7 @@ namespace LiveSplit.OriDE {
 							data = collection.Add(sceneValue);
 
 							if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
-									fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
+									  fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
 								data.Data = new byte[8];
 
 								if (fieldName.IndexOf("PetrifiedPlant") >= 0) {
@@ -429,6 +435,12 @@ namespace LiveSplit.OriDE {
 								} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Bulb") >= 0) {
 									data.WriteFloat((int)EntityDamage.Health, -1);
 									data.WriteFloat((int)EntityDamage.MaxHealth, 4);
+								}
+
+								if (sceneValue.HitBoxes != null) {
+									foreach (SceneID hitbox in sceneValue.HitBoxes) {
+										SetHitBox(sceneValue.Parent, hitbox, child.Checked);
+									}
 								}
 							} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
 								data.Data = new byte[1];
@@ -451,6 +463,17 @@ namespace LiveSplit.OriDE {
 				this.Close();
 			} catch (Exception ex) {
 				MessageBox.Show(this, "Failed to save file: " + ex.ToString());
+			}
+		}
+		public void SetHitBox(SceneID parent, SceneID id, bool enabled) {
+			SceneData data = Save.Find(id);
+			if (data != null) {
+				data.WriteFloat(0, enabled ? 1f : 0f);
+			} else if (!enabled) {
+				SceneCollection collection = Save.Insert(parent);
+				data = collection.Add(id);
+
+				data.Data = new byte[6];
 			}
 		}
 		private void btnDelete_Click(object sender, EventArgs e) {
