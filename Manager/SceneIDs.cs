@@ -628,50 +628,72 @@ namespace LiveSplit.OriDE {
 		public static SceneID EnabledByDarknessLifted_NaruStoryTop_Trigger = new SceneID("40491B45A64420A44AF16A754DA1A487");
 		public static SceneID Mapstone = new SceneID("424D5FE459EA408810D4C29B6A6C8DAE");
 		public static SceneID PetrifiedPlant = new SceneID("418500C69E8CAE7F14F722175C03C08B");
+		public static SceneID Lever_GoesLeft = new SceneID("43801A22028508D9530EA2A20C60789C") {
+			Children = new List<SceneID>() {
+				new SceneID("4A4A9713AD3F88D32BAED0E1B6B9399F") { Name = "Deactivate" },
+				new SceneID("49DF37A38C5875ED081754C4051F22BB") { Name = "Animator" }
+			}
+		};
 	}
 	public class NorthMangroveFallsIntro : SceneID {
 		public static SceneID NoSoulFlameZones_Trigger = new SceneID("49FC6453A5D2A7929AB293A31E18BB81");
 		public static SceneID ExpOrb100 = new SceneID("48DD36AA196A9E89F9A530AECF6988BE");
 		public static SceneID AbilityCell = new SceneID("41565E76B8B341C60D8EFDABE797318E");
 		public static SceneID SpiritTorchStart = new SceneID("47500BE4F13BC5B3FE1D4D34D70C79A0") {
-			Children = new List<SceneID>() { new SceneID("463070778691949B53810714254B208E"),
-											 new SceneID("46621D65D4A21989897837692667818D") { Name = "Activator" },
-											 new SceneID("41F6937A4E98269416AB2C1AE83822B0") { Name = "Animator" } }
+			Children = new List<SceneID>() {
+				new SceneID("463070778691949B53810714254B208E"),
+				new SceneID("46621D65D4A21989897837692667818D") { Name = "Activator" },
+				new SceneID("41F6937A4E98269416AB2C1AE83822B0") { Name = "Animator" }
+			}
 		};
 		public static SceneID SpiritTorch1 = new SceneID("4C2AFD4471B99CD72D1D4CDFF4002CA0") {
-			Children = new List<SceneID>() { new SceneID("41F4750BB989895BC5C69F12B70233A9"),
-											 new SceneID("4CFD6EF78B72F2200EDF932BEC00F3A0") { Name = "Activator" },
-											 new SceneID("4D0282723BC798D96F7723AA00736FAE") { Name = "Animator" } }
+			Children = new List<SceneID>() {
+				new SceneID("41F4750BB989895BC5C69F12B70233A9"),
+				new SceneID("4CFD6EF78B72F2200EDF932BEC00F3A0") { Name = "Activator" },
+				new SceneID("4D0282723BC798D96F7723AA00736FAE") { Name = "Animator" }
+			}
 		};
 		public static SceneID SpiritTorch2 = new SceneID("42587F47444836A14EC605A75959D7BE") {
-			Children = new List<SceneID>() { new SceneID("4DF18636DF001325C99C36F7152979A3"),
-											 new SceneID("46740FD188562B3FF715512F4240E9B6") { Name = "Activator" },
-											 new SceneID("4B49143B402D7D8415E9C8713CF95893") { Name = "Animator" } }
+			Children = new List<SceneID>() {
+				new SceneID("4DF18636DF001325C99C36F7152979A3"),
+				new SceneID("46740FD188562B3FF715512F4240E9B6") { Name = "Activator" },
+				new SceneID("4B49143B402D7D8415E9C8713CF95893") { Name = "Animator" }
+			}
 		};
 		public static SceneID SpiritTorchPlatform = new SceneID("4BCCF02B795DA6F2BA2A84FCA8780BA2") {
-			Children = new List<SceneID>() { new SceneID("43334120BB6EBCAF3A024C090BD7FDAF"),
-											 new SceneID("494E4784D02C547CB08421BCFD49569D") { Name = "Activator" },
-											 new SceneID("4A1294F811B9CEAB8D3DB9F45C5345AD") { Name = "Animator" } }
+			Children = new List<SceneID>() {
+				new SceneID("43334120BB6EBCAF3A024C090BD7FDAF"),
+				new SceneID("494E4784D02C547CB08421BCFD49569D") { Name = "Activator" },
+				new SceneID("4A1294F811B9CEAB8D3DB9F45C5345AD") { Name = "Animator" }
+			}
 		};
 		public static SceneID SpiritTorch4 = new SceneID("47C2B7BEB6AA12FD5128783F562F149B") {
-			Children = new List<SceneID>() { new SceneID("488B32F9E892CF0C5F5EC392A602C9AD"),
-											 new SceneID("41B25ACFE5B124ED151C1DD49D933D9D") { Name = "Activator" },
-											 new SceneID("4E28311010C16F66C7CAC899EFD78FA3") { Name = "Animator" } }
+			Children = new List<SceneID>() {
+				new SceneID("488B32F9E892CF0C5F5EC392A602C9AD"),
+				new SceneID("41B25ACFE5B124ED151C1DD49D933D9D") { Name = "Activator" },
+				new SceneID("4E28311010C16F66C7CAC899EFD78FA3") { Name = "Animator" }
+			}
 		};
 		public static SceneID SpiritTorch5 = new SceneID("41E06E69961B8DEC4B9AD23FF981C2B6") {
-			Children = new List<SceneID>() { new SceneID("41A7635B7240DFED08373BDB4006F98F"),
-											 new SceneID("498F837EB34F6EB90EE6463D6F0EDD87") { Name = "Activator" },
-											 new SceneID("4672258A8AB8DA45BDC077D7464D56AA") { Name = "Animator" } }
+			Children = new List<SceneID>() {
+				new SceneID("41A7635B7240DFED08373BDB4006F98F"),
+				new SceneID("498F837EB34F6EB90EE6463D6F0EDD87") { Name = "Activator" },
+				new SceneID("4672258A8AB8DA45BDC077D7464D56AA") { Name = "Animator" }
+			}
 		};
 		public static SceneID SpiritTorch6 = new SceneID("47C6173E37FA67E31BCE09C64BF9C1A1") {
-			Children = new List<SceneID>() { new SceneID("46FDC92500D654E9807F7249C2987EA0"),
-											 new SceneID("433CFA5E16622CF007B3C734849C0EAD") { Name = "Activator" },
-											 new SceneID("49743E76F1638C183269A3F37AF1E8A2") { Name = "Animator" } }
+			Children = new List<SceneID>() {
+				new SceneID("46FDC92500D654E9807F7249C2987EA0"),
+				new SceneID("433CFA5E16622CF007B3C734849C0EAD") { Name = "Activator" },
+				new SceneID("49743E76F1638C183269A3F37AF1E8A2") { Name = "Animator" }
+			}
 		};
 		public static SceneID SpiritTorchTop = new SceneID("4137F45F06C5143A19F2B21717730797") {
-			Children = new List<SceneID>() { new SceneID("4373920660D327859955FAB9F8615DBB"),
-											 new SceneID("424E4084617803F25098B6EBFC3233B9") { Name = "Activator" },
-											 new SceneID("47274FD209216A267BB1D71109E2929D") { Name = "Animator" } }
+			Children = new List<SceneID>() {
+				new SceneID("4373920660D327859955FAB9F8615DBB"),
+				new SceneID("424E4084617803F25098B6EBFC3233B9") { Name = "Activator" },
+				new SceneID("47274FD209216A267BB1D71109E2929D") { Name = "Animator" }
+			}
 		};
 	}
 	public class NorthMangroveFallsLanternIntro : SceneID {

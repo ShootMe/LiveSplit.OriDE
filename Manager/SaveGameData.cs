@@ -540,4 +540,9 @@ namespace LiveSplit.OriDE {
 		Health,
 		MaxHealth = 4
 	}
+	public enum LeverDirections {
+		Left,
+		Middle,
+		Right
+	}
 }

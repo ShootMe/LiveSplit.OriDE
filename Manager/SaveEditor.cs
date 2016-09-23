@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -6,7 +7,8 @@ using System.Windows.Forms;
 namespace LiveSplit.OriDE {
 	public partial class SaveEditor : Form {
 		public SaveGameData Save { get; set; }
-
+		private List<TreeNode> allNodes = new List<TreeNode>();
+		private static string currentFilter = null;
 		public SaveEditor() {
 			InitializeComponent();
 
@@ -15,6 +17,16 @@ namespace LiveSplit.OriDE {
 			if (file != null) {
 				this.BackgroundImage = Image.FromStream(file);
 			}
+		}
+		private void SaveEditor_Shown(object sender, EventArgs e) {
+			SuspendUpdate.Suspend(this);
+			UpdateInfo();
+			SuspendUpdate.Resume(this);
+			txtFilter.Text = currentFilter;
+			txtFilter_TextChanged(this, null);
+		}
+		private void SaveEditor_FormClosed(object sender, FormClosedEventArgs e) {
+			currentFilter = txtFilter.Text;
 		}
 
 		public void UpdateInfo() {
@@ -154,10 +166,12 @@ namespace LiveSplit.OriDE {
 
 				treeObjects.SuspendLayout();
 				Type[] types = typeof(SceneID).Assembly.GetTypes();
+				allNodes.Clear();
 				for (int i = 0; i < types.Length; i++) {
 					Type asmType = types[i];
 					if (asmType != typeof(SceneID) && asmType != typeof(MasterAssets) && typeof(SceneID).IsAssignableFrom(asmType)) {
 						TreeNode parentNode = treeObjects.Nodes.Add(asmType.Name);
+						allNodes.Add(parentNode);
 
 						FieldInfo[] fields = asmType.GetFields(BindingFlags.Static | BindingFlags.Public);
 						for (int j = 0; j < fields.Length; j++) {
@@ -178,6 +192,10 @@ namespace LiveSplit.OriDE {
 									}
 								} else if (fieldName.IndexOf("Torch") >= 0) {
 									if (data[0] == 0) {
+										childNode.Checked = true;
+									}
+								} else if (fieldName.IndexOf("Lever") >= 0) {
+									if (data.GetInt(0) == (int)(fieldName.IndexOf("GoesLeft") >= 0 ? LeverDirections.Right : LeverDirections.Left)) {
 										childNode.Checked = true;
 									}
 								} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
@@ -214,13 +232,6 @@ namespace LiveSplit.OriDE {
 				MessageBox.Show(this, "Failed to load save: " + ex.ToString());
 			}
 		}
-
-		private void SaveEditor_Shown(object sender, EventArgs e) {
-			SuspendUpdate.Suspend(this);
-			UpdateInfo();
-			SuspendUpdate.Resume(this);
-		}
-
 		private void btnSave_Click(object sender, EventArgs e) {
 			try {
 				SceneData data = Save.Master[MasterAssets.SeinLevel];
@@ -388,8 +399,8 @@ namespace LiveSplit.OriDE {
 				data[(int)WorldEvents.WarmthReturned] = (byte)(chkWarmth.Checked ? 1 : 0);
 				data[(int)WorldEvents.WindRestored] = (byte)(chkWindRestored.Checked ? 1 : 0);
 
-				for (int i = 0; i < treeObjects.Nodes.Count; i++) {
-					TreeNode node = treeObjects.Nodes[i];
+				for (int i = 0; i < allNodes.Count; i++) {
+					TreeNode node = allNodes[i];
 
 					for (int j = 0; j < node.Nodes.Count; j++) {
 						TreeNode child = node.Nodes[j];
@@ -405,6 +416,15 @@ namespace LiveSplit.OriDE {
 								data[0] = (byte)(child.Checked ? 1 : 0);
 							} else if (fieldName.IndexOf("Torch") >= 0) {
 								data[0] = (byte)(child.Checked ? 0 : 1);
+
+								if (sceneValue.Children != null) {
+									foreach (SceneID extra in sceneValue.Children) {
+										SetChildScene(sceneValue.Parent, extra, !child.Checked);
+									}
+								}
+							} else if (fieldName.IndexOf("Lever") >= 0) {
+								data.Data = new byte[4];
+								data.WriteInt(0, (int)(fieldName.IndexOf("GoesLeft") >= 0 ? (child.Checked ? LeverDirections.Right : LeverDirections.Left) : (child.Checked ? LeverDirections.Left : LeverDirections.Right)));
 
 								if (sceneValue.Children != null) {
 									foreach (SceneID extra in sceneValue.Children) {
@@ -447,6 +467,15 @@ namespace LiveSplit.OriDE {
 							} else if (fieldName.IndexOf("Torch") >= 0) {
 								data.Data = new byte[1];
 								data[0] = 1;
+
+								if (sceneValue.Children != null) {
+									foreach (SceneID extra in sceneValue.Children) {
+										SetChildScene(sceneValue.Parent, extra, !child.Checked);
+									}
+								}
+							} else if (fieldName.IndexOf("Lever") >= 0) {
+								data.Data = new byte[4];
+								data.WriteInt(0, (int)(fieldName.IndexOf("GoesLeft") >= 0 ? LeverDirections.Left : LeverDirections.Right));
 
 								if (sceneValue.Children != null) {
 									foreach (SceneID extra in sceneValue.Children) {
@@ -600,6 +629,61 @@ namespace LiveSplit.OriDE {
 			} finally {
 				AcceptButton = btnSave;
 			}
+		}
+		private void txtFilter_TextChanged(object sender, EventArgs e) {
+			SuspendUpdate.Suspend(this);
+			currentFilter = txtFilter.Text;
+			string[] filters = null;
+			if (!string.IsNullOrEmpty(currentFilter)) {
+				filters = currentFilter.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+			}
+
+			treeObjects.SuspendLayout();
+			treeObjects.Nodes.Clear();
+
+			for (int i = 0; i < allNodes.Count; i++) {
+				TreeNode node = allNodes[i];
+				TreeNode copy = new TreeNode(node.Text);
+
+				bool addedParent = false;
+				if (filters != null && filters.Length > 0) {
+					for (int k = 0; k < filters.Length; k++) {
+						if (node.Text.IndexOf(filters[k], StringComparison.OrdinalIgnoreCase) >= 0) {
+							addedParent = true;
+							break;
+						}
+					}
+				}
+
+				bool addedChild = false;
+				for (int j = 0; j < node.Nodes.Count; j++) {
+					TreeNode child = node.Nodes[j];
+
+					bool shouldAdd = addedParent || filters == null || filters.Length == 0;
+					if (!shouldAdd) {
+						for (int k = 0; k < filters.Length; k++) {
+							if (child.Text.IndexOf(filters[k], StringComparison.OrdinalIgnoreCase) >= 0) {
+								shouldAdd = true;
+								break;
+							}
+						}
+					}
+
+					if (shouldAdd) {
+						addedChild = true;
+						copy.Nodes.Add(child);
+					}
+				}
+
+				if (addedChild || addedParent) {
+					treeObjects.Nodes.Add(copy);
+				}
+			}
+
+			treeObjects.ExpandAll();
+			treeObjects.ResumeLayout(true);
+			treeObjects.SelectedNode = treeObjects.Nodes[0];
+			SuspendUpdate.Resume(this);
 		}
 	}
 }
