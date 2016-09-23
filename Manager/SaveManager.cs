@@ -61,7 +61,9 @@ namespace LiveSplit.OriDE {
 
 					count++;
 					SaveGameData save = new SaveGameData();
-					save.Load(files[i]);
+					try {
+						save.Load(files[i]);
+					} catch { continue; }
 
 					SceneData data = save.Master[MasterAssets.SeinLevel];
 					int currentLevel = (data?.GetInt((int)LevelInfo.CurrentLevel)).GetValueOrDefault(0);

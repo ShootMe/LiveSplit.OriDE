@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 namespace LiveSplit.OriDE {
@@ -37,12 +38,53 @@ namespace LiveSplit.OriDE {
 
 		public SceneCollection Master { get { return this.Insert(SceneID.Assets); } }
 
+		static SaveGameData() {
+			Dictionary<string, FieldInfo> masterFields = new Dictionary<string, FieldInfo>();
+			foreach (FieldInfo field in typeof(MasterAssets).GetFields(BindingFlags.Static | BindingFlags.Public)) {
+				masterFields.Add(field.Name, field);
+			}
+
+			Type[] types = typeof(SceneID).Assembly.GetTypes();
+			for (int i = 0; i < types.Length; i++) {
+				Type asmType = types[i];
+				if (asmType != typeof(SceneID) && typeof(SceneID).IsAssignableFrom(asmType)) {
+					FieldInfo[] fields = asmType.GetFields(BindingFlags.Static | BindingFlags.Public);
+					for (int j = 0; j < fields.Length; j++) {
+						SceneID sceneValue = (SceneID)fields[j].GetValue(null);
+						sceneValue.Name = fields[j].Name;
+						FieldInfo field = null;
+						if (masterFields.TryGetValue(asmType.Name, out field)) {
+							sceneValue.Parent = (SceneID)field.GetValue(null);
+						}
+						SceneID.SceneNames.Add(sceneValue, sceneValue.Name);
+					}
+				}
+			}
+
+			SceneID.SceneNames.Add(SceneID.Assets, SceneID.Assets.Name);
+
+			if (File.Exists("guids.txt")) {
+				using (StreamReader reader = new StreamReader("guids.txt")) {
+					string line = null;
+					while ((line = reader.ReadLine()) != null) {
+						string[] splits = line.Split('\t');
+						if (splits.Length != 5) { continue; }
+
+						SceneID id = new SceneID(int.Parse(splits[1]), int.Parse(splits[2]), int.Parse(splits[3]), int.Parse(splits[4]));
+						if (!SceneID.SceneNames.ContainsKey(id)) {
+							SceneID.SceneNames.Add(id, splits[0]);
+						}
+					}
+				}
+			}
+		}
+
 		public void WriteObjectsAsText(string filePath) {
 			File.Delete(filePath);
 			Encoding win = Encoding.GetEncoding(1252);
 			byte[] seperator = win.GetBytes("------------------------------------------------------------------------------\n\n");
 
-			using (FileStream fs = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
+			using (FileStream fs = File.Open(filePath, FileMode.Create, FileAccess.ReadWrite)) {
 				using (BinaryWriter writer = new BinaryWriter(fs)) {
 					foreach (SceneCollection current in Scenes.Values) {
 						byte[] output = win.GetBytes(current.ID.ToString() + " " + current.Count + "\n");
@@ -59,7 +101,7 @@ namespace LiveSplit.OriDE {
 			}
 		}
 		public void Save(string filePath) {
-			using (FileStream fs = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
+			using (FileStream fs = File.Open(filePath, FileMode.Create, FileAccess.ReadWrite)) {
 				using (BinaryWriter writer = new BinaryWriter(fs)) {
 					writer.Write(HEADER_FORMAT_STRING);
 					writer.Write(VERSION);
@@ -157,7 +199,7 @@ namespace LiveSplit.OriDE {
 		}
 		public bool Remove(SceneID sceneID) {
 			foreach (SceneCollection collection in Scenes.Values) {
-				if(collection.Remove(sceneID)) {
+				if (collection.Remove(sceneID)) {
 					return true;
 				}
 			}
@@ -197,6 +239,16 @@ namespace LiveSplit.OriDE {
 				Objects.TryGetValue(id, out data);
 				return data;
 			}
+		}
+		public SceneData Add(SceneID id) {
+			SceneData data = null;
+			if (Objects.TryGetValue(id, out data)) {
+				return data;
+			}
+			data = new SceneData();
+			data.ID = id;
+			Objects.Add(id, data);
+			return data;
 		}
 		public bool Remove(SceneID sceneID) {
 			return Objects.Remove(sceneID);
@@ -263,26 +315,7 @@ namespace LiveSplit.OriDE {
 	public class SceneID {
 		public static SceneID Assets = new MasterAssets();
 		public static Dictionary<SceneID, string> SceneNames = new Dictionary<SceneID, string>();
-
-		static SceneID() {
-			SceneNames.Add(Assets, Assets.Name);
-
-			if (File.Exists("guids.txt")) {
-				using (StreamReader reader = new StreamReader("guids.txt")) {
-					string line = null;
-					while ((line = reader.ReadLine()) != null) {
-						string[] splits = line.Split('\t');
-						if (splits.Length != 5) { continue; }
-
-						SceneID id = new SceneID(int.Parse(splits[1]), int.Parse(splits[2]), int.Parse(splits[3]), int.Parse(splits[4]));
-						if (!SceneNames.ContainsKey(id)) {
-							SceneNames.Add(id, splits[0]);
-						}
-					}
-				}
-			}
-		}
-
+		public SceneID Parent;
 		public string Name;
 		public readonly long Left, Right;
 
