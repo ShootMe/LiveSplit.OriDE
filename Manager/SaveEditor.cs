@@ -169,57 +169,70 @@ namespace LiveSplit.OriDE {
 				allNodes.Clear();
 				for (int i = 0; i < types.Length; i++) {
 					Type asmType = types[i];
-					if (asmType != typeof(SceneID) && asmType != typeof(MasterAssets) && typeof(SceneID).IsAssignableFrom(asmType)) {
+					if (asmType != typeof(SceneID) && typeof(SceneID).IsAssignableFrom(asmType)) {
 						TreeNode parentNode = treeObjects.Nodes.Add(asmType.Name);
 						allNodes.Add(parentNode);
 
-						FieldInfo[] fields = asmType.GetFields(BindingFlags.Static | BindingFlags.Public);
-						for (int j = 0; j < fields.Length; j++) {
-							string fieldName = fields[j].Name;
-							TreeNode childNode = new TreeNode(fieldName);
-							SceneID sceneValue = (SceneID)fields[j].GetValue(null);
-							childNode.Tag = sceneValue;
+						if (asmType != typeof(MasterAssets)) {
+							FieldInfo[] fields = asmType.GetFields(BindingFlags.Static | BindingFlags.Public);
+							for (int j = 0; j < fields.Length; j++) {
+								string fieldName = fields[j].Name;
+								TreeNode childNode = new TreeNode(fieldName);
+								SceneID sceneValue = (SceneID)fields[j].GetValue(null);
+								childNode.Tag = sceneValue;
 
-							data = Save.Find(sceneValue);
+								data = Save.Find(sceneValue);
+								if (data != null) {
+									if (fieldName.IndexOf("Animator") >= 0) {
+										if (data.GetFloat(0) == 0) {
+											childNode.Checked = true;
+										}
+									} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
+										if (data[0] == 1) {
+											childNode.Checked = true;
+										}
+									} else if (fieldName.IndexOf("Torch") >= 0) {
+										if (data[0] == 0) {
+											childNode.Checked = true;
+										}
+									} else if (fieldName.IndexOf("Lever") >= 0) {
+										if (data.GetInt(0) == (int)(fieldName.IndexOf("GoesLeft") >= 0 ? LeverDirections.Right : LeverDirections.Left)) {
+											childNode.Checked = true;
+										}
+									} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
+										  fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
+										if (data.GetFloat((int)EntityDamage.Health) > 0) {
+											childNode.Checked = true;
+										}
+									} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
+										if (data[(int)Pickup.Collected] == 0) {
+											childNode.Checked = true;
+										}
+									} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
+										if (data[(int)Collectible.Collected] == 0) {
+											childNode.Checked = true;
+										}
+									} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
+										if (data.GetInt((int)Door.CurrentState) != 2) {
+											childNode.Checked = true;
+										}
+									}
+								} else {
+									childNode.Checked = true;
+								}
+								parentNode.Nodes.Add(childNode);
+							}
+						} else {
+							TreeNode childNode = parentNode.Nodes.Add("SwimmingBar_Animator");
+							childNode.Tag = MasterAssets.SwimmingBar_Animator;
+							data = Save.Find(MasterAssets.SwimmingBar_Animator);
 							if (data != null) {
-								if (fieldName.IndexOf("Animator") >= 0) {
-									if (data.GetFloat(0) == 0) {
-										childNode.Checked = true;
-									}
-								} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
-									if (data[0] == 1) {
-										childNode.Checked = true;
-									}
-								} else if (fieldName.IndexOf("Torch") >= 0) {
-									if (data[0] == 0) {
-										childNode.Checked = true;
-									}
-								} else if (fieldName.IndexOf("Lever") >= 0) {
-									if (data.GetInt(0) == (int)(fieldName.IndexOf("GoesLeft") >= 0 ? LeverDirections.Right : LeverDirections.Left)) {
-										childNode.Checked = true;
-									}
-								} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
-									  fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
-									if (data.GetFloat((int)EntityDamage.Health) > 0) {
-										childNode.Checked = true;
-									}
-								} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
-									if (data[(int)Pickup.Collected] == 0) {
-										childNode.Checked = true;
-									}
-								} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
-									if (data[(int)Collectible.Collected] == 0) {
-										childNode.Checked = true;
-									}
-								} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
-									if (data.GetInt((int)Door.CurrentState) != 2) {
-										childNode.Checked = true;
-									}
+								if (data.GetFloat(0) == 0) {
+									childNode.Checked = true;
 								}
 							} else {
 								childNode.Checked = true;
 							}
-							parentNode.Nodes.Add(childNode);
 						}
 					}
 				}
@@ -408,39 +421,25 @@ namespace LiveSplit.OriDE {
 						string fieldName = child.Text;
 
 						data = Save.Find(sceneValue);
+						bool enableDisable = !child.Checked;
 
 						if (data != null) {
 							if (fieldName.IndexOf("Animator") >= 0) {
 								data.WriteFloat(0, child.Checked ? 0 : 100f);
+								data[4] = (byte)(child.Checked ? 0 : 1);
 							} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
 								data[0] = (byte)(child.Checked ? 1 : 0);
 							} else if (fieldName.IndexOf("Torch") >= 0) {
 								data[0] = (byte)(child.Checked ? 0 : 1);
-
-								if (sceneValue.Children != null) {
-									foreach (SceneID extra in sceneValue.Children) {
-										SetChildScene(sceneValue.Parent, extra, !child.Checked);
-									}
-								}
 							} else if (fieldName.IndexOf("Lever") >= 0) {
 								data.Data = new byte[4];
 								data.WriteInt(0, (int)(fieldName.IndexOf("GoesLeft") >= 0 ? (child.Checked ? LeverDirections.Right : LeverDirections.Left) : (child.Checked ? LeverDirections.Left : LeverDirections.Right)));
-
-								if (sceneValue.Children != null) {
-									foreach (SceneID extra in sceneValue.Children) {
-										SetChildScene(sceneValue.Parent, extra, !child.Checked);
-									}
-								}
 							} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
 									fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
 								float currentHP = data.GetFloat((int)EntityDamage.Health);
 								data.WriteFloat((int)EntityDamage.Health, child.Checked ? (currentHP > 0 ? currentHP : data.GetFloat((int)EntityDamage.MaxHealth)) : -1f);
 
-								if (sceneValue.Children != null) {
-									foreach (SceneID extra in sceneValue.Children) {
-										SetChildScene(sceneValue.Parent, extra, child.Checked);
-									}
-								}
+								enableDisable = !enableDisable;
 							} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
 								data[(int)Pickup.Collected] = (byte)(child.Checked ? 0 : 1);
 							} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
@@ -461,27 +460,16 @@ namespace LiveSplit.OriDE {
 							if (fieldName.IndexOf("Animator") >= 0) {
 								data.Data = new byte[6];
 								data.WriteFloat(0, 100f);
+								data[4] = 1;
 							} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
 								data.Data = new byte[1];
 								data[0] = 0;
 							} else if (fieldName.IndexOf("Torch") >= 0) {
 								data.Data = new byte[1];
 								data[0] = 1;
-
-								if (sceneValue.Children != null) {
-									foreach (SceneID extra in sceneValue.Children) {
-										SetChildScene(sceneValue.Parent, extra, !child.Checked);
-									}
-								}
 							} else if (fieldName.IndexOf("Lever") >= 0) {
 								data.Data = new byte[4];
 								data.WriteInt(0, (int)(fieldName.IndexOf("GoesLeft") >= 0 ? LeverDirections.Left : LeverDirections.Right));
-
-								if (sceneValue.Children != null) {
-									foreach (SceneID extra in sceneValue.Children) {
-										SetChildScene(sceneValue.Parent, extra, !child.Checked);
-									}
-								}
 							} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
 										fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
 								data.Data = new byte[8];
@@ -497,11 +485,7 @@ namespace LiveSplit.OriDE {
 									data.WriteFloat((int)EntityDamage.MaxHealth, 4);
 								}
 
-								if (sceneValue.Children != null) {
-									foreach (SceneID extra in sceneValue.Children) {
-										SetChildScene(sceneValue.Parent, extra, child.Checked);
-									}
-								}
+								enableDisable = !enableDisable;
 							} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
 								data.Data = new byte[5];
 								data[(int)Pickup.Collected] = 1;
@@ -512,6 +496,12 @@ namespace LiveSplit.OriDE {
 								data.Data = new byte[16];
 								data.WriteInt((int)Door.CurrentState, 2);
 								data.WriteInt((int)Door.AmountOfItemsUsed, fieldName.IndexOf("Two") >= 0 ? 2 : 4);
+							}
+						}
+
+						if (sceneValue.Children != null) {
+							foreach (SceneID extra in sceneValue.Children) {
+								SetChildScene(sceneValue.Parent, extra, enableDisable);
 							}
 						}
 					}
@@ -527,6 +517,7 @@ namespace LiveSplit.OriDE {
 			if (data != null) {
 				if (string.IsNullOrEmpty(id.Name)) {
 					data.WriteFloat(0, enabled ? 100f : 0f);
+					data[4] = (byte)(enabled ? 1 : 0);
 				} else if (id.Name.IndexOf("Activator") >= 0) {
 					data[0] = (byte)(enabled ? 1 : 0);
 				} else if (id.Name.IndexOf("Deactivate") >= 0) {

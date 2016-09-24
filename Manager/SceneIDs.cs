@@ -14,6 +14,11 @@ namespace LiveSplit.OriDE {
 		public static SceneID SeinEnergyInfo = new SceneID("4DE917EC7C3072427FEBCC44A35880B9");
 		public static SceneID SavePedestals = new SceneID("44C2B52E4830C74C96FEAD2C45332E8D");
 		public static SceneID WorldEvents = new SceneID("4744D2581864E35223F834212805F1B0");
+		public static SceneID SwimmingBar_Animator = new SceneID("4F040433FBDBFD6AA1C6F26773D49DA4") {
+			Children = new List<SceneID>() {
+				new SceneID("4605C622E293847940D38CE24219D5AE")
+			}
+		};
 
 		public static SceneID ForlornRuinsC = new SceneID("BAB44F6981AC324314572CF5F2F7C3E9");
 		public static SceneID ForlornRuinsEntrancePlaceholder = new SceneID("1B24B91ADBC5C18DFD4622597D4569EA");
@@ -47,6 +52,7 @@ namespace LiveSplit.OriDE {
 		public static SceneID MangroveFallsGrenadeEscalation = new SceneID("A664AF2E8A8732F391BF3DD32C3ED1F8");
 		public static SceneID MangroveFallsGrenadeEscalationR = new SceneID("3084738D7254B9F4425FEE58F86C9F18");
 		public static SceneID MistyWoodsCeilingClimbing = new SceneID("5A343558C96892926513A7C593FE5C9B");
+		public static SceneID MistyWoodsDocks = new SceneID("CB94B3544B6E75DA67EE43D34B7A0D39");
 		public static SceneID MistyWoodsDocksB = new SceneID("CA34C31AE29DC88EC11F24E09F50C25A");
 		public static SceneID MistyWoodsGetClimb = new SceneID("CD64DF8FCA0BBB6EC53BF4D2D5DD655A");
 		public static SceneID MistyWoodsGetTorch = new SceneID("AF844791A8E493506C012181B2606E4A");
@@ -628,7 +634,7 @@ namespace LiveSplit.OriDE {
 		public static SceneID EnabledByDarknessLifted_NaruStoryTop_Trigger = new SceneID("40491B45A64420A44AF16A754DA1A487");
 		public static SceneID Mapstone = new SceneID("424D5FE459EA408810D4C29B6A6C8DAE");
 		public static SceneID PetrifiedPlant = new SceneID("418500C69E8CAE7F14F722175C03C08B");
-		public static SceneID Lever_GoesLeft = new SceneID("43801A22028508D9530EA2A20C60789C") {
+		public static SceneID LeverNaruStatue_GoesLeft = new SceneID("43801A22028508D9530EA2A20C60789C") {
 			Children = new List<SceneID>() {
 				new SceneID("4A4A9713AD3F88D32BAED0E1B6B9399F") { Name = "Deactivate" },
 				new SceneID("49DF37A38C5875ED081754C4051F22BB") { Name = "Animator" }
