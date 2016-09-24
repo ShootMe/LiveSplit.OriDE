@@ -426,7 +426,7 @@ namespace LiveSplit.OriDE {
 						if (data != null) {
 							if (fieldName.IndexOf("Animator") >= 0) {
 								data.WriteFloat(0, child.Checked ? 0 : 100f);
-								data[4] = (byte)(child.Checked ? 0 : 1);
+								data[4] = 1;
 							} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
 								data[0] = (byte)(child.Checked ? 1 : 0);
 							} else if (fieldName.IndexOf("Torch") >= 0) {
@@ -517,7 +517,7 @@ namespace LiveSplit.OriDE {
 			if (data != null) {
 				if (string.IsNullOrEmpty(id.Name)) {
 					data.WriteFloat(0, enabled ? 100f : 0f);
-					data[4] = (byte)(enabled ? 1 : 0);
+					data[4] = 1;
 				} else if (id.Name.IndexOf("Activator") >= 0) {
 					data[0] = (byte)(enabled ? 1 : 0);
 				} else if (id.Name.IndexOf("Deactivate") >= 0) {
@@ -531,6 +531,7 @@ namespace LiveSplit.OriDE {
 
 				if (string.IsNullOrEmpty(id.Name)) {
 					data.Data = new byte[6];
+					data[4] = 1;
 				} else if (id.Name.IndexOf("Activator") >= 0) {
 					data.Data = new byte[1];
 				} else if (id.Name.IndexOf("Deactivate") >= 0) {
