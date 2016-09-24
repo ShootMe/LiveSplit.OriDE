@@ -831,11 +831,11 @@ namespace LiveSplit.OriDE {
 		};
 		public static SceneID CreepMiddleTop = new SceneID("4271F32BD4D4A13DD35BD91A2D8C4183");
 		public static SceneID DoorWithTwoSlots = new SceneID("4F42A3632371D15EFE5F6B669A612B98");
-		public static SceneID Creep1B = new SceneID("4C3268B25C746B6F272CD95C5C812EA2");
-		public static SceneID Creep2B = new SceneID("41D5B05C86D98EA225DADF9B1BDC09B8");
-		public static SceneID Creep3B = new SceneID("4C729FFB86E80F6200F70B584B4DB286");
-		public static SceneID Creep4B = new SceneID("4932A953022F9C7B474F5B7B920C91B8");
-		public static SceneID Creep5B = new SceneID("45A687DC307CC29EC7629FC18E435A8E");
+		public static SceneID CreepBL = new SceneID("4C3268B25C746B6F272CD95C5C812EA2");
+		public static SceneID CreepBR = new SceneID("4932A953022F9C7B474F5B7B920C91B8");
+		public static SceneID CreepM = new SceneID("41D5B05C86D98EA225DADF9B1BDC09B8");
+		public static SceneID CreepTL = new SceneID("45A687DC307CC29EC7629FC18E435A8E");
+		public static SceneID CreepTR = new SceneID("4C729FFB86E80F6200F70B584B4DB286");
 		public static SceneID RedBulb = new SceneID("490F022CAA64283FDBDB9F5FF553259F");
 	}
 	public class SunkenGladesOriRoom : SceneID {
@@ -859,16 +859,16 @@ namespace LiveSplit.OriDE {
 		public static SceneID Mapstone = new SceneID("498A9179FF77BCB9BD2E4818DF0770B0");
 		public static SceneID AbilityCell = new SceneID("46B4969FCEB745703602FBFAE0A467B2");
 		public static SceneID RedBulb = new SceneID("4E44EA678FA1CEECBB40B9C0CAF62682");
-		public static SceneID Creep1A = new SceneID("488989A85C039D87D8B278614D99A1BF");
-		public static SceneID Creep2A = new SceneID("4D65A16E6B745EA43DA3E866B76AC3BC");
-		public static SceneID Creep3A = new SceneID("45AB2E05E3DC87D66234DD3A6F2BCA95");
-		public static SceneID Creep4A = new SceneID("4DB7DA7939E46F490A902D1B5D1571AF");
-		public static SceneID Creep5A = new SceneID("45D13D10574AE27B4148CEE288308DB9");
-		public static SceneID Creep1B = new SceneID("4C1A20BCA51F5264BE980CB890EA33AF");
-		public static SceneID Creep2B = new SceneID("4DF340CC7846C658AEC2F9705FB2C6AC");
-		public static SceneID Creep3B = new SceneID("45658252F372AEEFC745E89C61830A99");
-		public static SceneID Creep4B = new SceneID("467D03E57DAACDFB65252ED1BEACEA83");
-		public static SceneID Creep5B = new SceneID("42396EBD253CD5DAAC8C31F301DF8BA8");
+		public static SceneID CreepMushroomLT = new SceneID("45AB2E05E3DC87D66234DD3A6F2BCA95");
+		public static SceneID CreepMushroomLB = new SceneID("4DF340CC7846C658AEC2F9705FB2C6AC");
+		public static SceneID CreepMushroomM = new SceneID("4D65A16E6B745EA43DA3E866B76AC3BC");
+		public static SceneID CreepMushroomRT = new SceneID("45D13D10574AE27B4148CEE288308DB9");
+		public static SceneID CreepMushroomRB = new SceneID("42396EBD253CD5DAAC8C31F301DF8BA8");
+		public static SceneID CreepWallBL = new SceneID("4DB7DA7939E46F490A902D1B5D1571AF");
+		public static SceneID CreepWallBR = new SceneID("4C1A20BCA51F5264BE980CB890EA33AF");
+		public static SceneID CreepWallM = new SceneID("488989A85C039D87D8B278614D99A1BF");
+		public static SceneID CreepWallTL = new SceneID("45658252F372AEEFC745E89C61830A99");
+		public static SceneID CreepWallTR = new SceneID("467D03E57DAACDFB65252ED1BEACEA83");
 	}
 	public class SunkenGladesSpiritCavernLaser : SceneID {
 		public static SceneID StompableFloor = new SceneID("45FD715F48CE32E33691E284BB3AEE94");
@@ -885,11 +885,11 @@ namespace LiveSplit.OriDE {
 		public static SceneID Keystone = new SceneID("4E6531353A113E270A285B3B6AFC8CB2");
 		public static SceneID ExpOrb15_1 = new SceneID("477E93371AD2ED468633046D72E9238C");
 		public static SceneID ExpOrb15_2 = new SceneID("42A782A405BBF4FB4E920152B3FEFDA4");
-		public static SceneID Creep1 = new SceneID("4B221356931E63D52EEB4657AFC87393");
-		public static SceneID Creep2 = new SceneID("45C711456E495EAD8BC4DF69FE5232B1");
-		public static SceneID Creep3 = new SceneID("496641944468BFB767252713B25F63BA");
-		public static SceneID Creep4 = new SceneID("446DFD3B46F2DCBDFFDC5A37DF405CBD");
-		public static SceneID Creep5 = new SceneID("4C76880636366658490FCD59C091B28D");
+		public static SceneID CreepLT = new SceneID("45C711456E495EAD8BC4DF69FE5232B1");
+		public static SceneID CreepLB = new SceneID("4C76880636366658490FCD59C091B28D");
+		public static SceneID CreepM = new SceneID("4B221356931E63D52EEB4657AFC87393");
+		public static SceneID CreepRT = new SceneID("446DFD3B46F2DCBDFFDC5A37DF405CBD");
+		public static SceneID CreepRB = new SceneID("496641944468BFB767252713B25F63BA");
 	}
 	public class SunkenGladesSpiritCavernWalljumpB : SceneID {
 		public static SceneID StoryLines_fadeInSpiritA_Trigger = new SceneID("470F4C438BE2C6E0E24E201AF7C265B6");

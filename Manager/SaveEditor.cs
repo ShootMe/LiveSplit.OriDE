@@ -438,8 +438,6 @@ namespace LiveSplit.OriDE {
 									fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
 								float currentHP = data.GetFloat((int)EntityDamage.Health);
 								data.WriteFloat((int)EntityDamage.Health, child.Checked ? (currentHP > 0 ? currentHP : data.GetFloat((int)EntityDamage.MaxHealth)) : -1f);
-
-								enableDisable = !enableDisable;
 							} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
 								data[(int)Pickup.Collected] = (byte)(child.Checked ? 0 : 1);
 							} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
@@ -484,8 +482,6 @@ namespace LiveSplit.OriDE {
 									data.WriteFloat((int)EntityDamage.Health, -1);
 									data.WriteFloat((int)EntityDamage.MaxHealth, 4);
 								}
-
-								enableDisable = !enableDisable;
 							} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
 								data.Data = new byte[5];
 								data[(int)Pickup.Collected] = 1;
