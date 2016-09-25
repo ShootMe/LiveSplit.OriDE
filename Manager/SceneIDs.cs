@@ -5,6 +5,7 @@ namespace LiveSplit.OriDE {
 		public MasterAssets() : base() { Name = "MasterAssets"; }
 		public static SceneID SeinInventory = new SceneID("444B746E7F7A0AE0CC208C40DE7CD9B1");
 		public static SceneID PlatformMovement = new SceneID("4AA674A355CA54E9321AEAB78E4E5599");
+		public static SceneID ScenesManager = new SceneID("4A5B886C02AC652324FC2FDD8ED513AB");
 		public static SceneID SeinLevel = new SceneID("44D72845AB790E021CC526C2EEAC82A5");
 		public static SceneID PlayerAbilities = new SceneID("4B417974465D2E6BE06A6D8DBD0F0BB3");
 		public static SceneID SeinSoulFlame = new SceneID("4548C1A49142B7E7C26404C530CF0CAC");
@@ -19,6 +20,8 @@ namespace LiveSplit.OriDE {
 				new SceneID("4605C622E293847940D38CE24219D5AE")
 			}
 		};
+		//sunkenGladesSpiritCavernWalljumpB
+		public static SceneID WallJumpTimeLine = new SceneID("4478A1869C0C7012B29B6A2736B8C0A4");
 
 		public static SceneID ForlornRuinsC = new SceneID("BAB44F6981AC324314572CF5F2F7C3E9");
 		public static SceneID ForlornRuinsEntrancePlaceholder = new SceneID("1B24B91ADBC5C18DFD4622597D4569EA");

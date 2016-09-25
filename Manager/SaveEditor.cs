@@ -270,6 +270,10 @@ namespace LiveSplit.OriDE {
 				data.WriteFloat((int)SaveInfo.SpeedX, float.Parse(txtVelocityX.Text));
 				data.WriteFloat((int)SaveInfo.SpeedY, float.Parse(txtVelocityY.Text));
 
+				data = Save.Master[MasterAssets.ScenesManager];
+				data.WriteFloat(0, float.Parse(txtPosX.Text));
+				data.WriteFloat(4, float.Parse(txtPosY.Text));
+
 				data = Save.Master[MasterAssets.PlayerAbilities];
 				data[(int)Abilities.AbilityMarkers] = (byte)(chkAbilityMarkers.Checked ? 1 : 0);
 				data[(int)Abilities.AirDash] = (byte)(chkAirDash.Checked ? 1 : 0);
