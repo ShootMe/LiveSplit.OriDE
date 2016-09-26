@@ -46,12 +46,18 @@ namespace LiveSplit.OriDE {
 				txtHP.Text = ((data?.GetFloat((int)SeinHealthController.Amount)).GetValueOrDefault(0) / 4f).ToString("0.##");
 				txtHPMax.Text = ((data?.GetInt((int)SeinHealthController.MaxHealth)).GetValueOrDefault(0) / 4).ToString();
 
-				data = Save.Master[MasterAssets.PlatformMovement];
-				txtPosX.Text = data?.GetFloat((int)SaveInfo.PosX).ToString();
-				txtPosY.Text = data?.GetFloat((int)SaveInfo.PosY).ToString();
+				IntFloat trueValue = default(IntFloat);
 
-				txtVelocityX.Text = data?.GetFloat((int)SaveInfo.SpeedX).ToString();
-				txtVelocityY.Text = data?.GetFloat((int)SaveInfo.SpeedY).ToString();
+				data = Save.Master[MasterAssets.PlatformMovement];
+				trueValue.IntVal = data.GetInt((int)SaveInfo.PosX);
+				txtPosX.Text = trueValue.FloatVal.ToString("R");
+				trueValue.IntVal = data.GetInt((int)SaveInfo.PosY);
+				txtPosY.Text = trueValue.FloatVal.ToString("R");
+
+				trueValue.IntVal = data.GetInt((int)SaveInfo.SpeedX);
+				txtVelocityX.Text = trueValue.FloatVal.ToString("R");
+				trueValue.IntVal = data.GetInt((int)SaveInfo.SpeedY);
+				txtVelocityY.Text = trueValue.FloatVal.ToString("R");
 
 				data = Save.Master[MasterAssets.PlayerAbilities];
 				if (data != null) {
@@ -107,8 +113,10 @@ namespace LiveSplit.OriDE {
 				data = Save.Master[MasterAssets.SeinSoulFlame];
 				bool hasSoulFlame = data != null && data[(int)SoulFlameInfo.HasSoulFlame] == 1;
 				if (hasSoulFlame) {
-					txtSoulX.Text = data.GetFloat((int)SoulFlameInfo.SoulX).ToString();
-					txtSoulY.Text = data.GetFloat((int)SoulFlameInfo.SoulY).ToString();
+					trueValue.IntVal = data.GetInt((int)SoulFlameInfo.SoulX);
+					txtSoulX.Text = trueValue.FloatVal.ToString("R");
+					trueValue.IntVal = data.GetInt((int)SoulFlameInfo.SoulY);
+					txtSoulY.Text = trueValue.FloatVal.ToString("R");
 				} else {
 					txtSoulX.Text = string.Empty;
 					txtSoulY.Text = string.Empty;
@@ -265,14 +273,21 @@ namespace LiveSplit.OriDE {
 				Save.MaxHealth = int.Parse(txtHPMax.Text);
 
 				data = Save.Master[MasterAssets.PlatformMovement];
-				data.WriteFloat((int)SaveInfo.PosX, float.Parse(txtPosX.Text));
-				data.WriteFloat((int)SaveInfo.PosY, float.Parse(txtPosY.Text));
-				data.WriteFloat((int)SaveInfo.SpeedX, float.Parse(txtVelocityX.Text));
-				data.WriteFloat((int)SaveInfo.SpeedY, float.Parse(txtVelocityY.Text));
+				IntFloat trueValue = default(IntFloat);
+				trueValue.FloatVal = float.Parse(txtPosX.Text);
+				data.WriteInt((int)SaveInfo.PosX, trueValue.IntVal);
+				trueValue.FloatVal = float.Parse(txtPosY.Text);
+				data.WriteInt((int)SaveInfo.PosY, trueValue.IntVal);
+				trueValue.FloatVal = float.Parse(txtVelocityX.Text);
+				data.WriteInt((int)SaveInfo.SpeedX, trueValue.IntVal);
+				trueValue.FloatVal = float.Parse(txtVelocityY.Text);
+				data.WriteInt((int)SaveInfo.SpeedY, trueValue.IntVal);
 
 				data = Save.Master[MasterAssets.ScenesManager];
-				data.WriteFloat(0, float.Parse(txtPosX.Text));
-				data.WriteFloat(4, float.Parse(txtPosY.Text));
+				trueValue.FloatVal = float.Parse(txtPosX.Text);
+				data.WriteInt(0, trueValue.IntVal);
+				trueValue.FloatVal = float.Parse(txtPosY.Text);
+				data.WriteInt(4, trueValue.IntVal);
 
 				data = Save.Master[MasterAssets.PlayerAbilities];
 				data[(int)Abilities.AbilityMarkers] = (byte)(chkAbilityMarkers.Checked ? 1 : 0);
@@ -341,8 +356,11 @@ namespace LiveSplit.OriDE {
 						data.Data = newData;
 					}
 					data[(int)SoulFlameInfo.HasSoulFlame] = 1;
-					data.WriteFloat((int)SoulFlameInfo.SoulX, float.Parse(txtSoulX.Text));
-					data.WriteFloat((int)SoulFlameInfo.SoulY, float.Parse(txtSoulY.Text));
+
+					trueValue.FloatVal = float.Parse(txtSoulX.Text);
+					data.WriteInt((int)SoulFlameInfo.SoulX, trueValue.IntVal);
+					trueValue.FloatVal = float.Parse(txtSoulY.Text);
+					data.WriteInt((int)SoulFlameInfo.SoulY, trueValue.IntVal);
 				} else {
 					if (data.Data.Length > 31) {
 						byte[] newData = new byte[31];
@@ -506,6 +524,7 @@ namespace LiveSplit.OriDE {
 						}
 					}
 				}
+
 				Save.Save(Save.FilePath);
 				this.Close();
 			} catch (Exception ex) {

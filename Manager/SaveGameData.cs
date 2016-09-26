@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 namespace LiveSplit.OriDE {
@@ -544,5 +545,12 @@ namespace LiveSplit.OriDE {
 		Left,
 		Middle,
 		Right
+	}
+	[StructLayout(LayoutKind.Explicit)]
+	public struct IntFloat {
+		[FieldOffset(0)]
+		public int IntVal;
+		[FieldOffset(0)]
+		public float FloatVal;
 	}
 }
