@@ -1145,6 +1145,7 @@
 			this.treeObjects.Name = "treeObjects";
 			this.treeObjects.Size = new System.Drawing.Size(474, 290);
 			this.treeObjects.TabIndex = 94;
+			this.treeObjects.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeObjects_AfterCheck);
 			// 
 			// chkDarknessLifted
 			// 

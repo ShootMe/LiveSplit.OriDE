@@ -143,12 +143,12 @@ namespace LiveSplit.OriDE {
 						break;
 					}
 				}
+
+				PointF cursor = Memory.GetCursorPosition();
 				lblArea.Text = "Area: " + (string.IsNullOrEmpty(currentArea.Name) ? "N/A" : currentArea.Name + " - " + currentArea.Progress.ToString("0.00") + "%");
 				lblMap.Text = "Total: " + total.ToString("0.00") + "% Scene: " + currentScene;
-				lblPos.Text = "Pos: " + pos.X.ToString("0.000") + ", " + pos.Y.ToString("0.000");
+				lblPos.Text = "Pos: " + pos.X.ToString("R") + ", " + pos.Y.ToString("R") + " Cursor: " + cursor.X.ToString("0.000") + ", " + cursor.Y.ToString("0.000");
 				lblSpeed.Text = (extraFast ? "Insane Speed: " : "Speed: ") + currentSpeed.X.ToString("0.000") + ", " + currentSpeed.Y.ToString("0.000") + " (" + Math.Sqrt(currentSpeed.X * currentSpeed.X + currentSpeed.Y * currentSpeed.Y).ToString("0.000") + ")";
-				PointF cursor = Memory.GetCursorPosition();
-				lblCursorPosition.Text = "Cursor: " + cursor.X.ToString("0.000") + ", " + cursor.Y.ToString("0.000");
 
 				if (isInGameWorld) {
 					int level = Memory.GetCurrentLevel();

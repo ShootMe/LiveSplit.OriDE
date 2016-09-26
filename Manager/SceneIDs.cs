@@ -716,6 +716,9 @@ namespace LiveSplit.OriDE {
 		public static SceneID StompablePlatform = new SceneID("4BC58372169CE4D3AAD57366DFA0379C");
 	}
 	public class SorrowPassEntranceB : SceneID {
+		public static SceneID SpiritTreeTextA_Trigger = new SceneID("4B47585F35EF796D19A87B0223C90A88");
+		public static SceneID SpiritTreeTextB_Trigger = new SceneID("4DCCC671423F137DEF6EA0BE0978428F");
+		public static SceneID SpiritTreeTextC_Trigger = new SceneID("401EC4050F1437A675F1576A8367B898");
 		public static SceneID StompablePlatform = new SceneID("4B15632B7E874747D6E5C68F4B276488");
 	}
 	public class SorrowPassForestB : SceneID {

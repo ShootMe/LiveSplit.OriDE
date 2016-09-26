@@ -35,7 +35,6 @@
 			this.lblSpeed = new System.Windows.Forms.Label();
 			this.lblKeys = new System.Windows.Forms.Label();
 			this.lblNote = new System.Windows.Forms.Label();
-			this.lblCursorPosition = new System.Windows.Forms.Label();
 			this.lblCurrentInput = new System.Windows.Forms.Label();
 			this.lblNextInput = new System.Windows.Forms.Label();
 			this.lblTASStates = new System.Windows.Forms.Label();
@@ -152,16 +151,6 @@
 			this.lblNote.Text = "Not available";
 			this.lblNote.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// lblCursorPosition
-			// 
-			this.lblCursorPosition.AutoSize = true;
-			this.lblCursorPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblCursorPosition.Location = new System.Drawing.Point(207, 49);
-			this.lblCursorPosition.Name = "lblCursorPosition";
-			this.lblCursorPosition.Size = new System.Drawing.Size(152, 20);
-			this.lblCursorPosition.TabIndex = 15;
-			this.lblCursorPosition.Text = "Cursor: 1.000, 1.000";
-			// 
 			// lblCurrentInput
 			// 
 			this.lblCurrentInput.AutoSize = true;
@@ -205,7 +194,6 @@
 			this.Controls.Add(this.lblTASStates);
 			this.Controls.Add(this.lblNextInput);
 			this.Controls.Add(this.lblCurrentInput);
-			this.Controls.Add(this.lblCursorPosition);
 			this.Controls.Add(this.lblKeys);
 			this.Controls.Add(this.lblSpeed);
 			this.Controls.Add(this.lblAbility);
@@ -241,7 +229,6 @@
 		private System.Windows.Forms.Label lblSpeed;
 		private System.Windows.Forms.Label lblKeys;
 		private System.Windows.Forms.Label lblNote;
-		private System.Windows.Forms.Label lblCursorPosition;
 		private System.Windows.Forms.Label lblCurrentInput;
 		private System.Windows.Forms.Label lblNextInput;
 		private System.Windows.Forms.Label lblTASStates;

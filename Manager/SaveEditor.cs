@@ -8,6 +8,9 @@ namespace LiveSplit.OriDE {
 	public partial class SaveEditor : Form {
 		public SaveGameData Save { get; set; }
 		private List<TreeNode> allNodes = new List<TreeNode>();
+		private List<TreeNode> modifiedNodes = new List<TreeNode>();
+		private bool loading = false;
+
 		private static string currentFilter = null;
 		public SaveEditor() {
 			InitializeComponent();
@@ -173,8 +176,10 @@ namespace LiveSplit.OriDE {
 				chkWindRestored.Checked = data[(int)WorldEvents.WindRestored] == 1;
 
 				treeObjects.SuspendLayout();
+				loading = true;
 				Type[] types = typeof(SceneID).Assembly.GetTypes();
 				allNodes.Clear();
+				modifiedNodes.Clear();
 				for (int i = 0; i < types.Length; i++) {
 					Type asmType = types[i];
 					if (asmType != typeof(SceneID) && typeof(SceneID).IsAssignableFrom(asmType)) {
@@ -247,6 +252,7 @@ namespace LiveSplit.OriDE {
 				treeObjects.ExpandAll();
 				treeObjects.ResumeLayout(true);
 				treeObjects.SelectedNode = treeObjects.Nodes[0];
+				loading = false;
 
 				this.Text = "Save Editor - " + Path.GetFileNameWithoutExtension(Save.FilePath);
 			} catch (Exception ex) {
@@ -434,93 +440,89 @@ namespace LiveSplit.OriDE {
 				data[(int)WorldEvents.WarmthReturned] = (byte)(chkWarmth.Checked ? 1 : 0);
 				data[(int)WorldEvents.WindRestored] = (byte)(chkWindRestored.Checked ? 1 : 0);
 
-				for (int i = 0; i < allNodes.Count; i++) {
-					TreeNode node = allNodes[i];
+				for (int j = 0; j < modifiedNodes.Count; j++) {
+					TreeNode child = modifiedNodes[j];
+					SceneID sceneValue = (SceneID)child.Tag;
+					string fieldName = child.Text;
 
-					for (int j = 0; j < node.Nodes.Count; j++) {
-						TreeNode child = node.Nodes[j];
-						SceneID sceneValue = (SceneID)child.Tag;
-						string fieldName = child.Text;
+					data = Save.Find(sceneValue);
+					bool enableDisable = !child.Checked;
 
-						data = Save.Find(sceneValue);
-						bool enableDisable = !child.Checked;
-
-						if (data != null) {
-							if (fieldName.IndexOf("Animator") >= 0) {
-								data.WriteFloat(0, child.Checked ? 0 : 100f);
-								data[4] = 1;
-							} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
-								data[0] = (byte)(child.Checked ? 1 : 0);
-							} else if (fieldName.IndexOf("Torch") >= 0) {
-								data[0] = (byte)(child.Checked ? 0 : 1);
-							} else if (fieldName.IndexOf("Lever") >= 0) {
-								data.Data = new byte[4];
-								data.WriteInt(0, (int)(fieldName.IndexOf("GoesLeft") >= 0 ? (child.Checked ? LeverDirections.Right : LeverDirections.Left) : (child.Checked ? LeverDirections.Left : LeverDirections.Right)));
-							} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
-									fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
-								float currentHP = data.GetFloat((int)EntityDamage.Health);
-								data.WriteFloat((int)EntityDamage.Health, child.Checked ? (currentHP > 0 ? currentHP : data.GetFloat((int)EntityDamage.MaxHealth)) : -1f);
-							} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
-								data[(int)Pickup.Collected] = (byte)(child.Checked ? 0 : 1);
-							} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
-								data[(int)Collectible.Collected] = (byte)(child.Checked ? 0 : 1);
-							} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
-								int currentState = data.GetInt((int)Door.CurrentState);
-								data.WriteInt((int)Door.CurrentState, child.Checked ? 0 : (currentState == 0 ? 2 : currentState));
-								if (child.Checked) {
-									data.WriteInt((int)Door.SlotsPending, 0);
-									data.WriteInt((int)Door.SlotsFilled, 0);
-									data.WriteInt((int)Door.AmountOfItemsUsed, 0);
-								}
-							}
-						} else if (!child.Checked) {
-							SceneCollection collection = Save.Insert(sceneValue.Parent);
-							data = collection.Add(sceneValue);
-
-							if (fieldName.IndexOf("Animator") >= 0) {
-								data.Data = new byte[6];
-								data.WriteFloat(0, 100f);
-								data[4] = 1;
-							} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
-								data.Data = new byte[1];
-								data[0] = 0;
-							} else if (fieldName.IndexOf("Torch") >= 0) {
-								data.Data = new byte[1];
-								data[0] = 1;
-							} else if (fieldName.IndexOf("Lever") >= 0) {
-								data.Data = new byte[4];
-								data.WriteInt(0, (int)(fieldName.IndexOf("GoesLeft") >= 0 ? LeverDirections.Left : LeverDirections.Right));
-							} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
-										fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
-								data.Data = new byte[8];
-
-								if (fieldName.IndexOf("PetrifiedPlant") >= 0) {
-									data.WriteFloat((int)EntityDamage.Health, -1);
-									data.WriteFloat((int)EntityDamage.MaxHealth, 5);
-								} else if (fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("Wall") >= 0) {
-									data.WriteFloat((int)EntityDamage.Health, -5);
-									data.WriteFloat((int)EntityDamage.MaxHealth, 10);
-								} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Bulb") >= 0) {
-									data.WriteFloat((int)EntityDamage.Health, -1);
-									data.WriteFloat((int)EntityDamage.MaxHealth, 4);
-								}
-							} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
-								data.Data = new byte[5];
-								data[(int)Pickup.Collected] = 1;
-							} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
-								data.Data = new byte[1];
-								data[(int)Collectible.Collected] = 1;
-							} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
-								data.Data = new byte[16];
-								data.WriteInt((int)Door.CurrentState, 2);
-								data.WriteInt((int)Door.AmountOfItemsUsed, fieldName.IndexOf("Two") >= 0 ? 2 : 4);
+					if (data != null) {
+						if (fieldName.IndexOf("Animator") >= 0) {
+							data.WriteFloat(0, child.Checked ? 0 : 100f);
+							data[4] = 1;
+						} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
+							data[0] = (byte)(child.Checked ? 1 : 0);
+						} else if (fieldName.IndexOf("Torch") >= 0) {
+							data[0] = (byte)(child.Checked ? 0 : 1);
+						} else if (fieldName.IndexOf("Lever") >= 0) {
+							data.Data = new byte[4];
+							data.WriteInt(0, (int)(fieldName.IndexOf("GoesLeft") >= 0 ? (child.Checked ? LeverDirections.Right : LeverDirections.Left) : (child.Checked ? LeverDirections.Left : LeverDirections.Right)));
+						} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
+								fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
+							float currentHP = data.GetFloat((int)EntityDamage.Health);
+							data.WriteFloat((int)EntityDamage.Health, child.Checked ? (currentHP > 0 ? currentHP : data.GetFloat((int)EntityDamage.MaxHealth)) : -1f);
+						} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
+							data[(int)Pickup.Collected] = (byte)(child.Checked ? 0 : 1);
+						} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
+							data[(int)Collectible.Collected] = (byte)(child.Checked ? 0 : 1);
+						} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
+							int currentState = data.GetInt((int)Door.CurrentState);
+							data.WriteInt((int)Door.CurrentState, child.Checked ? 0 : (currentState == 0 ? 2 : currentState));
+							if (child.Checked) {
+								data.WriteInt((int)Door.SlotsPending, 0);
+								data.WriteInt((int)Door.SlotsFilled, 0);
+								data.WriteInt((int)Door.AmountOfItemsUsed, 0);
 							}
 						}
+					} else if (!child.Checked) {
+						SceneCollection collection = Save.Insert(sceneValue.Parent);
+						data = collection.Add(sceneValue);
 
-						if (sceneValue.Children != null) {
-							foreach (SceneID extra in sceneValue.Children) {
-								SetChildScene(sceneValue.Parent, extra, enableDisable);
+						if (fieldName.IndexOf("Animator") >= 0) {
+							data.Data = new byte[6];
+							data.WriteFloat(0, 100f);
+							data[4] = 1;
+						} else if (fieldName.IndexOf("Trigger") >= 0 || fieldName.IndexOf("Restrict") >= 0) {
+							data.Data = new byte[1];
+							data[0] = 0;
+						} else if (fieldName.IndexOf("Torch") >= 0) {
+							data.Data = new byte[1];
+							data[0] = 1;
+						} else if (fieldName.IndexOf("Lever") >= 0) {
+							data.Data = new byte[4];
+							data.WriteInt(0, (int)(fieldName.IndexOf("GoesLeft") >= 0 ? LeverDirections.Left : LeverDirections.Right));
+						} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Wall") >= 0 || fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bulb") >= 0 ||
+									fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("PetrifiedPlant") >= 0) {
+							data.Data = new byte[8];
+
+							if (fieldName.IndexOf("PetrifiedPlant") >= 0) {
+								data.WriteFloat((int)EntityDamage.Health, -1);
+								data.WriteFloat((int)EntityDamage.MaxHealth, 5);
+							} else if (fieldName.IndexOf("Stompable") >= 0 || fieldName.IndexOf("Bombable") >= 0 || fieldName.IndexOf("Breakable") >= 0 || fieldName.IndexOf("Wall") >= 0) {
+								data.WriteFloat((int)EntityDamage.Health, -5);
+								data.WriteFloat((int)EntityDamage.MaxHealth, 10);
+							} else if (fieldName.IndexOf("Creep") >= 0 || fieldName.IndexOf("Bulb") >= 0) {
+								data.WriteFloat((int)EntityDamage.Health, -1);
+								data.WriteFloat((int)EntityDamage.MaxHealth, 4);
 							}
+						} else if (fieldName.IndexOf("Keystone") >= 0 || fieldName.IndexOf("Mapstone") >= 0 || fieldName.IndexOf("Pickup") >= 0) {
+							data.Data = new byte[5];
+							data[(int)Pickup.Collected] = 1;
+						} else if (fieldName.IndexOf("AbilityCell") >= 0 || fieldName.IndexOf("HealthCell") >= 0 || fieldName.IndexOf("EnergyCell") >= 0 || fieldName.IndexOf("ExpOrb") >= 0) {
+							data.Data = new byte[1];
+							data[(int)Collectible.Collected] = 1;
+						} else if (fieldName.IndexOf("DoorWith") >= 0 || fieldName.IndexOf("EnergyDoor") >= 0) {
+							data.Data = new byte[16];
+							data.WriteInt((int)Door.CurrentState, 2);
+							data.WriteInt((int)Door.AmountOfItemsUsed, fieldName.IndexOf("Two") >= 0 ? 2 : 4);
+						}
+					}
+
+					if (sceneValue.Children != null) {
+						foreach (SceneID extra in sceneValue.Children) {
+							SetChildScene(sceneValue.Parent, extra, enableDisable);
 						}
 					}
 				}
@@ -695,6 +697,11 @@ namespace LiveSplit.OriDE {
 			treeObjects.ResumeLayout(true);
 			treeObjects.SelectedNode = treeObjects.Nodes[0];
 			SuspendUpdate.Resume(this);
+		}
+		private void treeObjects_AfterCheck(object sender, TreeViewEventArgs e) {
+			if (!loading && e.Node.Tag != null && !modifiedNodes.Contains(e.Node)) {
+				modifiedNodes.Add(e.Node);
+			}
 		}
 	}
 }
