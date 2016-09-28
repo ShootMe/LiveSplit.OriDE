@@ -22,6 +22,8 @@ namespace LiveSplit.OriDE {
 		};
 		//sunkenGladesSpiritCavernWalljumpB
 		public static SceneID WallJumpTimeLine = new SceneID("4478A1869C0C7012B29B6A2736B8C0A4");
+		//ginsoTreeBashRedirectArt
+		public static SceneID BashTimeLine = new SceneID("4FDF95A28FD3D3BF10712444684F7A9C");
 
 		public static SceneID ForlornRuinsC = new SceneID("BAB44F6981AC324314572CF5F2F7C3E9");
 		public static SceneID ForlornRuinsEntrancePlaceholder = new SceneID("1B24B91ADBC5C18DFD4622597D4569EA");

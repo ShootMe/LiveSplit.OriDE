@@ -92,9 +92,9 @@ namespace LiveSplit.OriDE {
 					chkRegroup.Checked = data[(int)Abilities.Regroup] == 1;
 					chkRekindle.Checked = data[(int)Abilities.Rekindle] == 1;
 					chkSense.Checked = data[(int)Abilities.Sense] == 1;
-					chkSoulLinkEfficiency.Checked = data[(int)Abilities.SoulEfficiency] == 1;
+					chkSoulLinkEfficiency.Checked = data[(int)Abilities.SoulFlameEfficiency] == 1;
 					chkSparkFlame.Checked = data[(int)Abilities.SparkFlame] == 1;
-					chkSpiritEfficiency.Checked = data[(int)Abilities.SoulFlameEfficiency] == 1;
+					chkSpiritEfficiency.Checked = data[(int)Abilities.SoulEfficiency] == 1;
 					chkSpiritFlame.Checked = data[(int)Abilities.SpiritFlame] == 1;
 					chkSplitFlame.Checked = data[(int)Abilities.SplitFlameUpgrade] == 1;
 					chkStomp.Checked = data[(int)Abilities.Stomp] == 1;
@@ -295,6 +295,9 @@ namespace LiveSplit.OriDE {
 				trueValue.FloatVal = float.Parse(txtPosY.Text);
 				data.WriteInt(4, trueValue.IntVal);
 
+				//data = Save.Find(MasterAssets.BashTimeLine);
+				//data.WriteFloat(1, 8.416667f);
+
 				data = Save.Master[MasterAssets.PlayerAbilities];
 				data[(int)Abilities.AbilityMarkers] = (byte)(chkAbilityMarkers.Checked ? 1 : 0);
 				data[(int)Abilities.AirDash] = (byte)(chkAirDash.Checked ? 1 : 0);
@@ -324,9 +327,9 @@ namespace LiveSplit.OriDE {
 				data[(int)Abilities.Regroup] = (byte)(chkRegroup.Checked ? 1 : 0);
 				data[(int)Abilities.Rekindle] = (byte)(chkRekindle.Checked ? 1 : 0);
 				data[(int)Abilities.Sense] = (byte)(chkSense.Checked ? 1 : 0);
-				data[(int)Abilities.SoulEfficiency] = (byte)(chkSoulLinkEfficiency.Checked ? 1 : 0);
+				data[(int)Abilities.SoulEfficiency] = (byte)(chkSpiritEfficiency.Checked ? 1 : 0);
 				data[(int)Abilities.SparkFlame] = (byte)(chkSparkFlame.Checked ? 1 : 0);
-				data[(int)Abilities.SoulFlameEfficiency] = (byte)(chkSpiritEfficiency.Checked ? 1 : 0);
+				data[(int)Abilities.SoulFlameEfficiency] = (byte)(chkSoulLinkEfficiency.Checked ? 1 : 0);
 				data[(int)Abilities.SpiritFlame] = (byte)(chkSpiritFlame.Checked ? 1 : 0);
 				data[(int)Abilities.SplitFlameUpgrade] = (byte)(chkSplitFlame.Checked ? 1 : 0);
 				data[(int)Abilities.Stomp] = (byte)(chkStomp.Checked ? 1 : 0);
