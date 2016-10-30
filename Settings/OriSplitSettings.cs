@@ -55,7 +55,10 @@ namespace LiveSplit.OriDE.Settings {
 			{"Swamp 100%",               "Boolean"},
 			{"Glades 100%",              "Boolean"},
 			{"Sorrow 100%",              "Boolean"},
-			{"Black Root 100%",          "Boolean"}
+			{"Black Root 100%",          "Boolean"},
+			{"Ginso 100%",               "Boolean"},
+			{"Forlorn 100%",             "Boolean"},
+			{"Horu 100%",                "Boolean"}
 		};
 		public OriSplitSettings() {
 			InitializeComponent();

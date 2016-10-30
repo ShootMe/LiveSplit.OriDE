@@ -84,6 +84,9 @@ namespace LiveSplit.OriDE {
 						case "Valley 100%":
 						case "Grotto 100%":
 						case "Swamp 100%":
+						case "Ginso 100%":
+						case "Forlorn 100%":
+						case "Horu 100%":
 						case "Glades 100%":
 						case "Sorrow 100%":
 						case "Black Root 100%":
