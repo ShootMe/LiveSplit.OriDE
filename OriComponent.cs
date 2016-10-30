@@ -20,6 +20,7 @@ namespace LiveSplit.OriDE {
 		private int currentSplit = 0;
 		private bool hasLog = false;
 		private int lastLogCheck = 0;
+		private DateTime notInGame = DateTime.MinValue;
 		internal static List<string> keys = new List<string>() { "Pos", "CurrentSplit", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "CurrentEnergy", "HealthCells", "CurrentHealth", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameStateMachine", "WorldEvents", "RainbowDash" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
@@ -47,6 +48,10 @@ namespace LiveSplit.OriDE {
 			bool isInGameWorld = CheckInGameWorld(gameState);
 			bool isStartingGame = CheckStartingNewGame(gameState);
 
+			if(!isInGameWorld) {
+				notInGame = DateTime.Now;
+			}
+
 			LogValues();
 
 			if (settings.RainbowDash && isInGameWorld) {
@@ -60,14 +65,14 @@ namespace LiveSplit.OriDE {
 				if (split.Field == "Start Game") {
 					shouldSplit = isStartingGame;
 				} else if (split.Field == "In Game") {
-					shouldSplit = isInGame;
+					shouldSplit = isInGame && notInGame.AddSeconds(1) > DateTime.Now;
 				} else if (split.Field == "In Menu") {
 					shouldSplit = !isInGame;
 				} else if (split.Field == "Hitbox" || split.Field == "End of Forlorn Escape" || split.Field == "End of Horu Escape") {
 					HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
 					HitBox hitBox = new HitBox(split.Value);
 					shouldSplit = hitBox.Intersects(ori);
-				} else if (isInGameWorld) {
+				} else if (isInGameWorld && DateTime.Now.AddSeconds(-1) > notInGame) {
 					switch (split.Field) {
 						case "Map %":
 							decimal map = mem.GetTotalMapCompletion();
