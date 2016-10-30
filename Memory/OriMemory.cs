@@ -161,7 +161,7 @@ namespace LiveSplit.OriDE.Memory {
 		public bool GetAbility(string name) {
 			IntPtr start = seinCharacter.Read<IntPtr>(0x00, 0x4c);
 			int ability = abilities[name];
-			return Program.Read<bool>(start, ability * 4, 0x08); ;
+			return Program.Read<bool>(start, ability * 4, 0x08);
 		}
 		public List<Area> GetMapCompletion() {
 			List<Area> areas = new List<Area>();
@@ -364,13 +364,13 @@ namespace LiveSplit.OriDE.Memory {
 			if (Program != null) { this.Program.Dispose(); }
 		}
 
-		public static Dictionary<string, int> keys = new Dictionary<string, int>()
+		public static Dictionary<string, int> keys = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
 		{
 			{"Water Vein",   0},
 			{"Gumon Seal",   1},
 			{"Sunstone",     2},
 		};
-		public static Dictionary<string, int> events = new Dictionary<string, int>()
+		public static Dictionary<string, int> events = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
 		{
 			{"Ginso Tree Entered",   0},
 			{"Mist Lifted",          1},
@@ -381,7 +381,7 @@ namespace LiveSplit.OriDE.Memory {
 			{"Warmth Returned",      6},
 			{"Darkness Lifted",      7}
 		};
-		public static Dictionary<string, int> abilities = new Dictionary<string, int>()
+		public static Dictionary<string, int> abilities = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
 		{
 			{"Bash",                     5},
 			{"Charge Flame",             6},

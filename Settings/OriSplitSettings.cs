@@ -11,6 +11,7 @@ namespace LiveSplit.OriDE.Settings {
 		};
 		public static Dictionary<string, string> AvailableSplits = new Dictionary<string, string>()
 		{
+			{"Ability",                  "Value"},
 			{"In Game",                  "Boolean"},
 			{"In Menu",                  "Boolean"},
 			{"Map %",                    "Value"},

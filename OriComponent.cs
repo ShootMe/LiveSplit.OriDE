@@ -105,6 +105,8 @@ namespace LiveSplit.OriDE {
 						case "Climb":
 						case "Charge Jump":
 							shouldSplit = mem.GetAbility(split.Field); break;
+						case "Ability":
+							shouldSplit = mem.GetAbility(split.Value); break;
 						case "Mist Lifted":
 						case "Clean Water":
 						case "Wind Restored":
