@@ -128,11 +128,11 @@ namespace LiveSplit.OriDE.Settings {
 			XmlElement xmlSettings = document.CreateElement("Settings");
 
 			XmlElement xmlMap = document.CreateElement("MapDisplay");
-			xmlMap.InnerText = chkShowMapDisplay.Checked.ToString();
+			xmlMap.InnerText = ShowMapDisplay.ToString();
 			xmlSettings.AppendChild(xmlMap);
 
 			XmlElement xmlDash = document.CreateElement("RainbowDash");
-			xmlDash.InnerText = chkRainbowDash.Checked.ToString();
+			xmlDash.InnerText = RainbowDash.ToString();
 			xmlSettings.AppendChild(xmlDash);
 
 			XmlElement xmlSplits = document.CreateElement("Splits");
