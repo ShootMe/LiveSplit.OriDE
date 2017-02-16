@@ -7,7 +7,8 @@ namespace LiveSplit.OriDE.Settings {
 		public static Dictionary<string, string> DefaultSplits = new Dictionary<string, string>()
 		{
 			{"End of Forlorn Escape",    "-1162.265,-221.822,7.031,3.334"},
-			{"End of Horu Escape",       "162.890,577.337,5.216,14.574"}
+			{"End of Horu Escape",       "162.890,577.337,5.216,14.574"},
+			{"Spirit Tree Reached",      "-96,-120,3,3"}
 		};
 		public static Dictionary<string, string> AvailableSplits = new Dictionary<string, string>()
 		{
@@ -30,7 +31,7 @@ namespace LiveSplit.OriDE.Settings {
 			{"Glide",                    "Boolean"},
 			{"Climb",                    "Boolean"},
 			{"Charge Jump",              "Boolean"},
-			{"Spirit Tree Reached",      "Boolean"},
+			{"Spirit Tree Reached",      "Hitbox"},
 			{"Water Vein",               "Boolean"},
 			{"Ginso Tree Entered",       "Boolean"},
 			{"Clean Water",              "Boolean"}, // End of Escape

@@ -48,7 +48,7 @@ namespace LiveSplit.OriDE {
 			bool isInGameWorld = CheckInGameWorld(gameState);
 			bool isStartingGame = CheckStartingNewGame(gameState);
 
-			if(!isInGameWorld) {
+			if (!isInGameWorld) {
 				notInGame = DateTime.Now;
 			}
 
@@ -57,6 +57,22 @@ namespace LiveSplit.OriDE {
 			if (settings.RainbowDash && isInGameWorld) {
 				mem.ActivateRainbowDash();
 			}
+
+			//if (isInGameWorld && settings.Randomizer) {
+			//	if (!mem.GetAbility("Spirit Flame") && !mem.CanMove()) {
+			//		HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
+			//		HitBox seinSkill = new HitBox("-165,-262,1,2");
+			//		if (seinSkill.Intersects(ori)) {
+			//			mem.SetSkills(true);
+			//		}
+			//	} else {
+			//		decimal totalMap = mem.GetTotalMapCompletion();
+			//		if (totalMap > (decimal)1.21 && totalMap < (decimal)1.23 && mem.GetAbility("Charge Jump") && mem.CanMove()) {
+			//			mem.SetSkills(false);
+			//			mem.SetSkills(true, "Spirit Flame");
+			//		}
+			//	}
+			//}
 
 			if (Model != null && currentSplit < settings.Splits.Count) {
 				bool shouldSplit = false;

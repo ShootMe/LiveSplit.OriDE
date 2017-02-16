@@ -163,6 +163,20 @@ namespace LiveSplit.OriDE.Memory {
 			int ability = abilities[name];
 			return Program.Read<bool>(start, ability * 4, 0x08);
 		}
+		public void SetAbility(string name, bool enable) {
+			IntPtr start = (IntPtr)seinCharacter.Read<int>(0x00, 0x4c);
+			int ability = abilities[name];
+			Program.Write(start, enable, ability * 4, 0x08);
+		}
+		public void SetSkills(bool enable, params string[] skills) {
+			if (skills == null || skills.Length == 0) {
+				skills = new string[] { "Bash", "Charge Flame", "Wall Jump", "Stomp", "Double Jump", "Charge Jump", "Climb", "Glide", "Spirit Flame", "Dash", "Light Grenade" };
+			}
+
+			for (int i = 0; i < skills.Length; i++) {
+				SetAbility(skills[i], enable);
+			}
+		}
 		public List<Area> GetMapCompletion() {
 			List<Area> areas = new List<Area>();
 			if (gameWorld.Value != IntPtr.Zero) {
@@ -192,9 +206,10 @@ namespace LiveSplit.OriDE.Memory {
 		}
 		public decimal GetTotalMapCompletion() {
 			decimal total = 0;
+			int listSize = 0;
 			if (gameWorld.Value != IntPtr.Zero) {
 				IntPtr listHead = (IntPtr)gameWorld.Read<int>(0x18, 0x08);
-				int listSize = gameWorld.Read<int>(0x18, 0x0c);
+				listSize = gameWorld.Read<int>(0x18, 0x0c);
 				for (var i = 0; i < listSize; i++) {
 					IntPtr gameWorldAreaHead = (IntPtr)Program.Read<int>(listHead, 0x10 + (i * 4));
 					Area area = GetArea(gameWorldAreaHead);
@@ -202,7 +217,7 @@ namespace LiveSplit.OriDE.Memory {
 				}
 			}
 
-			return total;
+			return total / (decimal)(listSize == 0 ? 1 : listSize);
 		}
 		private Area GetArea(IntPtr areaAddress) {
 			float completionAmount = Program.Read<float>(areaAddress, 0x14);
@@ -261,6 +276,9 @@ namespace LiveSplit.OriDE.Memory {
 		}
 		public bool IsEnteringGame() {
 			return gameController.Read<bool>(0x68) || gameController.Read<bool>(0x69) || seinCharacter.Value == IntPtr.Zero || (GetCurrentLevel() == 0 && GetCurrentENMax() == 3 && GetCurrentHPMax() == 3);
+		}
+		public bool CanMove() {
+			return !gameController.Read<bool>(0x7c) && !gameController.Read<bool>(0x7b);
 		}
 		public GameState GetGameState() {
 			return (GameState)gameStateMachine.Read<int>(0x14);
