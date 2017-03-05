@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <updates>
+	<update version="1.5.3">
+		<files>
+			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
+		</files>
+		<changelog>
+			<change>
+				Possibly fix autosplitter not splitting randomly
+			</change>
+		</changelog>
+	</update>
 	<update version="1.5.2">
 		<files>
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>

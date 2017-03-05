@@ -9,14 +9,14 @@ namespace LiveSplit.OriDE.Memory {
 		public bool IsHooked { get; set; } = false;
 
 		public OriMemory() {
-			gameWorld = new ProgramPointer(this, MemPointer.GameWorld) { AutoDeref = true };
-			gameplayCamera = new ProgramPointer(this, MemPointer.GameplayCamera) { AutoDeref = true };
+			gameWorld = new ProgramPointer(this, MemPointer.GameWorld) { AutoDeref = false };
+			gameplayCamera = new ProgramPointer(this, MemPointer.GameplayCamera) { AutoDeref = false };
 			worldEvents = new ProgramPointer(this, MemPointer.WorldEvents) { AutoDeref = false };
 			seinCharacter = new ProgramPointer(this, MemPointer.SeinCharacter) { AutoDeref = false };
-			scenesManager = new ProgramPointer(this, MemPointer.ScenesManager) { AutoDeref = true };
-			gameStateMachine = new ProgramPointer(this, MemPointer.GameStateMachine) { AutoDeref = true };
+			scenesManager = new ProgramPointer(this, MemPointer.ScenesManager) { AutoDeref = false };
+			gameStateMachine = new ProgramPointer(this, MemPointer.GameStateMachine) { AutoDeref = false };
 			rainbowDash = new ProgramPointer(this, MemPointer.RainbowDash) { AutoDeref = false };
-			gameController = new ProgramPointer(this, MemPointer.GameController) { AutoDeref = true };
+			gameController = new ProgramPointer(this, MemPointer.GameController) { AutoDeref = false };
 			tas = new ProgramPointer(this, MemPointer.TAS) { AutoDeref = false };
 			coreInput = new ProgramPointer(this, MemPointer.Input) { AutoDeref = false };
 		}
@@ -117,8 +117,8 @@ namespace LiveSplit.OriDE.Memory {
 		public PointF GetCameraTargetPosition() {
 			if (!IsHooked) { return new PointF(0, 0); }
 
-			float px = gameplayCamera.Read<float>(0x14, 0x10);
-			float py = gameplayCamera.Read<float>(0x14, 0x14);
+			float px = gameplayCamera.Read<float>(0x0, 0x14, 0x10);
+			float py = gameplayCamera.Read<float>(0x0, 0x14, 0x14);
 			return new PointF(px, py);
 		}
 		public Dictionary<string, bool> GetEvents() {
@@ -180,10 +180,10 @@ namespace LiveSplit.OriDE.Memory {
 		public List<Area> GetMapCompletion() {
 			List<Area> areas = new List<Area>();
 			if (gameWorld.Value != IntPtr.Zero) {
-				IntPtr current = (IntPtr)gameWorld.Read<int>(0x1c);
+				IntPtr current = (IntPtr)gameWorld.Read<int>(0x0,0x1c);
 				Area currentArea = GetArea(current);
-				IntPtr listHead = (IntPtr)gameWorld.Read<int>(0x18, 0x08);
-				int listSize = gameWorld.Read<int>(0x18, 0x0c);
+				IntPtr listHead = (IntPtr)gameWorld.Read<int>(0x0, 0x18, 0x08);
+				int listSize = gameWorld.Read<int>(0x0, 0x18, 0x0c);
 
 				for (var i = 0; i < listSize; i++) {
 					IntPtr gameWorldAreaHead = (IntPtr)Program.Read<int>(listHead, 0x10 + (i * 4));
@@ -200,7 +200,7 @@ namespace LiveSplit.OriDE.Memory {
 		}
 		public Area GetCurrentArea() {
 			if (gameWorld.Value != IntPtr.Zero) {
-				return GetArea((IntPtr)gameWorld.Read<int>(0x1c));
+				return GetArea((IntPtr)gameWorld.Read<int>(0x0, 0x1c));
 			}
 			return default(Area);
 		}
@@ -208,8 +208,8 @@ namespace LiveSplit.OriDE.Memory {
 			decimal total = 0;
 			int listSize = 0;
 			if (gameWorld.Value != IntPtr.Zero) {
-				IntPtr listHead = (IntPtr)gameWorld.Read<int>(0x18, 0x08);
-				listSize = gameWorld.Read<int>(0x18, 0x0c);
+				IntPtr listHead = (IntPtr)gameWorld.Read<int>(0x0, 0x18, 0x08);
+				listSize = gameWorld.Read<int>(0x0, 0x18, 0x0c);
 				for (var i = 0; i < listSize; i++) {
 					IntPtr gameWorldAreaHead = (IntPtr)Program.Read<int>(listHead, 0x10 + (i * 4));
 					Area area = GetArea(gameWorldAreaHead);
@@ -233,7 +233,7 @@ namespace LiveSplit.OriDE.Memory {
 			return area;
 		}
 		public List<Scene> GetScenes(PointF currentPos = default(PointF)) {
-			IntPtr activeScenesHead = (IntPtr)scenesManager.Read<int>(0x14);
+			IntPtr activeScenesHead = (IntPtr)scenesManager.Read<int>(0x0, 0x14);
 			int listSize = Program.Read<int>(activeScenesHead, 0x0c);
 
 			if (currentPos == default(PointF)) {
@@ -275,13 +275,13 @@ namespace LiveSplit.OriDE.Memory {
 			return scenes;
 		}
 		public bool IsEnteringGame() {
-			return gameController.Read<bool>(0x68) || gameController.Read<bool>(0x69) || seinCharacter.Value == IntPtr.Zero || (GetCurrentLevel() == 0 && GetCurrentENMax() == 3 && GetCurrentHPMax() == 3);
+			return gameController.Read<bool>(0x0, 0x68) || gameController.Read<bool>(0x0, 0x69) || seinCharacter.Value == IntPtr.Zero || (GetCurrentLevel() == 0 && GetCurrentENMax() == 3 && GetCurrentHPMax() == 3);
 		}
 		public bool CanMove() {
-			return !gameController.Read<bool>(0x7c) && !gameController.Read<bool>(0x7b);
+			return !gameController.Read<bool>(0x0, 0x7c) && !gameController.Read<bool>(0x0, 0x7b);
 		}
 		public GameState GetGameState() {
-			return (GameState)gameStateMachine.Read<int>(0x14);
+			return (GameState)gameStateMachine.Read<int>(0x0, 0x14);
 		}
 		public int GetKeyStones() {
 			return seinCharacter.Read<int>(0x00, 0x2c, 0x1c);
