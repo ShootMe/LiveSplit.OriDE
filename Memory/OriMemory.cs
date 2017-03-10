@@ -150,7 +150,7 @@ namespace LiveSplit.OriDE.Memory {
 			return Program.Read<bool>(start + key);
 		}
 		public Dictionary<string, bool> GetAbilities() {
-			IntPtr start = (IntPtr)seinCharacter.Read<int>(0x00, 0x4c);
+			IntPtr start = (IntPtr)seinCharacter.Read<uint>(0x00, 0x4c);
 
 			Dictionary<string, bool> results = new Dictionary<string, bool>();
 			foreach (var pair in abilities) {
@@ -159,12 +159,12 @@ namespace LiveSplit.OriDE.Memory {
 			return results;
 		}
 		public bool GetAbility(string name) {
-			IntPtr start = (IntPtr)seinCharacter.Read<int>(0x00, 0x4c);
+			IntPtr start = (IntPtr)seinCharacter.Read<uint>(0x00, 0x4c);
 			int ability = abilities[name];
 			return Program.Read<bool>(start, ability * 4, 0x08);
 		}
 		public void SetAbility(string name, bool enable) {
-			IntPtr start = (IntPtr)seinCharacter.Read<int>(0x00, 0x4c);
+			IntPtr start = (IntPtr)seinCharacter.Read<uint>(0x00, 0x4c);
 			int ability = abilities[name];
 			Program.Write(start, enable, ability * 4, 0x08);
 		}
@@ -180,13 +180,13 @@ namespace LiveSplit.OriDE.Memory {
 		public List<Area> GetMapCompletion() {
 			List<Area> areas = new List<Area>();
 			if (gameWorld.Value != IntPtr.Zero) {
-				IntPtr current = (IntPtr)gameWorld.Read<int>(0x0,0x1c);
+				IntPtr current = (IntPtr)gameWorld.Read<uint>(0x0,0x1c);
 				Area currentArea = GetArea(current);
-				IntPtr listHead = (IntPtr)gameWorld.Read<int>(0x0, 0x18, 0x08);
+				IntPtr listHead = (IntPtr)gameWorld.Read<uint>(0x0, 0x18, 0x08);
 				int listSize = gameWorld.Read<int>(0x0, 0x18, 0x0c);
 
 				for (var i = 0; i < listSize; i++) {
-					IntPtr gameWorldAreaHead = (IntPtr)Program.Read<int>(listHead, 0x10 + (i * 4));
+					IntPtr gameWorldAreaHead = (IntPtr)Program.Read<uint>(listHead, 0x10 + (i * 4));
 
 					Area area = GetArea(gameWorldAreaHead);
 					if (area.Name.Equals(currentArea.Name, StringComparison.OrdinalIgnoreCase)) {
@@ -200,7 +200,7 @@ namespace LiveSplit.OriDE.Memory {
 		}
 		public Area GetCurrentArea() {
 			if (gameWorld.Value != IntPtr.Zero) {
-				return GetArea((IntPtr)gameWorld.Read<int>(0x0, 0x1c));
+				return GetArea((IntPtr)gameWorld.Read<uint>(0x0, 0x1c));
 			}
 			return default(Area);
 		}
@@ -208,10 +208,10 @@ namespace LiveSplit.OriDE.Memory {
 			decimal total = 0;
 			int listSize = 0;
 			if (gameWorld.Value != IntPtr.Zero) {
-				IntPtr listHead = (IntPtr)gameWorld.Read<int>(0x0, 0x18, 0x08);
+				IntPtr listHead = (IntPtr)gameWorld.Read<uint>(0x0, 0x18, 0x08);
 				listSize = gameWorld.Read<int>(0x0, 0x18, 0x0c);
 				for (var i = 0; i < listSize; i++) {
-					IntPtr gameWorldAreaHead = (IntPtr)Program.Read<int>(listHead, 0x10 + (i * 4));
+					IntPtr gameWorldAreaHead = (IntPtr)Program.Read<uint>(listHead, 0x10 + (i * 4));
 					Area area = GetArea(gameWorldAreaHead);
 					total += area.Progress;
 				}
@@ -221,7 +221,7 @@ namespace LiveSplit.OriDE.Memory {
 		}
 		private Area GetArea(IntPtr areaAddress) {
 			float completionAmount = Program.Read<float>(areaAddress, 0x14);
-			string areaName = Program.Read((IntPtr)Program.Read<int>(areaAddress, 0x08, 0x1c));
+			string areaName = Program.Read((IntPtr)Program.Read<uint>(areaAddress, 0x08, 0x1c));
 			if (areaName.IndexOf("Mangrove", StringComparison.OrdinalIgnoreCase) >= 0) {
 				areaName = "Black Root";
 			}
@@ -233,7 +233,7 @@ namespace LiveSplit.OriDE.Memory {
 			return area;
 		}
 		public List<Scene> GetScenes(PointF currentPos = default(PointF)) {
-			IntPtr activeScenesHead = (IntPtr)scenesManager.Read<int>(0x0, 0x14);
+			IntPtr activeScenesHead = (IntPtr)scenesManager.Read<uint>(0x0, 0x14);
 			int listSize = Program.Read<int>(activeScenesHead, 0x0c);
 
 			if (currentPos == default(PointF)) {
@@ -244,16 +244,16 @@ namespace LiveSplit.OriDE.Memory {
 
 			List<Scene> scenes = new List<Scene>();
 			for (int i = 0; i < listSize; i++) {
-				IntPtr sceneManagerHead = (IntPtr)Program.Read<int>(activeScenesHead, 0x08, 0x10 + (i * 4));
-				IntPtr runtimeSceneHead = (IntPtr)Program.Read<int>(sceneManagerHead, 0x0c);
+				IntPtr sceneManagerHead = (IntPtr)Program.Read<uint>(activeScenesHead, 0x08, 0x10 + (i * 4));
+				IntPtr runtimeSceneHead = (IntPtr)Program.Read<uint>(sceneManagerHead, 0x0c);
 
 				Scene scene = new Scene();
-				scene.Name = Program.Read((IntPtr)Program.Read<int>(runtimeSceneHead, 0x08));
+				scene.Name = Program.Read((IntPtr)Program.Read<uint>(runtimeSceneHead, 0x08));
 				scene.State = (SceneState)Program.Read<int>(sceneManagerHead, 0x14);
 				bool dependantScene = Program.Read<bool>(runtimeSceneHead, 0x34);
 
 				if (!foundActive && !dependantScene) {
-					runtimeSceneHead = (IntPtr)Program.Read<int>(runtimeSceneHead, 0x14);
+					runtimeSceneHead = (IntPtr)Program.Read<uint>(runtimeSceneHead, 0x14);
 					int boundaryCount = Program.Read<int>(runtimeSceneHead, 0x0c);
 					for (int j = 0; j < boundaryCount; j++) {
 						float bx = Program.Read<float>(runtimeSceneHead, 0x08, 0x10 + (j * 16));
@@ -507,9 +507,9 @@ namespace LiveSplit.OriDE.Memory {
 			bool is64bit = Memory.Program.Is64Bit();
 			IntPtr p = IntPtr.Zero;
 			if (is64bit) {
-				p = (IntPtr)Memory.Program.Read<long>(Value, offsets);
+				p = (IntPtr)Memory.Program.Read<ulong>(Value, offsets);
 			} else {
-				p = (IntPtr)Memory.Program.Read<int>(Value, offsets);
+				p = (IntPtr)Memory.Program.Read<uint>(Value, offsets);
 			}
 			return Memory.Program.Read(p);
 		}
@@ -551,16 +551,13 @@ namespace LiveSplit.OriDE.Memory {
 				pointer = GetVersionedFunctionPointer();
 				if (pointer != IntPtr.Zero) {
 					bool is64bit = Memory.Program.Is64Bit();
+					pointer = (IntPtr)Memory.Program.Read<uint>(pointer);
 					if (AutoDeref) {
 						if (is64bit) {
-							pointer = (IntPtr)Memory.Program.Read<long>(pointer, 0, 0);
+							pointer = (IntPtr)Memory.Program.Read<ulong>(pointer);
 						} else {
-							pointer = (IntPtr)Memory.Program.Read<int>(pointer, 0, 0);
+							pointer = (IntPtr)Memory.Program.Read<uint>(pointer);
 						}
-					} else if (is64bit) {
-						pointer = (IntPtr)Memory.Program.Read<long>(pointer, 0);
-					} else {
-						pointer = (IntPtr)Memory.Program.Read<int>(pointer, 0);
 					}
 				}
 			}
