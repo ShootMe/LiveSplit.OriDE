@@ -10,6 +10,19 @@ using System.Xml;
 using LiveSplit.OriDE.Memory;
 using LiveSplit.OriDE.Settings;
 namespace LiveSplit.OriDE {
+	public enum Skill {
+		Sein,
+		WallJump,
+		ChargeFlame,
+		Dash,
+		DoubleJump,
+		Bash,
+		Stomp,
+		Glide,
+		Climb,
+		ChargeJump,
+		Grenade
+	}
 	public class OriComponent : IComponent {
 		public string ComponentName { get { return "Ori DE Autosplitter"; } }
 		public TimerModel Model { get; set; }
@@ -240,6 +253,206 @@ namespace LiveSplit.OriDE {
 					currentSplit++;
 				}
 			}
+		}
+		public Skill[] GetRandomSkills(int seed = -1) {
+			Random rnd = new Random(seed);
+			seed = rnd.Next(0, 5381);
+
+			int count = 0;
+			Skill[] newList = new Skill[11];
+			newList[0] = Skill.Sein;
+
+			HashSet<Skill> used = new HashSet<Skill>();
+			used.Add(Skill.Sein);
+
+			List<Skill> wallJump = new List<Skill>() { Skill.DoubleJump, Skill.Climb, Skill.ChargeJump };
+			for (int j = 0; j < wallJump.Count; j++) {
+				Skill wallJumpSkill = wallJump[j];
+				if (wallJumpSkill == Skill.WallJump) { continue; }
+
+				newList[1] = wallJumpSkill;
+				used.Add(wallJumpSkill);
+
+				List<Skill> chargeFlame = new List<Skill>();
+				if (used.Contains(Skill.ChargeJump)) {
+					foreach (Skill s in Enum.GetValues(typeof(Skill))) {
+						if (s != Skill.ChargeFlame && !used.Contains(s)) {
+							chargeFlame.Add(s);
+						}
+					}
+				} else {
+					chargeFlame.Add(Skill.ChargeJump);
+					chargeFlame.Add(Skill.Grenade);
+				}
+
+				for (int k = 0; k < chargeFlame.Count; k++) {
+					Skill chargeFlameSkill = chargeFlame[k];
+					newList[2] = chargeFlameSkill;
+					used.Add(chargeFlameSkill);
+
+					List<Skill> dash = new List<Skill>();
+					if (used.Contains(Skill.WallJump) || used.Contains(Skill.DoubleJump) || used.Contains(Skill.ChargeJump) || used.Contains(Skill.Climb) || (used.Contains(Skill.Bash) && used.Contains(Skill.Grenade))) {
+						foreach (Skill s in Enum.GetValues(typeof(Skill))) {
+							if (s != Skill.Dash && !used.Contains(s)) {
+								dash.Add(s);
+							}
+						}
+					} else {
+						dash.Add(Skill.WallJump);
+						dash.Add(Skill.DoubleJump);
+						dash.Add(Skill.ChargeJump);
+						dash.Add(Skill.Climb);
+						if (used.Contains(Skill.Grenade)) { dash.Add(Skill.Bash); }
+						if (used.Contains(Skill.Bash)) { dash.Add(Skill.Grenade); }
+					}
+
+					for (int m = 0; m < dash.Count; m++) {
+						Skill dashSkill = dash[m];
+						newList[3] = dashSkill;
+						used.Add(dashSkill);
+
+						if ((used.Contains(Skill.WallJump) || used.Contains(Skill.DoubleJump) || used.Contains(Skill.ChargeJump) || used.Contains(Skill.Climb)) && (used.Contains(Skill.Grenade) || used.Contains(Skill.ChargeFlame) || used.Contains(Skill.Stomp))) {
+							List<Skill> doubleJump = new List<Skill>();
+							if ((used.Contains(Skill.ChargeJump) && used.Contains(Skill.Climb)) || (used.Contains(Skill.DoubleJump) && used.Contains(Skill.WallJump))) {
+								foreach (Skill s in Enum.GetValues(typeof(Skill))) {
+									if (s != Skill.Bash && !used.Contains(s)) {
+										doubleJump.Add(s);
+									}
+								}
+							} else {
+								if (used.Contains(Skill.ChargeJump)) { doubleJump.Add(Skill.Climb); }
+								if (used.Contains(Skill.Climb)) { doubleJump.Add(Skill.ChargeJump); }
+								if (used.Contains(Skill.DoubleJump)) { doubleJump.Add(Skill.WallJump); }
+								if (used.Contains(Skill.WallJump) && !used.Contains(Skill.ChargeJump)) { doubleJump.Add(Skill.Climb); }
+							}
+
+							for (int i = 0; i < doubleJump.Count; i++) {
+								Skill doubleJumpSkill = doubleJump[i];
+								newList[4] = doubleJumpSkill;
+								used.Add(doubleJumpSkill);
+
+								List<Skill> bash = new List<Skill>();
+								if (used.Contains(Skill.ChargeJump) || (used.Contains(Skill.Bash) && (used.Contains(Skill.WallJump) || used.Contains(Skill.DoubleJump)))) {
+									foreach (Skill s in Enum.GetValues(typeof(Skill))) {
+										if (s != Skill.Bash && !used.Contains(s)) {
+											bash.Add(s);
+										}
+									}
+								} else {
+									bash.Add(Skill.ChargeJump);
+									if (used.Contains(Skill.Bash) && !used.Contains(Skill.WallJump)) { bash.Add(Skill.WallJump); }
+									if (used.Contains(Skill.Bash) && !used.Contains(Skill.DoubleJump)) { bash.Add(Skill.DoubleJump); }
+								}
+
+								for (int n = 0; n < bash.Count; n++) {
+									Skill bashSkill = bash[n];
+									newList[5] = bashSkill;
+									used.Add(bashSkill);
+
+									if (used.Contains(Skill.Stomp)) {
+										List<Skill> stomp = new List<Skill>();
+										if (used.Contains(Skill.Bash)) {
+											foreach (Skill s in Enum.GetValues(typeof(Skill))) {
+												if (s != Skill.Stomp && !used.Contains(s)) {
+													stomp.Add(s);
+												}
+											}
+										} else {
+											stomp.Add(Skill.Bash);
+										}
+
+										for (int o = 0; o < stomp.Count; o++) {
+											Skill stompSkill = stomp[o];
+											newList[6] = stompSkill;
+											used.Add(stompSkill);
+
+											List<Skill> glide = new List<Skill>();
+											foreach (Skill s in Enum.GetValues(typeof(Skill))) {
+												if (s != Skill.Glide && !used.Contains(s)) {
+													glide.Add(s);
+												}
+											}
+
+											for (int p = 0; p < glide.Count; p++) {
+												Skill glideSkill = glide[p];
+												newList[7] = glideSkill;
+												used.Add(glideSkill);
+
+												List<Skill> climb = new List<Skill>();
+												foreach (Skill s in Enum.GetValues(typeof(Skill))) {
+													if (s != Skill.Climb && !used.Contains(s)) {
+														climb.Add(s);
+													}
+												}
+
+												for (int q = 0; q < climb.Count; q++) {
+													Skill climbSkill = climb[q];
+													newList[8] = climbSkill;
+													used.Add(climbSkill);
+
+													List<Skill> chargeJump = new List<Skill>();
+													foreach (Skill s in Enum.GetValues(typeof(Skill))) {
+														if (s != Skill.ChargeJump && !used.Contains(s)) {
+															chargeJump.Add(s);
+														}
+													}
+
+													for (int r = 0; r < chargeJump.Count; r++) {
+														Skill chargeJumpSkill = chargeJump[r];
+														newList[9] = chargeJumpSkill;
+														used.Add(chargeJumpSkill);
+
+														List<Skill> grenade = new List<Skill>();
+														foreach (Skill s in Enum.GetValues(typeof(Skill))) {
+															if (s != Skill.Grenade && !used.Contains(s)) {
+																grenade.Add(s);
+															}
+														}
+
+														for (int s = 0; s < grenade.Count; s++) {
+															Skill grenadeSkill = grenade[s];
+															newList[10] = grenadeSkill;
+															used.Add(grenadeSkill);
+
+															if (count == seed) {
+																return newList;
+															}
+															//Console.WriteLine(newList[0].ToString() + " - " + newList[1].ToString() + " - " + newList[2].ToString() + " - " + newList[3].ToString() + " - " + newList[4].ToString() + " - " + newList[5].ToString() + " - " + newList[6].ToString() + " - " + newList[7].ToString() + " - " + newList[8].ToString() + " - " + newList[9].ToString() + " - " + newList[10].ToString());
+															count++;
+
+															used.Remove(grenadeSkill);
+														}
+
+														used.Remove(chargeJumpSkill);
+													}
+
+													used.Remove(climbSkill);
+												}
+
+												used.Remove(glideSkill);
+											}
+
+											used.Remove(stompSkill);
+										}
+									}
+
+									used.Remove(bashSkill);
+								}
+
+								used.Remove(doubleJumpSkill);
+							}
+						}
+
+						used.Remove(dashSkill);
+					}
+
+					used.Remove(chargeFlameSkill);
+				}
+
+				used.Remove(wallJumpSkill);
+			}
+
+			return newList;
 		}
 		private void LogValues() {
 			if (lastLogCheck == 0) {
