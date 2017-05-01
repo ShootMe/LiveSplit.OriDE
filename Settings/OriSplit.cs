@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-namespace LiveSplit.OriDE {
+﻿namespace LiveSplit.OriDE {
 	public class OriSplit {
 		public string Field { get; set; }
 		public string Value { get; set; }

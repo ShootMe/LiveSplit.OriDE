@@ -83,6 +83,7 @@
     <None Include="OriManager.Designer.cs">
       <DependentUpon>OriManager.cs</DependentUpon>
     </None>
+    <Compile Include="OriRandomizer.cs" />
     <Compile Include="Settings\OriSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>

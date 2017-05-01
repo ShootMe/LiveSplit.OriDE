@@ -10,19 +10,6 @@ using System.Xml;
 using LiveSplit.OriDE.Memory;
 using LiveSplit.OriDE.Settings;
 namespace LiveSplit.OriDE {
-	public enum Skill {
-		Sein,
-		WallJump,
-		ChargeFlame,
-		Dash,
-		DoubleJump,
-		Bash,
-		Stomp,
-		Glide,
-		Climb,
-		ChargeJump,
-		Grenade
-	}
 	public class OriComponent : IComponent {
 		public string ComponentName { get { return "Ori DE Autosplitter"; } }
 		public TimerModel Model { get; set; }
@@ -37,6 +24,7 @@ namespace LiveSplit.OriDE {
 		internal static List<string> keys = new List<string>() { "Pos", "CurrentSplit", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "CurrentEnergy", "HealthCells", "CurrentHealth", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameStateMachine", "WorldEvents", "RainbowDash" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
+		private OriRandomizer randomizer;
 
 		public OriComponent() {
 			try {
@@ -44,6 +32,7 @@ namespace LiveSplit.OriDE {
 				textInfo.LongestString = "Valley Of The Wind - 100.00%";
 				mem = new OriMemory();
 				settings = new OriSettings(this);
+				randomizer = new OriRandomizer(mem);
 				mem.AddLogItems(keys);
 				foreach (string key in keys) {
 					currentValues[key] = "";
@@ -71,21 +60,29 @@ namespace LiveSplit.OriDE {
 				mem.ActivateRainbowDash();
 			}
 
-			//if (isInGameWorld && settings.Randomizer) {
-			//	if (!mem.GetAbility("Spirit Flame") && !mem.CanMove()) {
-			//		HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
-			//		HitBox seinSkill = new HitBox("-165,-262,1,2");
-			//		if (seinSkill.Intersects(ori)) {
-			//			mem.SetSkills(true);
-			//		}
-			//	} else {
-			//		decimal totalMap = mem.GetTotalMapCompletion();
-			//		if (totalMap > (decimal)1.21 && totalMap < (decimal)1.23 && mem.GetAbility("Charge Jump") && mem.CanMove()) {
-			//			mem.SetSkills(false);
-			//			mem.SetSkills(true, "Spirit Flame");
-			//		}
-			//	}
-			//}
+			if (Model != null && settings.Randomizer) {
+				if (isStartingGame && Model.CurrentState.CurrentPhase == TimerPhase.NotRunning) {
+					Model.Start();
+					randomizer.ClearRandomizer();
+					randomizer.UpdateRandomSkills(settings.RandomSeed);
+				}
+
+				if (Model.CurrentState.CurrentPhase == TimerPhase.Running) {
+					List<Scene> scenes = mem.GetScenes();
+					for (int i = 0; i < scenes.Count; i++) {
+						Scene scene = scenes[i];
+						if (scene.State == SceneState.Loading) {
+							switch (scene.Name) {
+								case "creditsScreen": Model.Split(); break;
+							}
+						}
+					}
+
+					if (isInGameWorld && DateTime.Now.AddSeconds(-1) > notInGame) {
+						randomizer.Update();
+					}
+				}
+			}
 
 			if (Model != null && currentSplit < settings.Splits.Count) {
 				bool shouldSplit = false;
@@ -254,206 +251,6 @@ namespace LiveSplit.OriDE {
 				}
 			}
 		}
-		public Skill[] GetRandomSkills(int seed = -1) {
-			Random rnd = new Random(seed);
-			seed = rnd.Next(0, 5381);
-
-			int count = 0;
-			Skill[] newList = new Skill[11];
-			newList[0] = Skill.Sein;
-
-			HashSet<Skill> used = new HashSet<Skill>();
-			used.Add(Skill.Sein);
-
-			List<Skill> wallJump = new List<Skill>() { Skill.DoubleJump, Skill.Climb, Skill.ChargeJump };
-			for (int j = 0; j < wallJump.Count; j++) {
-				Skill wallJumpSkill = wallJump[j];
-				if (wallJumpSkill == Skill.WallJump) { continue; }
-
-				newList[1] = wallJumpSkill;
-				used.Add(wallJumpSkill);
-
-				List<Skill> chargeFlame = new List<Skill>();
-				if (used.Contains(Skill.ChargeJump)) {
-					foreach (Skill s in Enum.GetValues(typeof(Skill))) {
-						if (s != Skill.ChargeFlame && !used.Contains(s)) {
-							chargeFlame.Add(s);
-						}
-					}
-				} else {
-					chargeFlame.Add(Skill.ChargeJump);
-					chargeFlame.Add(Skill.Grenade);
-				}
-
-				for (int k = 0; k < chargeFlame.Count; k++) {
-					Skill chargeFlameSkill = chargeFlame[k];
-					newList[2] = chargeFlameSkill;
-					used.Add(chargeFlameSkill);
-
-					List<Skill> dash = new List<Skill>();
-					if (used.Contains(Skill.WallJump) || used.Contains(Skill.DoubleJump) || used.Contains(Skill.ChargeJump) || used.Contains(Skill.Climb) || (used.Contains(Skill.Bash) && used.Contains(Skill.Grenade))) {
-						foreach (Skill s in Enum.GetValues(typeof(Skill))) {
-							if (s != Skill.Dash && !used.Contains(s)) {
-								dash.Add(s);
-							}
-						}
-					} else {
-						dash.Add(Skill.WallJump);
-						dash.Add(Skill.DoubleJump);
-						dash.Add(Skill.ChargeJump);
-						dash.Add(Skill.Climb);
-						if (used.Contains(Skill.Grenade)) { dash.Add(Skill.Bash); }
-						if (used.Contains(Skill.Bash)) { dash.Add(Skill.Grenade); }
-					}
-
-					for (int m = 0; m < dash.Count; m++) {
-						Skill dashSkill = dash[m];
-						newList[3] = dashSkill;
-						used.Add(dashSkill);
-
-						if ((used.Contains(Skill.WallJump) || used.Contains(Skill.DoubleJump) || used.Contains(Skill.ChargeJump) || used.Contains(Skill.Climb)) && (used.Contains(Skill.Grenade) || used.Contains(Skill.ChargeFlame) || used.Contains(Skill.Stomp))) {
-							List<Skill> doubleJump = new List<Skill>();
-							if ((used.Contains(Skill.ChargeJump) && used.Contains(Skill.Climb)) || (used.Contains(Skill.DoubleJump) && used.Contains(Skill.WallJump))) {
-								foreach (Skill s in Enum.GetValues(typeof(Skill))) {
-									if (s != Skill.Bash && !used.Contains(s)) {
-										doubleJump.Add(s);
-									}
-								}
-							} else {
-								if (used.Contains(Skill.ChargeJump)) { doubleJump.Add(Skill.Climb); }
-								if (used.Contains(Skill.Climb)) { doubleJump.Add(Skill.ChargeJump); }
-								if (used.Contains(Skill.DoubleJump)) { doubleJump.Add(Skill.WallJump); }
-								if (used.Contains(Skill.WallJump) && !used.Contains(Skill.ChargeJump)) { doubleJump.Add(Skill.Climb); }
-							}
-
-							for (int i = 0; i < doubleJump.Count; i++) {
-								Skill doubleJumpSkill = doubleJump[i];
-								newList[4] = doubleJumpSkill;
-								used.Add(doubleJumpSkill);
-
-								List<Skill> bash = new List<Skill>();
-								if (used.Contains(Skill.ChargeJump) || (used.Contains(Skill.Bash) && (used.Contains(Skill.WallJump) || used.Contains(Skill.DoubleJump)))) {
-									foreach (Skill s in Enum.GetValues(typeof(Skill))) {
-										if (s != Skill.Bash && !used.Contains(s)) {
-											bash.Add(s);
-										}
-									}
-								} else {
-									bash.Add(Skill.ChargeJump);
-									if (used.Contains(Skill.Bash) && !used.Contains(Skill.WallJump)) { bash.Add(Skill.WallJump); }
-									if (used.Contains(Skill.Bash) && !used.Contains(Skill.DoubleJump)) { bash.Add(Skill.DoubleJump); }
-								}
-
-								for (int n = 0; n < bash.Count; n++) {
-									Skill bashSkill = bash[n];
-									newList[5] = bashSkill;
-									used.Add(bashSkill);
-
-									if (used.Contains(Skill.Stomp)) {
-										List<Skill> stomp = new List<Skill>();
-										if (used.Contains(Skill.Bash)) {
-											foreach (Skill s in Enum.GetValues(typeof(Skill))) {
-												if (s != Skill.Stomp && !used.Contains(s)) {
-													stomp.Add(s);
-												}
-											}
-										} else {
-											stomp.Add(Skill.Bash);
-										}
-
-										for (int o = 0; o < stomp.Count; o++) {
-											Skill stompSkill = stomp[o];
-											newList[6] = stompSkill;
-											used.Add(stompSkill);
-
-											List<Skill> glide = new List<Skill>();
-											foreach (Skill s in Enum.GetValues(typeof(Skill))) {
-												if (s != Skill.Glide && !used.Contains(s)) {
-													glide.Add(s);
-												}
-											}
-
-											for (int p = 0; p < glide.Count; p++) {
-												Skill glideSkill = glide[p];
-												newList[7] = glideSkill;
-												used.Add(glideSkill);
-
-												List<Skill> climb = new List<Skill>();
-												foreach (Skill s in Enum.GetValues(typeof(Skill))) {
-													if (s != Skill.Climb && !used.Contains(s)) {
-														climb.Add(s);
-													}
-												}
-
-												for (int q = 0; q < climb.Count; q++) {
-													Skill climbSkill = climb[q];
-													newList[8] = climbSkill;
-													used.Add(climbSkill);
-
-													List<Skill> chargeJump = new List<Skill>();
-													foreach (Skill s in Enum.GetValues(typeof(Skill))) {
-														if (s != Skill.ChargeJump && !used.Contains(s)) {
-															chargeJump.Add(s);
-														}
-													}
-
-													for (int r = 0; r < chargeJump.Count; r++) {
-														Skill chargeJumpSkill = chargeJump[r];
-														newList[9] = chargeJumpSkill;
-														used.Add(chargeJumpSkill);
-
-														List<Skill> grenade = new List<Skill>();
-														foreach (Skill s in Enum.GetValues(typeof(Skill))) {
-															if (s != Skill.Grenade && !used.Contains(s)) {
-																grenade.Add(s);
-															}
-														}
-
-														for (int s = 0; s < grenade.Count; s++) {
-															Skill grenadeSkill = grenade[s];
-															newList[10] = grenadeSkill;
-															used.Add(grenadeSkill);
-
-															if (count == seed) {
-																return newList;
-															}
-															//Console.WriteLine(newList[0].ToString() + " - " + newList[1].ToString() + " - " + newList[2].ToString() + " - " + newList[3].ToString() + " - " + newList[4].ToString() + " - " + newList[5].ToString() + " - " + newList[6].ToString() + " - " + newList[7].ToString() + " - " + newList[8].ToString() + " - " + newList[9].ToString() + " - " + newList[10].ToString());
-															count++;
-
-															used.Remove(grenadeSkill);
-														}
-
-														used.Remove(chargeJumpSkill);
-													}
-
-													used.Remove(climbSkill);
-												}
-
-												used.Remove(glideSkill);
-											}
-
-											used.Remove(stompSkill);
-										}
-									}
-
-									used.Remove(bashSkill);
-								}
-
-								used.Remove(doubleJumpSkill);
-							}
-						}
-
-						used.Remove(dashSkill);
-					}
-
-					used.Remove(chargeFlameSkill);
-				}
-
-				used.Remove(wallJumpSkill);
-			}
-
-			return newList;
-		}
 		private void LogValues() {
 			if (lastLogCheck == 0) {
 				hasLog = File.Exists(oriLogPath);
@@ -533,25 +330,38 @@ namespace LiveSplit.OriDE {
 				lvstate.OnSkipSplit += OnSkipSplit;
 			}
 
+			if (Model != null && settings.Randomizer) {
+				if (Model.CurrentState.CurrentPhase == TimerPhase.NotRunning && randomizer.Seed != settings.RandomSeed && !string.IsNullOrEmpty(settings.RandomSeed)) {
+					randomizer.UpdateRandomSkills(settings.RandomSeed);
+				}
+			}
+
 			GetValues();
 
-			if (settings.ShowMapDisplay) {
-				List<Area> areas = mem.GetMapCompletion();
-				decimal total = 0;
-				Area currentArea = default(Area);
-				for (int i = 0; i < areas.Count; i++) {
-					Area area = areas[i];
-					total += area.Progress;
-					if (area.Current) {
-						currentArea = area;
+			if (settings.ShowMapDisplay || settings.Randomizer) {
+				if (settings.ShowMapDisplay) {
+					List<Area> areas = mem.GetMapCompletion();
+					decimal total = 0;
+					Area currentArea = default(Area);
+					for (int i = 0; i < areas.Count; i++) {
+						Area area = areas[i];
+						total += area.Progress;
+						if (area.Current) {
+							currentArea = area;
+						}
 					}
+					if (areas.Count > 0) {
+						total /= areas.Count;
+					}
+					textInfo.InformationName = "Total Map: " + total.ToString("0.00") + "%";
+					textInfo.InformationValue = currentArea.Name + " - " + currentArea.Progress.ToString("0.00") + "%";
+					textInfo.LongestString = "Valley Of The Wind - 100.00%";
+				} else {
+					textInfo.InformationName = randomizer.TextTitle;
+					textInfo.InformationValue = randomizer.TextInfo;
+					textInfo.LongestString = "Last Skill: Charge Flame";
 				}
-				if (areas.Count > 0) {
-					total /= areas.Count;
-				}
-				textInfo.InformationName = "Total Map: " + total.ToString("0.00") + "%";
-				textInfo.InformationValue = currentArea.Name + " - " + currentArea.Progress.ToString("0.00") + "%";
-				textInfo.LongestString = "Valley Of The Wind - 100.00%";
+
 				textInfo.Update(invalidator, lvstate, width, height, mode);
 				if (invalidator != null) {
 					invalidator.Invalidate(0, 0, width, height);
@@ -611,7 +421,7 @@ namespace LiveSplit.OriDE {
 		}
 		public XmlNode GetSettings(XmlDocument document) { return settings.UpdateSettings(document); }
 		public void DrawVertical(Graphics g, LiveSplitState state, float width, Region clipRegion) {
-			if (settings.ShowMapDisplay) {
+			if (settings.ShowMapDisplay || settings.Randomizer) {
 				if (state.LayoutSettings.BackgroundColor.ToArgb() != Color.Transparent.ToArgb()) {
 					g.FillRectangle(new SolidBrush(state.LayoutSettings.BackgroundColor), 0, 0, width, VerticalHeight);
 				}
@@ -620,7 +430,7 @@ namespace LiveSplit.OriDE {
 			}
 		}
 		public void DrawHorizontal(Graphics g, LiveSplitState state, float height, Region clipRegion) {
-			if (settings.ShowMapDisplay) {
+			if (settings.ShowMapDisplay || settings.Randomizer) {
 				if (state.LayoutSettings.BackgroundColor.ToArgb() != Color.Transparent.ToArgb()) {
 					g.FillRectangle(new SolidBrush(state.LayoutSettings.BackgroundColor), 0, 0, HorizontalWidth, height);
 				}
@@ -639,21 +449,21 @@ namespace LiveSplit.OriDE {
 			textInfo.ValueLabel.ForeColor = state.LayoutSettings.TextColor;
 		}
 		public float HorizontalWidth {
-			get { return settings.ShowMapDisplay ? textInfo.HorizontalWidth : 0; }
+			get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.HorizontalWidth : 0; }
 		}
 		public float VerticalHeight {
-			get { return settings.ShowMapDisplay ? textInfo.VerticalHeight : 0; }
+			get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.VerticalHeight : 0; }
 		}
 		public float MinimumHeight {
-			get { return settings.ShowMapDisplay ? textInfo.MinimumHeight : 0; }
+			get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.MinimumHeight : 0; }
 		}
 		public float MinimumWidth {
-			get { return settings.ShowMapDisplay ? textInfo.MinimumWidth : 0; }
+			get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.MinimumWidth : 0; }
 		}
-		public float PaddingTop { get { return settings.ShowMapDisplay ? textInfo.PaddingTop : 0; } }
-		public float PaddingLeft { get { return settings.ShowMapDisplay ? textInfo.PaddingLeft : 0; } }
-		public float PaddingBottom { get { return settings.ShowMapDisplay ? textInfo.PaddingBottom : 0; } }
-		public float PaddingRight { get { return settings.ShowMapDisplay ? textInfo.PaddingRight : 0; } }
+		public float PaddingTop { get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.PaddingTop : 0; } }
+		public float PaddingLeft { get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.PaddingLeft : 0; } }
+		public float PaddingBottom { get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.PaddingBottom : 0; } }
+		public float PaddingRight { get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.PaddingRight : 0; } }
 		public void Dispose() { }
 	}
 }

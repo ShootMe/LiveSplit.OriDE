@@ -1,6 +1,20 @@
 ﻿using System.Drawing;
 using System.Globalization;
 namespace LiveSplit.OriDE.Memory {
+	public enum Skill {
+		Sein,
+		WallJump,
+		ChargeFlame,
+		Dash,
+		DoubleJump,
+		Bash,
+		Stomp,
+		Glide,
+		Climb,
+		ChargeJump,
+		Grenade,
+		None
+	}
 	public struct Scene {
 		public string Name { get; set; }
 		public bool Active { get; set; }

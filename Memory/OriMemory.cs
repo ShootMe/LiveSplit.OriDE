@@ -7,6 +7,7 @@ namespace LiveSplit.OriDE.Memory {
 		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameStateMachine, rainbowDash, gameController, tas, coreInput;
 		public Process Program { get; set; }
 		public bool IsHooked { get; set; } = false;
+		private static Skill[] AllSkills = new Skill[] { Skill.Sein, Skill.WallJump, Skill.ChargeFlame, Skill.Dash, Skill.DoubleJump, Skill.Bash, Skill.Stomp, Skill.Glide, Skill.Climb, Skill.ChargeJump, Skill.Grenade };
 
 		public OriMemory() {
 			gameWorld = new ProgramPointer(this, MemPointer.GameWorld) { AutoDeref = false };
@@ -168,19 +169,31 @@ namespace LiveSplit.OriDE.Memory {
 			int ability = abilities[name];
 			Program.Write(start, enable, ability * 4, 0x08);
 		}
-		public void SetSkills(bool enable, params string[] skills) {
+		public void SetSkills(bool enable, params Skill[] skills) {
 			if (skills == null || skills.Length == 0) {
-				skills = new string[] { "Bash", "Charge Flame", "Wall Jump", "Stomp", "Double Jump", "Charge Jump", "Climb", "Glide", "Spirit Flame", "Dash", "Light Grenade" };
+				skills = AllSkills;
 			}
 
 			for (int i = 0; i < skills.Length; i++) {
-				SetAbility(skills[i], enable);
+				switch (skills[i]) {
+					case Skill.Sein: SetAbility("Sprit Flame", enable); break;
+					case Skill.WallJump: SetAbility("Wall Jump", enable); break;
+					case Skill.ChargeFlame: SetAbility("Charge Flame", enable); break;
+					case Skill.Dash: SetAbility("Dash", enable); break;
+					case Skill.DoubleJump: SetAbility("Double Jump", enable); break;
+					case Skill.Bash: SetAbility("Bash", enable); break;
+					case Skill.Stomp: SetAbility("Stomp", enable); break;
+					case Skill.Glide: SetAbility("Glide", enable); break;
+					case Skill.Climb: SetAbility("Climb", enable); break;
+					case Skill.ChargeJump: SetAbility("Charge Jump", enable); break;
+					case Skill.Grenade: SetAbility("Light Grenade", enable); break;
+				}
 			}
 		}
 		public List<Area> GetMapCompletion() {
 			List<Area> areas = new List<Area>();
 			if (gameWorld.Value != IntPtr.Zero) {
-				IntPtr current = (IntPtr)gameWorld.Read<uint>(0x0,0x1c);
+				IntPtr current = (IntPtr)gameWorld.Read<uint>(0x0, 0x1c);
 				Area currentArea = GetArea(current);
 				IntPtr listHead = (IntPtr)gameWorld.Read<uint>(0x0, 0x18, 0x08);
 				int listSize = gameWorld.Read<int>(0x0, 0x18, 0x0c);
