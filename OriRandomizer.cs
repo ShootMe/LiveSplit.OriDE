@@ -9,7 +9,8 @@ namespace LiveSplit.OriDE {
 		private int iteration;
 		private Dictionary<Skill, HitBox> treeHitboxes;
 		private List<Skill> skillsGained = new List<Skill>();
-		private bool allSkills = false;
+		private Skill lastSkill = Skill.None;
+		public bool Running { get { return skills != null; } }
 
 		public OriRandomizer(OriMemory mem) {
 			this.mem = mem;
@@ -21,20 +22,20 @@ namespace LiveSplit.OriDE {
 
 			skills = null;
 			skillsGained.Clear();
-			allSkills = false;
+			lastSkill = Skill.None;
 
 			treeHitboxes = new Dictionary<Skill, HitBox>() {
 				{ Skill.Sein,        new HitBox("-165,-262,1,2") },
-				{ Skill.WallJump,    new HitBox("-317,-302,5,5") },
-				{ Skill.ChargeFlame, new HitBox("-53,-154,5,5") },
-				{ Skill.Dash,        new HitBox("293,-252,5,5") },
-				{ Skill.DoubleJump,  new HitBox("785,-405,5,5") },
-				{ Skill.Bash,        new HitBox("532,333,5,5") },
-				{ Skill.Stomp,       new HitBox("859,-89,5,5") },
-				{ Skill.Glide,       new HitBox("-458,-14,5,5") },
-				{ Skill.Climb,       new HitBox("-1189,-96,5,5") },
-				{ Skill.ChargeJump,  new HitBox("-697,412,5,5") },
-				{ Skill.Grenade,     new HitBox("69,-374,5,5") }
+				{ Skill.WallJump,    new HitBox("-317,-301,5,6") },
+				{ Skill.ChargeFlame, new HitBox("-53,-153,5,6") },
+				{ Skill.Dash,        new HitBox("293,-251,5,6") },
+				{ Skill.DoubleJump,  new HitBox("785,-404,5,6") },
+				{ Skill.Bash,        new HitBox("532,334,5,6") },
+				{ Skill.Stomp,       new HitBox("859,-88,5,6") },
+				{ Skill.Glide,       new HitBox("-458,-13,5,6") },
+				{ Skill.Climb,       new HitBox("-1189,-95,5,6") },
+				{ Skill.ChargeJump,  new HitBox("-697,413,5,6") },
+				{ Skill.Grenade,     new HitBox("69,-373,5,6") }
 			};
 			UpdateRandomSkills(Seed);
 		}
@@ -50,12 +51,13 @@ namespace LiveSplit.OriDE {
 					touchingAnyTree = true;
 
 					if (mem.CanMove()) {
-						mem.SetSkills(true);
-						allSkills = true;
+						lastSkill = skills[(int)tree.Key];
+						mem.SetSkills(true, lastSkill);
 					} else {
-						skillsGained.Add(skills[(int)tree.Key]);
+						skillsGained.Add(lastSkill);
 						treeToRemove = tree.Key;
 						touchingAnyTree = false;
+						TextInfo = GetSkillName(tree.Key) + " -> " + GetSkillName(lastSkill);
 					}
 
 					break;
@@ -64,17 +66,29 @@ namespace LiveSplit.OriDE {
 
 			if (treeToRemove != Skill.None) {
 				treeHitboxes.Remove(treeToRemove);
-			}
-			if (!touchingAnyTree && allSkills) {
-				allSkills = false;
-
-				mem.SetSkills(false);
-				mem.SetSkills(true, skillsGained.ToArray());
+				lastSkill = Skill.None;
+			} else if (!touchingAnyTree && lastSkill != Skill.None) {
+				mem.SetSkills(false, lastSkill);
+				lastSkill = Skill.None;
 			}
 		}
+		private string GetSkillName(Skill skill) {
+			switch (skill) {
+				case Skill.Sein: return "Spirit Flame";
+				case Skill.WallJump: return "Wall Jump";
+				case Skill.ChargeFlame: return "Charge Flame";
+				case Skill.Dash: return "Dash";
+				case Skill.DoubleJump: return "Double Jump";
+				case Skill.Bash: return "Bash";
+				case Skill.Stomp: return "Stomp";
+				case Skill.Glide: return "Feather";
+				case Skill.Climb: return "Climb";
+				case Skill.ChargeJump: return "Charge Jump";
+				case Skill.Grenade: return "Light Burst";
+			}
+			return "N/A";
+		}
 		public void UpdateRandomSkills(string seed) {
-			TextTitle = "S: ";
-
 			Random rnd = null;
 			iteration = 0;
 			if (string.IsNullOrEmpty(seed)) {

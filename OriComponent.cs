@@ -63,11 +63,14 @@ namespace LiveSplit.OriDE {
 			if (Model != null && settings.Randomizer) {
 				if (isStartingGame && Model.CurrentState.CurrentPhase == TimerPhase.NotRunning) {
 					Model.Start();
-					randomizer.ClearRandomizer();
-					randomizer.UpdateRandomSkills(settings.RandomSeed);
 				}
 
 				if (Model.CurrentState.CurrentPhase == TimerPhase.Running) {
+					if (!randomizer.Running) {
+						randomizer.ClearRandomizer();
+						randomizer.UpdateRandomSkills(settings.RandomSeed);
+					}
+
 					List<Scene> scenes = mem.GetScenes();
 					for (int i = 0; i < scenes.Count; i++) {
 						Scene scene = scenes[i];
@@ -82,6 +85,8 @@ namespace LiveSplit.OriDE {
 						randomizer.Update();
 					}
 				}
+
+				return;
 			}
 
 			if (Model != null && currentSplit < settings.Splits.Count) {

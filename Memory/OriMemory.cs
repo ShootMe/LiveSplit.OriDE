@@ -176,7 +176,7 @@ namespace LiveSplit.OriDE.Memory {
 
 			for (int i = 0; i < skills.Length; i++) {
 				switch (skills[i]) {
-					case Skill.Sein: SetAbility("Sprit Flame", enable); break;
+					case Skill.Sein: SetAbility("Spirit Flame", enable); break;
 					case Skill.WallJump: SetAbility("Wall Jump", enable); break;
 					case Skill.ChargeFlame: SetAbility("Charge Flame", enable); break;
 					case Skill.Dash: SetAbility("Dash", enable); break;
@@ -291,7 +291,7 @@ namespace LiveSplit.OriDE.Memory {
 			return gameController.Read<bool>(0x0, 0x68) || gameController.Read<bool>(0x0, 0x69) || seinCharacter.Value == IntPtr.Zero || (GetCurrentLevel() == 0 && GetCurrentENMax() == 3 && GetCurrentHPMax() == 3);
 		}
 		public bool CanMove() {
-			return !gameController.Read<bool>(0x0, 0x7c) && !gameController.Read<bool>(0x0, 0x7b);
+			return !gameController.Read<bool>(0x0, 0x7c) && !gameController.Read<bool>(0x0, 0x7b) && !seinCharacter.Read<bool>(0x0, 0x18, 0x38) && !seinCharacter.Read<bool>(0x0, 0x18, 0x40);
 		}
 		public GameState GetGameState() {
 			return (GameState)gameStateMachine.Read<int>(0x0, 0x14);
