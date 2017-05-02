@@ -61,8 +61,13 @@ namespace LiveSplit.OriDE {
 			}
 
 			if (Model != null && settings.Randomizer) {
-				if (isStartingGame && Model.CurrentState.CurrentPhase == TimerPhase.NotRunning) {
-					Model.Start();
+				if (Model.CurrentState.CurrentPhase == TimerPhase.NotRunning) {
+					if (isStartingGame) {
+						Model.Start();
+					}
+					if (randomizer.Running) {
+						randomizer.ClearRandomizer();
+					}
 				}
 
 				if (Model.CurrentState.CurrentPhase == TimerPhase.Running) {
