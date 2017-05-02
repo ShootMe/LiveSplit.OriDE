@@ -58,7 +58,7 @@ namespace LiveSplit.OriDE {
 						treeToRemove = tree.Key;
 						touchingAnyTree = false;
 						TextInfo = GetSkillName(tree.Key) + " -> " + GetSkillName(lastSkill);
-						if (lastSkill != tree.Key) {
+						if (!skillsGained.Contains(tree.Key)) {
 							mem.SetSkills(false, tree.Key);
 						}
 					}
@@ -109,7 +109,7 @@ namespace LiveSplit.OriDE {
 			Seed = seed;
 			TextTitle = seed + " - " + iteration;
 			TextInfo = "Last Skill: N/A";
-
+			
 			IterateSein(iteration);
 		}
 		private int IterateSein(int count) {
@@ -342,7 +342,7 @@ namespace LiveSplit.OriDE {
 				if (pickedSkill == Skill.Grenade || usedSkills.Contains(pickedSkill) || count <= 0) { continue; }
 
 				skills[(int)Skill.Grenade] = pickedSkill;
-
+				
 				count--;
 			}
 
