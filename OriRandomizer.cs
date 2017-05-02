@@ -97,27 +97,28 @@ namespace LiveSplit.OriDE {
 			if (string.IsNullOrEmpty(seed)) {
 				seed = "Random";
 				rnd = new Random();
-				iteration = rnd.Next(1, 49851);
+				iteration = rnd.Next(1, 7087);
 			} else if (int.TryParse(seed, out iteration)) {
-				if (iteration < 1 || iteration > 49850) {
-					iteration = (iteration % 49850) + 1;
+				if (iteration < 1 || iteration > 7086) {
+					iteration = (iteration % 7086) + 1;
 				}
 			} else {
 				rnd = new Random(seed.GetHashCode());
-				iteration = rnd.Next(1, 49851);
+				iteration = rnd.Next(1, 7087);
 			}
 			Seed = seed;
 			TextTitle = seed + " - " + iteration;
 			TextInfo = "Last Skill: N/A";
-			
+
 			IterateSein(iteration);
 		}
 		private int IterateSein(int count) {
 			HashSet<Skill> usedSkills = new HashSet<Skill>();
+			usedSkills.Add(Skill.None);
 			skills = new Skill[11];
 
-			//49850 with just sein, 1427794 with sein, stomp, and charge jump
-			List<Skill> treeSkills = new List<Skill>() { Skill.Sein };
+			//7086 with just sein, 175159 with sein, stomp, and charge jump
+			List<Skill> treeSkills = new List<Skill>() { Skill.Sein, Skill.Stomp, Skill.ChargeJump };
 
 			for (int i = 0; i < treeSkills.Count && count > 0; i++) {
 				Skill pickedSkill = treeSkills[i];
@@ -342,7 +343,7 @@ namespace LiveSplit.OriDE {
 				if (pickedSkill == Skill.Grenade || usedSkills.Contains(pickedSkill) || count <= 0) { continue; }
 
 				skills[(int)Skill.Grenade] = pickedSkill;
-				
+
 				count--;
 			}
 
