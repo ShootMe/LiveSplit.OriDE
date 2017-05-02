@@ -364,7 +364,7 @@ namespace LiveSplit.OriDE {
 				} else {
 					textInfo.InformationName = randomizer.TextTitle;
 					textInfo.InformationValue = randomizer.TextInfo;
-					textInfo.LongestString = "Last Skill: Charge Flame";
+					textInfo.LongestString = "Spirit Flame -> Spirit Flame";
 				}
 
 				textInfo.Update(invalidator, lvstate, width, height, mode);
