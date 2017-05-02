@@ -94,29 +94,53 @@ namespace LiveSplit.OriDE {
 			if (string.IsNullOrEmpty(seed)) {
 				seed = "Random";
 				rnd = new Random();
-				iteration = rnd.Next(1, 7087);
+				iteration = rnd.Next(1, 49851);
 			} else if (int.TryParse(seed, out iteration)) {
-				if (iteration < 1 || iteration > 7086) {
-					iteration = (iteration % 7086) + 1;
+				if (iteration < 1 || iteration > 49850) {
+					iteration = (iteration % 49850) + 1;
 				}
 			} else {
 				rnd = new Random(seed.GetHashCode());
-				iteration = rnd.Next(1, 7087);
+				iteration = rnd.Next(1, 49851);
 			}
 			Seed = seed;
 			TextTitle = seed + " - " + iteration;
 			TextInfo = "Last Skill: N/A";
 
-			skills = new Skill[11];
-			skills[(int)Skill.Sein] = Skill.Sein;
-
+			IterateSein(iteration);
+		}
+		private int IterateSein(int count) {
 			HashSet<Skill> usedSkills = new HashSet<Skill>();
-			usedSkills.Add(Skill.Sein);
+			skills = new Skill[11];
 
-			IterateWallJump(iteration, usedSkills);
+			//49850 with just sein, 1427794 with sein, stomp, and charge jump
+			List<Skill> treeSkills = new List<Skill>() { Skill.Sein };
+
+			for (int i = 0; i < treeSkills.Count && count > 0; i++) {
+				Skill pickedSkill = treeSkills[i];
+				skills[(int)Skill.Sein] = pickedSkill;
+				usedSkills.Add(pickedSkill);
+
+				count = IterateWallJump(count, usedSkills);
+
+				usedSkills.Remove(pickedSkill);
+			}
+
+			return count;
 		}
 		private int IterateWallJump(int count, HashSet<Skill> usedSkills) {
-			List<Skill> treeSkills = new List<Skill>() { Skill.DoubleJump, Skill.Climb, Skill.ChargeJump };
+			List<Skill> treeSkills = new List<Skill>();
+			if (usedSkills.Contains(Skill.ChargeJump)) {
+				foreach (Skill s in Enum.GetValues(typeof(Skill))) {
+					if (s != Skill.WallJump && !usedSkills.Contains(s)) {
+						treeSkills.Add(s);
+					}
+				}
+			} else {
+				treeSkills.Add(Skill.DoubleJump);
+				treeSkills.Add(Skill.Climb);
+				treeSkills.Add(Skill.ChargeJump);
+			}
 
 			for (int i = 0; i < treeSkills.Count && count > 0; i++) {
 				Skill pickedSkill = treeSkills[i];
@@ -315,11 +339,8 @@ namespace LiveSplit.OriDE {
 				if (pickedSkill == Skill.Grenade || usedSkills.Contains(pickedSkill) || count <= 0) { continue; }
 
 				skills[(int)Skill.Grenade] = pickedSkill;
-				usedSkills.Add(pickedSkill);
 
 				count--;
-
-				usedSkills.Remove(pickedSkill);
 			}
 
 			return count;
