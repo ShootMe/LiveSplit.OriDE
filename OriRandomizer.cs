@@ -58,6 +58,9 @@ namespace LiveSplit.OriDE {
 						treeToRemove = tree.Key;
 						touchingAnyTree = false;
 						TextInfo = GetSkillName(tree.Key) + " -> " + GetSkillName(lastSkill);
+						if (lastSkill != tree.Key) {
+							mem.SetSkills(false, tree.Key);
+						}
 					}
 
 					break;
