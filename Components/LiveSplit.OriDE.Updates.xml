@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <updates>
+	<update version="1.7.0">
+		<files>
+			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
+		</files>
+		<changelog>
+			<change>
+				Made moving splits easier in layout. Removed Rando (Use Sigmas instead). Fixed Reached Spirit Tree (For Real).
+			</change>
+		</changelog>
+	</update>
 	<update version="1.6.9">
 		<files>
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>

@@ -24,7 +24,6 @@ namespace LiveSplit.OriDE {
 		internal static List<string> keys = new List<string>() { "Pos", "CurrentSplit", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "CurrentEnergy", "HealthCells", "CurrentHealth", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameStateMachine", "WorldEvents", "RainbowDash" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
-		private OriRandomizer randomizer;
 
 		public OriComponent() {
 			try {
@@ -32,7 +31,6 @@ namespace LiveSplit.OriDE {
 				textInfo.LongestString = "Valley Of The Wind - 100.00%";
 				mem = new OriMemory();
 				settings = new OriSettings(this);
-				randomizer = new OriRandomizer(mem);
 				mem.AddLogItems(keys);
 				foreach (string key in keys) {
 					currentValues[key] = "";
@@ -60,40 +58,6 @@ namespace LiveSplit.OriDE {
 				mem.ActivateRainbowDash();
 			}
 
-			if (Model != null && settings.Randomizer) {
-				if (Model.CurrentState.CurrentPhase == TimerPhase.NotRunning) {
-					if (isStartingGame) {
-						Model.Start();
-					}
-					if (randomizer.Running) {
-						randomizer.ClearRandomizer();
-					}
-				}
-
-				if (Model.CurrentState.CurrentPhase == TimerPhase.Running) {
-					if (!randomizer.Running) {
-						randomizer.ClearRandomizer();
-						randomizer.UpdateRandomSkills(settings.RandomSeed);
-					}
-
-					List<Scene> scenes = mem.GetScenes();
-					for (int i = 0; i < scenes.Count; i++) {
-						Scene scene = scenes[i];
-						if (scene.State == SceneState.Loading) {
-							switch (scene.Name) {
-								case "creditsScreen": Model.Split(); break;
-							}
-						}
-					}
-
-					if (isInGameWorld && DateTime.Now.AddSeconds(-1) > notInGame) {
-						randomizer.Update();
-					}
-				}
-
-				return;
-			}
-
 			if (Model != null && currentSplit < settings.Splits.Count) {
 				bool shouldSplit = false;
 
@@ -104,7 +68,7 @@ namespace LiveSplit.OriDE {
 					shouldSplit = isInGame && notInGame.AddSeconds(1) > DateTime.Now;
 				} else if (split.Field == "In Menu") {
 					shouldSplit = !isInGame;
-				} else if (split.Field == "Hitbox" || split.Field == "End of Forlorn Escape" || split.Field == "End of Horu Escape") {
+				} else if (split.Field == "Hitbox" || split.Field == "End of Forlorn Escape" || split.Field == "End of Horu Escape" || split.Field == "Spirit Tree Reached") {
 					HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
 					HitBox hitBox = new HitBox(split.Value);
 					shouldSplit = hitBox.Intersects(ori);
@@ -155,7 +119,6 @@ namespace LiveSplit.OriDE {
 						case "Clean Water":
 						case "Wind Restored":
 						case "Gumo Free":
-						case "Spirit Tree Reached":
 						case "Warmth Returned":
 						case "Darkness Lifted":
 							shouldSplit = mem.GetEvent(split.Field); break;
@@ -340,37 +303,25 @@ namespace LiveSplit.OriDE {
 				lvstate.OnSkipSplit += OnSkipSplit;
 			}
 
-			if (Model != null && settings.Randomizer) {
-				if (Model.CurrentState.CurrentPhase == TimerPhase.NotRunning && randomizer.Seed != settings.RandomSeed && !string.IsNullOrEmpty(settings.RandomSeed)) {
-					randomizer.UpdateRandomSkills(settings.RandomSeed);
-				}
-			}
-
 			GetValues();
 
-			if (settings.ShowMapDisplay || settings.Randomizer) {
-				if (settings.ShowMapDisplay) {
-					List<Area> areas = mem.GetMapCompletion();
-					decimal total = 0;
-					Area currentArea = default(Area);
-					for (int i = 0; i < areas.Count; i++) {
-						Area area = areas[i];
-						total += area.Progress;
-						if (area.Current) {
-							currentArea = area;
-						}
+			if (settings.ShowMapDisplay) {
+				List<Area> areas = mem.GetMapCompletion();
+				decimal total = 0;
+				Area currentArea = default(Area);
+				for (int i = 0; i < areas.Count; i++) {
+					Area area = areas[i];
+					total += area.Progress;
+					if (area.Current) {
+						currentArea = area;
 					}
-					if (areas.Count > 0) {
-						total /= areas.Count;
-					}
-					textInfo.InformationName = "Total Map: " + total.ToString("0.00") + "%";
-					textInfo.InformationValue = currentArea.Name + " - " + currentArea.Progress.ToString("0.00") + "%";
-					textInfo.LongestString = "Valley Of The Wind - 100.00%";
-				} else {
-					textInfo.InformationName = randomizer.TextTitle;
-					textInfo.InformationValue = randomizer.TextInfo;
-					textInfo.LongestString = "Spirit Flame -> Spirit Flame";
 				}
+				if (areas.Count > 0) {
+					total /= areas.Count;
+				}
+				textInfo.InformationName = "Total Map: " + total.ToString("0.00") + "%";
+				textInfo.InformationValue = currentArea.Name + " - " + currentArea.Progress.ToString("0.00") + "%";
+				textInfo.LongestString = "Valley Of The Wind - 100.00%";
 
 				textInfo.Update(invalidator, lvstate, width, height, mode);
 				if (invalidator != null) {
@@ -431,7 +382,7 @@ namespace LiveSplit.OriDE {
 		}
 		public XmlNode GetSettings(XmlDocument document) { return settings.UpdateSettings(document); }
 		public void DrawVertical(Graphics g, LiveSplitState state, float width, Region clipRegion) {
-			if (settings.ShowMapDisplay || settings.Randomizer) {
+			if (settings.ShowMapDisplay) {
 				if (state.LayoutSettings.BackgroundColor.ToArgb() != Color.Transparent.ToArgb()) {
 					g.FillRectangle(new SolidBrush(state.LayoutSettings.BackgroundColor), 0, 0, width, VerticalHeight);
 				}
@@ -440,7 +391,7 @@ namespace LiveSplit.OriDE {
 			}
 		}
 		public void DrawHorizontal(Graphics g, LiveSplitState state, float height, Region clipRegion) {
-			if (settings.ShowMapDisplay || settings.Randomizer) {
+			if (settings.ShowMapDisplay) {
 				if (state.LayoutSettings.BackgroundColor.ToArgb() != Color.Transparent.ToArgb()) {
 					g.FillRectangle(new SolidBrush(state.LayoutSettings.BackgroundColor), 0, 0, HorizontalWidth, height);
 				}
@@ -459,21 +410,21 @@ namespace LiveSplit.OriDE {
 			textInfo.ValueLabel.ForeColor = state.LayoutSettings.TextColor;
 		}
 		public float HorizontalWidth {
-			get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.HorizontalWidth : 0; }
+			get { return settings.ShowMapDisplay ? textInfo.HorizontalWidth : 0; }
 		}
 		public float VerticalHeight {
-			get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.VerticalHeight : 0; }
+			get { return settings.ShowMapDisplay ? textInfo.VerticalHeight : 0; }
 		}
 		public float MinimumHeight {
-			get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.MinimumHeight : 0; }
+			get { return settings.ShowMapDisplay ? textInfo.MinimumHeight : 0; }
 		}
 		public float MinimumWidth {
-			get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.MinimumWidth : 0; }
+			get { return settings.ShowMapDisplay ? textInfo.MinimumWidth : 0; }
 		}
-		public float PaddingTop { get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.PaddingTop : 0; } }
-		public float PaddingLeft { get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.PaddingLeft : 0; } }
-		public float PaddingBottom { get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.PaddingBottom : 0; } }
-		public float PaddingRight { get { return settings.ShowMapDisplay || settings.Randomizer ? textInfo.PaddingRight : 0; } }
+		public float PaddingTop { get { return settings.ShowMapDisplay ? textInfo.PaddingTop : 0; } }
+		public float PaddingLeft { get { return settings.ShowMapDisplay ? textInfo.PaddingLeft : 0; } }
+		public float PaddingBottom { get { return settings.ShowMapDisplay ? textInfo.PaddingBottom : 0; } }
+		public float PaddingRight { get { return settings.ShowMapDisplay ? textInfo.PaddingRight : 0; } }
 		public void Dispose() { }
 	}
 }

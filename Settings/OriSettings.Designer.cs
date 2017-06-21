@@ -29,13 +29,9 @@
 			this.flowOptions = new System.Windows.Forms.FlowLayoutPanel();
 			this.chkShowMapDisplay = new System.Windows.Forms.CheckBox();
 			this.chkRainbowDash = new System.Windows.Forms.CheckBox();
-			this.flowRandomizer = new System.Windows.Forms.FlowLayoutPanel();
-			this.chkRandomizer = new System.Windows.Forms.CheckBox();
-			this.txtSeed = new System.Windows.Forms.TextBox();
 			this.toolTips = new System.Windows.Forms.ToolTip(this.components);
 			this.flowMain.SuspendLayout();
 			this.flowOptions.SuspendLayout();
-			this.flowRandomizer.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// btnAddSplit
@@ -50,18 +46,21 @@
 			// 
 			// flowMain
 			// 
+			this.flowMain.AllowDrop = true;
 			this.flowMain.AutoSize = true;
 			this.flowMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.flowMain.Controls.Add(this.flowOptions);
-			this.flowMain.Controls.Add(this.flowRandomizer);
 			this.flowMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowMain.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.flowMain.Location = new System.Drawing.Point(0, 0);
 			this.flowMain.Margin = new System.Windows.Forms.Padding(0);
 			this.flowMain.Name = "flowMain";
-			this.flowMain.Size = new System.Drawing.Size(311, 53);
+			this.flowMain.Size = new System.Drawing.Size(311, 27);
 			this.flowMain.TabIndex = 0;
 			this.flowMain.WrapContents = false;
+			this.flowMain.DragDrop += new System.Windows.Forms.DragEventHandler(this.flowMain_DragDrop);
+			this.flowMain.DragEnter += new System.Windows.Forms.DragEventHandler(this.flowMain_DragEnter);
+			this.flowMain.DragOver += new System.Windows.Forms.DragEventHandler(this.flowMain_DragOver);
 			// 
 			// flowOptions
 			// 
@@ -99,40 +98,6 @@
 			this.chkRainbowDash.UseVisualStyleBackColor = true;
 			this.chkRainbowDash.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
 			// 
-			// flowRandomizer
-			// 
-			this.flowRandomizer.AutoSize = true;
-			this.flowRandomizer.Controls.Add(this.chkRandomizer);
-			this.flowRandomizer.Controls.Add(this.txtSeed);
-			this.flowRandomizer.Location = new System.Drawing.Point(0, 27);
-			this.flowRandomizer.Margin = new System.Windows.Forms.Padding(0);
-			this.flowRandomizer.Name = "flowRandomizer";
-			this.flowRandomizer.Size = new System.Drawing.Size(194, 26);
-			this.flowRandomizer.TabIndex = 1;
-			// 
-			// chkRandomizer
-			// 
-			this.chkRandomizer.AutoSize = true;
-			this.chkRandomizer.Location = new System.Drawing.Point(3, 3);
-			this.chkRandomizer.Name = "chkRandomizer";
-			this.chkRandomizer.Size = new System.Drawing.Size(82, 17);
-			this.chkRandomizer.TabIndex = 0;
-			this.chkRandomizer.Text = "Randomizer";
-			this.toolTips.SetToolTip(this.chkRandomizer, "Activate the Randomizer that will switch Skills around in Ori");
-			this.chkRandomizer.UseVisualStyleBackColor = true;
-			this.chkRandomizer.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
-			// 
-			// txtSeed
-			// 
-			this.txtSeed.Location = new System.Drawing.Point(91, 3);
-			this.txtSeed.MaxLength = 10;
-			this.txtSeed.Name = "txtSeed";
-			this.txtSeed.Size = new System.Drawing.Size(100, 20);
-			this.txtSeed.TabIndex = 1;
-			this.toolTips.SetToolTip(this.txtSeed, "Seed used for the Randomizer. Leave blank for a random seed each playthrough.");
-			this.txtSeed.Visible = false;
-			this.txtSeed.TextChanged += new System.EventHandler(this.txtValue_TextChanged);
-			// 
 			// OriSettings
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -143,14 +108,12 @@
 			this.Controls.Add(this.flowMain);
 			this.Margin = new System.Windows.Forms.Padding(0);
 			this.Name = "OriSettings";
-			this.Size = new System.Drawing.Size(311, 53);
+			this.Size = new System.Drawing.Size(311, 27);
 			this.Load += new System.EventHandler(this.OriSettings_Load);
 			this.flowMain.ResumeLayout(false);
 			this.flowMain.PerformLayout();
 			this.flowOptions.ResumeLayout(false);
 			this.flowOptions.PerformLayout();
-			this.flowRandomizer.ResumeLayout(false);
-			this.flowRandomizer.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -162,9 +125,6 @@
 		private System.Windows.Forms.FlowLayoutPanel flowOptions;
 		private System.Windows.Forms.CheckBox chkShowMapDisplay;
 		private System.Windows.Forms.CheckBox chkRainbowDash;
-		private System.Windows.Forms.FlowLayoutPanel flowRandomizer;
-		private System.Windows.Forms.CheckBox chkRandomizer;
-		private System.Windows.Forms.TextBox txtSeed;
 		private System.Windows.Forms.ToolTip toolTips;
 	}
 }

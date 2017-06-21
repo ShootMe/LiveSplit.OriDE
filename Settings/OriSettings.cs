@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
 namespace LiveSplit.OriDE.Settings {
@@ -8,8 +9,6 @@ namespace LiveSplit.OriDE.Settings {
 		public List<OriSplit> Splits { get; private set; }
 		public bool ShowMapDisplay { get; set; }
 		public bool RainbowDash { get; set; }
-		public bool Randomizer { get; set; }
-		public string RandomSeed { get; set; }
 		private OriComponent component;
 		private bool isLoading;
 		public OriSettings(OriComponent comp) {
@@ -47,14 +46,11 @@ namespace LiveSplit.OriDE.Settings {
 				setting.txtValue.Text = split.Value;
 				setting.chkShouldSplit.Checked = split.ShouldSplit;
 				AddHandlers(setting);
-				setting.Visible = !Randomizer;
 				flowMain.Controls.Add(setting);
 			}
 
 			chkShowMapDisplay.Checked = ShowMapDisplay;
 			chkRainbowDash.Checked = RainbowDash;
-			chkRandomizer.Checked = Randomizer;
-			txtSeed.Text = RandomSeed;
 
 			isLoading = false;
 			this.flowMain.ResumeLayout(true);
@@ -63,39 +59,15 @@ namespace LiveSplit.OriDE.Settings {
 			setting.txtValue.TextChanged += new EventHandler(txtValue_TextChanged);
 			setting.cboName.SelectedIndexChanged += new EventHandler(cboName_SelectedIndexChanged);
 			setting.btnRemove.Click += new EventHandler(btnRemove_Click);
-			setting.btnUp.Click += new EventHandler(btnUp_Click);
-			setting.btnDown.Click += new EventHandler(btnDown_Click);
 			setting.chkShouldSplit.CheckedChanged += new EventHandler(chkBox_CheckedChanged);
 		}
 		private void RemoveHandlers(OriSplitSettings setting) {
 			setting.txtValue.TextChanged -= txtValue_TextChanged;
 			setting.cboName.SelectedIndexChanged -= cboName_SelectedIndexChanged;
 			setting.btnRemove.Click -= btnRemove_Click;
-			setting.btnUp.Click -= btnUp_Click;
-			setting.btnDown.Click -= btnDown_Click;
-		}
-		public void btnDown_Click(object sender, EventArgs e) {
-			for (int i = flowMain.Controls.Count - 2; i > 2; i--) {
-				Control c = flowMain.Controls[i];
-				if (c.Contains((Control)sender)) {
-					flowMain.Controls.SetChildIndex(c, i + 1);
-					UpdateSplits();
-					break;
-				}
-			}
-		}
-		public void btnUp_Click(object sender, EventArgs e) {
-			for (int i = flowMain.Controls.Count - 1; i > 3; i--) {
-				Control c = flowMain.Controls[i];
-				if (c.Contains((Control)sender)) {
-					flowMain.Controls.SetChildIndex(c, i - 1);
-					UpdateSplits();
-					break;
-				}
-			}
 		}
 		public void btnRemove_Click(object sender, EventArgs e) {
-			for (int i = flowMain.Controls.Count - 1; i > 2; i--) {
+			for (int i = flowMain.Controls.Count - 1; i > 0; i--) {
 				if (flowMain.Controls[i].Contains((Control)sender)) {
 					RemoveHandlers((OriSplitSettings)((Button)sender).Parent);
 
@@ -112,12 +84,6 @@ namespace LiveSplit.OriDE.Settings {
 			UpdateSplits();
 		}
 		private void chkBox_CheckedChanged(object sender, EventArgs e) {
-			txtSeed.Visible = chkRandomizer.Checked;
-			chkShowMapDisplay.Enabled = !chkRandomizer.Checked;
-			if (chkRandomizer.Checked) {
-				chkShowMapDisplay.Checked = false;
-			}
-
 			UpdateSplits();
 		}
 		public void UpdateSplits() {
@@ -134,16 +100,8 @@ namespace LiveSplit.OriDE.Settings {
 				}
 			}
 
-			foreach (Control c in flowMain.Controls) {
-				if (c is OriSplitSettings) {
-					c.Visible = !chkRandomizer.Checked;
-				}
-			}
-
 			ShowMapDisplay = chkShowMapDisplay.Checked;
 			RainbowDash = chkRainbowDash.Checked;
-			Randomizer = chkRandomizer.Checked;
-			RandomSeed = txtSeed.Text;
 		}
 		public XmlNode UpdateSettings(XmlDocument document) {
 			XmlElement xmlSettings = document.CreateElement("Settings");
@@ -155,14 +113,6 @@ namespace LiveSplit.OriDE.Settings {
 			XmlElement xmlDash = document.CreateElement("RainbowDash");
 			xmlDash.InnerText = RainbowDash.ToString();
 			xmlSettings.AppendChild(xmlDash);
-
-			XmlElement xmlRnd = document.CreateElement("Randomizer");
-			xmlRnd.InnerText = Randomizer.ToString();
-			xmlSettings.AppendChild(xmlRnd);
-
-			XmlElement xmlRndSeed = document.CreateElement("RandomSeed");
-			xmlRndSeed.InnerText = RandomSeed;
-			xmlSettings.AppendChild(xmlRndSeed);
 
 			XmlElement xmlSplits = document.CreateElement("Splits");
 			xmlSettings.AppendChild(xmlSplits);
@@ -184,36 +134,22 @@ namespace LiveSplit.OriDE.Settings {
 			return xmlSettings;
 		}
 		public void SetSettings(XmlNode settings) {
-			XmlNode showMapNode = settings.SelectSingleNode("//MapDisplay");
+			XmlNode showMapNode = settings.SelectSingleNode(".//MapDisplay");
 			if (showMapNode != null && showMapNode.InnerText != "") {
 				ShowMapDisplay = bool.Parse(showMapNode.InnerText);
 			} else {
 				ShowMapDisplay = false;
 			}
 
-			XmlNode showRainbow = settings.SelectSingleNode("//RainbowDash");
+			XmlNode showRainbow = settings.SelectSingleNode(".//RainbowDash");
 			if (showRainbow != null && showRainbow.InnerText != "") {
 				RainbowDash = bool.Parse(showRainbow.InnerText);
 			} else {
 				RainbowDash = false;
 			}
 
-			XmlNode showRandom = settings.SelectSingleNode("//Randomizer");
-			if (showRandom != null && showRandom.InnerText != "") {
-				Randomizer = bool.Parse(showRandom.InnerText);
-			} else {
-				Randomizer = false;
-			}
-
-			XmlNode rndSeed = settings.SelectSingleNode("//RandomSeed");
-			if (rndSeed != null) {
-				RandomSeed = rndSeed.InnerText;
-			} else {
-				RandomSeed = null;
-			}
-
 			Splits.Clear();
-			XmlNodeList splitNodes = settings.SelectNodes("//Splits/Split");
+			XmlNodeList splitNodes = settings.SelectNodes(".//Splits/Split");
 			foreach (XmlNode splitNode in splitNodes) {
 				string name = splitNode.InnerText;
 				string value = splitNode.Attributes["Value"].Value;
@@ -222,8 +158,6 @@ namespace LiveSplit.OriDE.Settings {
 			}
 		}
 		private void btnAddSplit_Click(object sender, EventArgs e) {
-			if (Randomizer) { return; }
-
 			OriSplitSettings setting = new OriSplitSettings();
 			setting.cboName.DisplayMember = "SplitName";
 			setting.cboName.ValueMember = "Type";
@@ -244,6 +178,29 @@ namespace LiveSplit.OriDE.Settings {
 				dt.Rows.Add(pair.Key, pair.Value);
 			}
 			return dt;
+		}
+		private void flowMain_DragDrop(object sender, DragEventArgs e) {
+			UpdateSplits();
+		}
+		private void flowMain_DragEnter(object sender, DragEventArgs e) {
+			e.Effect = DragDropEffects.Move;
+		}
+		private void flowMain_DragOver(object sender, DragEventArgs e) {
+			OriSplitSettings data = (OriSplitSettings)e.Data.GetData(typeof(OriSplitSettings));
+			FlowLayoutPanel destination = (FlowLayoutPanel)sender;
+			Point p = destination.PointToClient(new Point(e.X, e.Y));
+			var item = destination.GetChildAtPoint(p);
+			int index = destination.Controls.GetChildIndex(item, false);
+			if (index == 0) {
+				e.Effect = DragDropEffects.None;
+			} else {
+				e.Effect = DragDropEffects.Move;
+				int oldIndex = destination.Controls.GetChildIndex(data);
+				if (oldIndex != index) {
+					destination.Controls.SetChildIndex(data, index);
+					destination.Invalidate();
+				}
+			}
 		}
 	}
 }

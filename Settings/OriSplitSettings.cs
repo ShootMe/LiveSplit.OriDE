@@ -4,6 +4,9 @@ using System.Windows.Forms;
 namespace LiveSplit.OriDE.Settings {
 	public partial class OriSplitSettings : UserControl {
 		public string ControlType = "";
+		private bool isDragging = false;
+		private int mX = 0;
+		private int mY = 0;
 		public static Dictionary<string, string> DefaultSplits = new Dictionary<string, string>()
 		{
 			{"End of Forlorn Escape",    "-1162.265,-221.822,7.031,3.334"},
@@ -71,13 +74,15 @@ namespace LiveSplit.OriDE.Settings {
 			txtValue.Visible = isValue || isHitbox;
 
 			int hitboxTextWidth = 130;
+			int valueWidth = 60;
 
 			if (ControlType == "Hitbox") {
 				txtValue.Width -= hitboxTextWidth;
-				btnDown.Left -= hitboxTextWidth;
 				btnRemove.Left -= hitboxTextWidth;
-				btnUp.Left -= hitboxTextWidth;
 				chkShouldSplit.Left -= hitboxTextWidth;
+			} else if (ControlType == "Boolean") {
+				btnRemove.Left += valueWidth;
+				chkShouldSplit.Left += valueWidth;
 			}
 
 			this.ControlType = cboName.SelectedValue.ToString();
@@ -88,17 +93,35 @@ namespace LiveSplit.OriDE.Settings {
 				txtValue.Text = "";
 				txtValue.Focus();
 				txtValue.Width += hitboxTextWidth;
-				btnDown.Left += hitboxTextWidth;
 				btnRemove.Left += hitboxTextWidth;
-				btnUp.Left += hitboxTextWidth;
 				chkShouldSplit.Left += hitboxTextWidth;
 			} else {
 				txtValue.Text = "True";
+				btnRemove.Left -= valueWidth;
+				chkShouldSplit.Left -= valueWidth;
 			}
 
 			if (DefaultSplits.ContainsKey(cboName.Text)) {
 				txtValue.Text = DefaultSplits[cboName.Text];
 			}
+		}
+		private void picHandle_MouseMove(object sender, MouseEventArgs e) {
+			if (!isDragging) {
+				if (e.Button == MouseButtons.Left) {
+					int num1 = mX - e.X;
+					int num2 = mY - e.Y;
+					if (((num1 * num1) + (num2 * num2)) > 20) {
+						DoDragDrop(this, DragDropEffects.All);
+						isDragging = true;
+						return;
+					}
+				}
+			}
+		}
+		private void picHandle_MouseDown(object sender, MouseEventArgs e) {
+			mX = e.X;
+			mY = e.Y;
+			isDragging = false;
 		}
 	}
 }
