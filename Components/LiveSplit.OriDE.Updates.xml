@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <updates>
+	<update version="1.8.0">
+		<files>
+			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
+		</files>
+		<changelog>
+			<change>
+				Changed how the Map Display option works now that the autosplitter can be activated from your Splits now.
+			</change>
+		</changelog>
+	</update>
 	<update version="1.7.0">
 		<files>
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>

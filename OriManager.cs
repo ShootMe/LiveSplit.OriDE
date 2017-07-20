@@ -53,6 +53,10 @@ namespace LiveSplit.OriDE {
 			} else if (e.Control && e.KeyCode == Keys.S) {
 				saveManager = new SaveManager();
 				saveManager.Show(this);
+			} else if (e.Control && e.KeyCode == Keys.C) {
+				bool tasEnabled = this.Width == 650 || (Memory.GetTASState() & 1) != 0;
+				PointF pos = tasEnabled && Memory.HasTAS() ? Memory.GetTASOriPositon() : Memory.GetCameraTargetPosition();
+				Clipboard.SetText(pos.X.ToString("R") + ", " + pos.Y.ToString("R"));
 			} else if (e.Control && e.KeyCode == Keys.T) {
 				if (this.Width == 650) {
 					this.Width = 380;

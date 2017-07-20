@@ -14,7 +14,6 @@ namespace LiveSplit.OriDE {
 		public string ComponentName { get { return "Ori DE Autosplitter"; } }
 		public TimerModel Model { get; set; }
 		private string oriLogPath = "_OriDE.log";
-		private InfoTextComponent textInfo;
 		public IDictionary<string, Action> ContextMenuControls { get { return null; } }
 		private OriMemory mem;
 		private int currentSplit = 0;
@@ -24,14 +23,14 @@ namespace LiveSplit.OriDE {
 		internal static List<string> keys = new List<string>() { "Pos", "CurrentSplit", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "CurrentEnergy", "HealthCells", "CurrentHealth", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameStateMachine", "WorldEvents", "RainbowDash" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
+		private LayoutComponent mapDisplay = null;
 
 		public OriComponent() {
 			try {
-				textInfo = new InfoTextComponent("0%", "Swamp 0.00%");
-				textInfo.LongestString = "Valley Of The Wind - 100.00%";
 				mem = new OriMemory();
 				settings = new OriSettings(this);
 				mem.AddLogItems(keys);
+				mapDisplay = new LayoutComponent("LiveSplit.OriDE.dll", new OriMapDisplayComponent(mem));
 				foreach (string key in keys) {
 					currentValues[key] = "";
 				}
@@ -292,6 +291,12 @@ namespace LiveSplit.OriDE {
 		}
 
 		public void Update(IInvalidator invalidator, LiveSplitState lvstate, float width, float height, LayoutMode mode) {
+			if (settings.ShowMapDisplay && !lvstate.Layout.LayoutComponents.Contains(mapDisplay)) {
+				lvstate.Layout.LayoutComponents.Add(mapDisplay);
+			} else if(!settings.ShowMapDisplay && lvstate.Layout.LayoutComponents.Contains(mapDisplay)) {
+				lvstate.Layout.LayoutComponents.Remove(mapDisplay);
+			}
+			
 			if (Model == null) {
 				Model = new TimerModel() { CurrentState = lvstate };
 				lvstate.OnReset += OnReset;
@@ -304,30 +309,6 @@ namespace LiveSplit.OriDE {
 			}
 
 			GetValues();
-
-			if (settings.ShowMapDisplay) {
-				List<Area> areas = mem.GetMapCompletion();
-				decimal total = 0;
-				Area currentArea = default(Area);
-				for (int i = 0; i < areas.Count; i++) {
-					Area area = areas[i];
-					total += area.Progress;
-					if (area.Current) {
-						currentArea = area;
-					}
-				}
-				if (areas.Count > 0) {
-					total /= areas.Count;
-				}
-				textInfo.InformationName = "Total Map: " + total.ToString("0.00") + "%";
-				textInfo.InformationValue = currentArea.Name + " - " + currentArea.Progress.ToString("0.00") + "%";
-				textInfo.LongestString = "Valley Of The Wind - 100.00%";
-
-				textInfo.Update(invalidator, lvstate, width, height, mode);
-				if (invalidator != null) {
-					invalidator.Invalidate(0, 0, width, height);
-				}
-			}
 		}
 
 		public void OnReset(object sender, TimerPhase e) {
@@ -382,49 +363,17 @@ namespace LiveSplit.OriDE {
 		}
 		public XmlNode GetSettings(XmlDocument document) { return settings.UpdateSettings(document); }
 		public void DrawVertical(Graphics g, LiveSplitState state, float width, Region clipRegion) {
-			if (settings.ShowMapDisplay) {
-				if (state.LayoutSettings.BackgroundColor.ToArgb() != Color.Transparent.ToArgb()) {
-					g.FillRectangle(new SolidBrush(state.LayoutSettings.BackgroundColor), 0, 0, width, VerticalHeight);
-				}
-				PrepareDraw(state, LayoutMode.Vertical);
-				textInfo.DrawVertical(g, state, width, clipRegion);
-			}
 		}
 		public void DrawHorizontal(Graphics g, LiveSplitState state, float height, Region clipRegion) {
-			if (settings.ShowMapDisplay) {
-				if (state.LayoutSettings.BackgroundColor.ToArgb() != Color.Transparent.ToArgb()) {
-					g.FillRectangle(new SolidBrush(state.LayoutSettings.BackgroundColor), 0, 0, HorizontalWidth, height);
-				}
-				PrepareDraw(state, LayoutMode.Horizontal);
-				textInfo.DrawHorizontal(g, state, height, clipRegion);
-			}
 		}
-		private void PrepareDraw(LiveSplitState state, LayoutMode mode) {
-			textInfo.DisplayTwoRows = true;
-			textInfo.NameLabel.HasShadow = textInfo.ValueLabel.HasShadow = state.LayoutSettings.DropShadows;
-			textInfo.NameLabel.HorizontalAlignment = StringAlignment.Far;
-			textInfo.ValueLabel.HorizontalAlignment = StringAlignment.Far;
-			textInfo.NameLabel.VerticalAlignment = StringAlignment.Near;
-			textInfo.ValueLabel.VerticalAlignment = StringAlignment.Near;
-			textInfo.NameLabel.ForeColor = state.LayoutSettings.TextColor;
-			textInfo.ValueLabel.ForeColor = state.LayoutSettings.TextColor;
-		}
-		public float HorizontalWidth {
-			get { return settings.ShowMapDisplay ? textInfo.HorizontalWidth : 0; }
-		}
-		public float VerticalHeight {
-			get { return settings.ShowMapDisplay ? textInfo.VerticalHeight : 0; }
-		}
-		public float MinimumHeight {
-			get { return settings.ShowMapDisplay ? textInfo.MinimumHeight : 0; }
-		}
-		public float MinimumWidth {
-			get { return settings.ShowMapDisplay ? textInfo.MinimumWidth : 0; }
-		}
-		public float PaddingTop { get { return settings.ShowMapDisplay ? textInfo.PaddingTop : 0; } }
-		public float PaddingLeft { get { return settings.ShowMapDisplay ? textInfo.PaddingLeft : 0; } }
-		public float PaddingBottom { get { return settings.ShowMapDisplay ? textInfo.PaddingBottom : 0; } }
-		public float PaddingRight { get { return settings.ShowMapDisplay ? textInfo.PaddingRight : 0; } }
+		public float HorizontalWidth => 0;
+		public float VerticalHeight => 0;
+		public float MinimumHeight => 0;
+		public float MinimumWidth => 0;
+		public float PaddingTop => 0;
+		public float PaddingLeft => 0;
+		public float PaddingBottom => 0;
+		public float PaddingRight => 0;
 		public void Dispose() { }
 	}
 }
