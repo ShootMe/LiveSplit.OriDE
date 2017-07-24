@@ -75,9 +75,15 @@ namespace LiveSplit.OriDE {
 			textInfo.NameLabel.ForeColor = state.LayoutSettings.TextColor;
 			textInfo.ValueLabel.ForeColor = state.LayoutSettings.TextColor;
 		}
-		XmlNode IComponent.GetSettings(XmlDocument document) { return document.CreateElement("Settings"); }
-		Control IComponent.GetSettingsControl(LayoutMode mode) { return null; }
-		void IComponent.SetSettings(XmlNode settings) { }
-		void IDisposable.Dispose() { }
+		public XmlNode GetSettings(XmlDocument document) { return document.CreateElement("Settings"); }
+		public Control GetSettingsControl(LayoutMode mode) { return null; }
+		public void SetSettings(XmlNode settings) { }
+		public void Dispose() { }
+		public override bool Equals(object obj) {
+			return obj != null && obj is OriMapDisplayComponent;
+		}
+		public override int GetHashCode() {
+			return 123456789;
+		}
 	}
 }
