@@ -7,13 +7,13 @@ namespace LiveSplit.OriDE.Settings {
 		private bool isDragging = false;
 		private int mX = 0;
 		private int mY = 0;
-		public static Dictionary<string, string> DefaultSplits = new Dictionary<string, string>()
+		public static SortedDictionary<string, string> DefaultSplits = new SortedDictionary<string, string>()
 		{
 			{"End of Forlorn Escape",    "-1162.265,-221.822,7.031,3.334"},
 			{"End of Horu Escape",       "162.890,577.337,5.216,14.574"},
 			{"Spirit Tree Reached",      "-96,-120,3,3"}
 		};
-		public static Dictionary<string, string> AvailableSplits = new Dictionary<string, string>()
+		public static SortedDictionary<string, string> AvailableSplits = new SortedDictionary<string, string>()
 		{
 			{"Ability",                  "Value"},
 			{"In Game",                  "Boolean"},
