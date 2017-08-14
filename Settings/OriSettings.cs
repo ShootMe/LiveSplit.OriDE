@@ -9,6 +9,7 @@ namespace LiveSplit.OriDE.Settings {
 		public List<OriSplit> Splits { get; private set; }
 		public bool ShowMapDisplay { get; set; }
 		public bool RainbowDash { get; set; }
+		public bool AlphaSort { get; set; }
 		private OriComponent component;
 		private bool isLoading;
 		public OriSettings(OriComponent comp) {
@@ -36,6 +37,8 @@ namespace LiveSplit.OriDE.Settings {
 					flowMain.Controls.RemoveAt(i);
 				}
 			}
+
+			rdSortAlpha.Checked = AlphaSort;
 
 			foreach (OriSplit split in Splits) {
 				OriSplitSettings setting = new OriSplitSettings();
@@ -89,6 +92,8 @@ namespace LiveSplit.OriDE.Settings {
 		public void UpdateSplits() {
 			if (isLoading) return;
 
+			AlphaSort = rdSortAlpha.Checked;
+
 			Splits.Clear();
 			foreach (Control c in flowMain.Controls) {
 				if (c is OriSplitSettings) {
@@ -113,6 +118,10 @@ namespace LiveSplit.OriDE.Settings {
 			XmlElement xmlDash = document.CreateElement("RainbowDash");
 			xmlDash.InnerText = RainbowDash.ToString();
 			xmlSettings.AppendChild(xmlDash);
+
+			XmlElement xmlSort = document.CreateElement("AlphaSort");
+			xmlSort.InnerText = AlphaSort.ToString();
+			xmlSettings.AppendChild(xmlSort);
 
 			XmlElement xmlSplits = document.CreateElement("Splits");
 			xmlSettings.AppendChild(xmlSplits);
@@ -148,6 +157,13 @@ namespace LiveSplit.OriDE.Settings {
 				RainbowDash = false;
 			}
 
+			XmlNode alphaSort = settings.SelectSingleNode(".//AlphaSort");
+			if (alphaSort != null && alphaSort.InnerText != "") {
+				AlphaSort = bool.Parse(alphaSort.InnerText);
+			} else {
+				AlphaSort = false;
+			}
+
 			Splits.Clear();
 			XmlNodeList splitNodes = settings.SelectNodes(".//Splits/Split");
 			foreach (XmlNode splitNode in splitNodes) {
@@ -177,6 +193,9 @@ namespace LiveSplit.OriDE.Settings {
 			foreach (var pair in OriSplitSettings.AvailableSplits) {
 				dt.Rows.Add(pair.Key, pair.Value);
 			}
+			if (rdSortAlpha.Checked) {
+				dt.DefaultView.Sort = "SplitName";
+			}
 			return dt;
 		}
 		private void flowMain_DragDrop(object sender, DragEventArgs e) {
@@ -199,6 +218,23 @@ namespace LiveSplit.OriDE.Settings {
 				if (oldIndex != index) {
 					destination.Controls.SetChildIndex(data, index);
 					destination.Invalidate();
+				}
+			}
+		}
+		private void rdSort_CheckedChanged(object sender, EventArgs e) {
+			foreach (Control c in flowMain.Controls) {
+				if (c is OriSplitSettings) {
+					OriSplitSettings setting = (OriSplitSettings)c;
+					object selected = setting.cboName.SelectedItem;
+					string value = setting.txtValue.Text;
+					DataTable dt = (DataTable)setting.cboName.DataSource;
+					if (rdSortAlpha.Checked) {
+						dt.DefaultView.Sort = "SplitName";
+					} else {
+						dt.DefaultView.Sort = null;
+					}
+					setting.cboName.SelectedItem = selected;
+					setting.txtValue.Text = value;
 				}
 			}
 		}

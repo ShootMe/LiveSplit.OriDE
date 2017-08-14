@@ -30,6 +30,9 @@
 			this.chkShowMapDisplay = new System.Windows.Forms.CheckBox();
 			this.chkRainbowDash = new System.Windows.Forms.CheckBox();
 			this.toolTips = new System.Windows.Forms.ToolTip(this.components);
+			this.rdSortGame = new System.Windows.Forms.RadioButton();
+			this.rdSortAlpha = new System.Windows.Forms.RadioButton();
+			this.lblSort = new System.Windows.Forms.Label();
 			this.flowMain.SuspendLayout();
 			this.flowOptions.SuspendLayout();
 			this.SuspendLayout();
@@ -55,7 +58,7 @@
 			this.flowMain.Location = new System.Drawing.Point(0, 0);
 			this.flowMain.Margin = new System.Windows.Forms.Padding(0);
 			this.flowMain.Name = "flowMain";
-			this.flowMain.Size = new System.Drawing.Size(311, 27);
+			this.flowMain.Size = new System.Drawing.Size(452, 27);
 			this.flowMain.TabIndex = 0;
 			this.flowMain.WrapContents = false;
 			this.flowMain.DragDrop += new System.Windows.Forms.DragEventHandler(this.flowMain_DragDrop);
@@ -68,10 +71,13 @@
 			this.flowOptions.Controls.Add(this.btnAddSplit);
 			this.flowOptions.Controls.Add(this.chkShowMapDisplay);
 			this.flowOptions.Controls.Add(this.chkRainbowDash);
+			this.flowOptions.Controls.Add(this.lblSort);
+			this.flowOptions.Controls.Add(this.rdSortGame);
+			this.flowOptions.Controls.Add(this.rdSortAlpha);
 			this.flowOptions.Location = new System.Drawing.Point(0, 0);
 			this.flowOptions.Margin = new System.Windows.Forms.Padding(0);
 			this.flowOptions.Name = "flowOptions";
-			this.flowOptions.Size = new System.Drawing.Size(311, 27);
+			this.flowOptions.Size = new System.Drawing.Size(452, 27);
 			this.flowOptions.TabIndex = 0;
 			// 
 			// chkShowMapDisplay
@@ -91,12 +97,44 @@
 			this.chkRainbowDash.AutoSize = true;
 			this.chkRainbowDash.Location = new System.Drawing.Point(164, 3);
 			this.chkRainbowDash.Name = "chkRainbowDash";
-			this.chkRainbowDash.Size = new System.Drawing.Size(144, 17);
+			this.chkRainbowDash.Size = new System.Drawing.Size(96, 17);
 			this.chkRainbowDash.TabIndex = 2;
-			this.chkRainbowDash.Text = "Rainbow Dash Activated";
+			this.chkRainbowDash.Text = "Rainbow Dash";
 			this.toolTips.SetToolTip(this.chkRainbowDash, "Turns Ori\'s Dash trail into a rainbow");
 			this.chkRainbowDash.UseVisualStyleBackColor = true;
 			this.chkRainbowDash.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
+			// 
+			// rdSortGame
+			// 
+			this.rdSortGame.AutoSize = true;
+			this.rdSortGame.Checked = true;
+			this.rdSortGame.Location = new System.Drawing.Point(338, 3);
+			this.rdSortGame.Name = "rdSortGame";
+			this.rdSortGame.Size = new System.Drawing.Size(53, 17);
+			this.rdSortGame.TabIndex = 3;
+			this.rdSortGame.TabStop = true;
+			this.rdSortGame.Text = "Game";
+			this.rdSortGame.UseVisualStyleBackColor = true;
+			// 
+			// rdSortAlpha
+			// 
+			this.rdSortAlpha.AutoSize = true;
+			this.rdSortAlpha.Location = new System.Drawing.Point(397, 3);
+			this.rdSortAlpha.Name = "rdSortAlpha";
+			this.rdSortAlpha.Size = new System.Drawing.Size(52, 17);
+			this.rdSortAlpha.TabIndex = 4;
+			this.rdSortAlpha.Text = "Alpha";
+			this.rdSortAlpha.UseVisualStyleBackColor = true;
+			this.rdSortAlpha.CheckedChanged += new System.EventHandler(this.rdSort_CheckedChanged);
+			// 
+			// lblSort
+			// 
+			this.lblSort.Location = new System.Drawing.Point(266, 0);
+			this.lblSort.Name = "lblSort";
+			this.lblSort.Size = new System.Drawing.Size(66, 21);
+			this.lblSort.TabIndex = 5;
+			this.lblSort.Text = "Sort Combo:";
+			this.lblSort.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// OriSettings
 			// 
@@ -108,7 +146,7 @@
 			this.Controls.Add(this.flowMain);
 			this.Margin = new System.Windows.Forms.Padding(0);
 			this.Name = "OriSettings";
-			this.Size = new System.Drawing.Size(311, 27);
+			this.Size = new System.Drawing.Size(452, 27);
 			this.Load += new System.EventHandler(this.OriSettings_Load);
 			this.flowMain.ResumeLayout(false);
 			this.flowMain.PerformLayout();
@@ -126,5 +164,8 @@
 		private System.Windows.Forms.CheckBox chkShowMapDisplay;
 		private System.Windows.Forms.CheckBox chkRainbowDash;
 		private System.Windows.Forms.ToolTip toolTips;
+		private System.Windows.Forms.Label lblSort;
+		private System.Windows.Forms.RadioButton rdSortGame;
+		private System.Windows.Forms.RadioButton rdSortAlpha;
 	}
 }
