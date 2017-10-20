@@ -146,7 +146,7 @@
 			this.lblNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblNote.Location = new System.Drawing.Point(0, 0);
 			this.lblNote.Name = "lblNote";
-			this.lblNote.Size = new System.Drawing.Size(364, 136);
+			this.lblNote.Size = new System.Drawing.Size(384, 136);
 			this.lblNote.TabIndex = 14;
 			this.lblNote.Text = "Not available";
 			this.lblNote.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -189,7 +189,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.Black;
-			this.ClientSize = new System.Drawing.Size(364, 136);
+			this.ClientSize = new System.Drawing.Size(384, 136);
 			this.Controls.Add(this.lblNote);
 			this.Controls.Add(this.lblTASStates);
 			this.Controls.Add(this.lblNextInput);

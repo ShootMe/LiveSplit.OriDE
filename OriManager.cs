@@ -6,6 +6,10 @@ using System.Threading;
 using System.Windows.Forms;
 namespace LiveSplit.OriDE {
 	public partial class OriManager : Form {
+		private const int TAS_WIDTH = 660;
+		private const int TAS_HEIGHT = 235;
+		private const int NORMAL_WIDTH = 400;
+		private const int NORMAL_HEIGHT = 175;
 		public OriMemory Memory { get; set; }
 		private bool useLivesplitColors = true, extraFast = false, goingFast = false;
 		private KeyboardHook kbHook;
@@ -54,19 +58,19 @@ namespace LiveSplit.OriDE {
 				saveManager = new SaveManager();
 				saveManager.Show(this);
 			} else if (e.Control && e.KeyCode == Keys.C) {
-				bool tasEnabled = this.Width == 650 || (Memory.GetTASState() & 1) != 0;
+				bool tasEnabled = this.Width == TAS_WIDTH || (Memory.GetTASState() & 1) != 0;
 				PointF pos = tasEnabled && Memory.HasTAS() ? Memory.GetTASOriPositon() : Memory.GetCameraTargetPosition();
 				Clipboard.SetText(pos.X.ToString("R") + ", " + pos.Y.ToString("R"));
 			} else if (e.Control && e.KeyCode == Keys.T) {
-				if (this.Width == 650) {
-					this.Width = 380;
-					this.Height = 175;
+				if (this.Width == TAS_WIDTH) {
+					this.Width = NORMAL_WIDTH;
+					this.Height = NORMAL_HEIGHT;
 					lblCurrentInput.Visible = false;
 					lblNextInput.Visible = false;
 					lblTASStates.Visible = false;
 				} else {
-					this.Width = 650;
-					this.Height = 235;
+					this.Width = TAS_WIDTH;
+					this.Height = TAS_HEIGHT;
 					lblCurrentInput.Visible = true;
 					lblNextInput.Visible = true;
 					lblTASStates.Visible = true;
@@ -94,10 +98,10 @@ namespace LiveSplit.OriDE {
 			if (this.InvokeRequired) {
 				this.Invoke((Action)UpdateValues);
 			} else {
-				bool tasEnabled = this.Width == 650 || (Memory.GetTASState() & 1) != 0;
-				if (this.Width < 650 && tasEnabled) {
-					this.Width = 650;
-					this.Height = 235;
+				bool tasEnabled = this.Width == TAS_WIDTH || (Memory.GetTASState() & 1) != 0;
+				if (this.Width < TAS_WIDTH && tasEnabled) {
+					this.Width = TAS_WIDTH;
+					this.Height = TAS_HEIGHT;
 					lblCurrentInput.Visible = true;
 					lblNextInput.Visible = true;
 					lblTASStates.Visible = true;
@@ -106,6 +110,7 @@ namespace LiveSplit.OriDE {
 					lblNextInput.Text = Memory.GetTASNextInput();
 					lblTASStates.Text = Memory.GetTASExtraInfo();
 				}
+
 				GameState gameState = Memory.GetGameState();
 				bool isInGameWorld = CheckInGameWorld(gameState);
 				bool isStartingGame = CheckStartingNewGame(gameState);
