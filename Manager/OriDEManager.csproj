@@ -49,9 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Keyboard.cs">
-      <Link>Keyboard.cs</Link>
-    </Compile>
     <Compile Include="..\Memory\Entities.cs">
       <Link>Memory\Entities.cs</Link>
     </Compile>

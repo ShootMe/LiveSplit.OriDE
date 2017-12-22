@@ -4,86 +4,87 @@ using System.Diagnostics;
 using System.Drawing;
 namespace LiveSplit.OriDE.Memory {
 	public partial class OriMemory {
-		private ProgramPointer gameWorld, gameplayCamera, worldEvents, seinCharacter, scenesManager, gameStateMachine, rainbowDash, gameController, tas, coreInput;
+		private static ProgramPointer GameWorld = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC53575683EC0C8B7D08B8????????89388B47", 13));
+		private static ProgramPointer GameplayCamera = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "05480000008B08894DE88B4804894DEC8B40088945F08B05", -4));
+		private static ProgramPointer WorldEvents = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC5783EC048B7D0C83EC0868????????57393FE8????????83C41083EC0868", 33));
+		private static ProgramPointer SeinCharacter = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC5783EC048B7D08B8????????8938B8????????893883EC0C68", 11));
+		private static ProgramPointer ScenesManager = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC5783EC148B7D08B8????????893883EC0C57E8????????83C4108B05", 11));
+		private static ProgramPointer GameStateMachine = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC5783EC148B7D08B8????????8938E8????????83EC0868", 11));
+		private static ProgramPointer RainbowDash = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "EC535783EC108B7D08C687????????000FB605????????85C074", 19));
+		private static ProgramPointer GameController = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "8B05????????83EC086A0050E8????????83C41085C074208B450883EC0C50E8", 2));
+		private static ProgramPointer TAS = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC53575683EC0CD9EED95DF00FB73D????????83EC0C6A02E8????????83C410D95DF083EC086AFF6A05E8????????83C4108BD883EC0C6A05E8", 17));
+		private static ProgramPointer CoreInput = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC83EC488B05????????8B40188B40108945B8B8????????8B08894DC08B400489", 22));
 		public Process Program { get; set; }
 		public bool IsHooked { get; set; } = false;
+		private DateTime lastHooked;
 		private static Skill[] AllSkills = new Skill[] { Skill.Sein, Skill.WallJump, Skill.ChargeFlame, Skill.Dash, Skill.DoubleJump, Skill.Bash, Skill.Stomp, Skill.Glide, Skill.Climb, Skill.ChargeJump, Skill.Grenade };
 
 		public OriMemory() {
-			gameWorld = new ProgramPointer(this, MemPointer.GameWorld) { AutoDeref = false };
-			gameplayCamera = new ProgramPointer(this, MemPointer.GameplayCamera) { AutoDeref = false };
-			worldEvents = new ProgramPointer(this, MemPointer.WorldEvents) { AutoDeref = false };
-			seinCharacter = new ProgramPointer(this, MemPointer.SeinCharacter) { AutoDeref = false };
-			scenesManager = new ProgramPointer(this, MemPointer.ScenesManager) { AutoDeref = false };
-			gameStateMachine = new ProgramPointer(this, MemPointer.GameStateMachine) { AutoDeref = false };
-			rainbowDash = new ProgramPointer(this, MemPointer.RainbowDash) { AutoDeref = false };
-			gameController = new ProgramPointer(this, MemPointer.GameController) { AutoDeref = false };
-			tas = new ProgramPointer(this, MemPointer.TAS) { AutoDeref = false };
-			coreInput = new ProgramPointer(this, MemPointer.Input) { AutoDeref = false };
+			lastHooked = DateTime.MinValue;
 		}
 
 		public int SeinInputDir() {
-			bool down = seinCharacter.Read<bool>(0x0, 0x34, 0x8, 0x8);
-			bool left = seinCharacter.Read<bool>(0x0, 0x34, 0xc, 0x8);
-			bool right = seinCharacter.Read<bool>(0x0, 0x34, 0x10, 0x8);
-			bool up = seinCharacter.Read<bool>(0x0, 0x34, 0x14, 0x8);
+			bool down = SeinCharacter.Read<bool>(Program, 0x0, 0x34, 0x8, 0x8);
+			bool left = SeinCharacter.Read<bool>(Program, 0x0, 0x34, 0xc, 0x8);
+			bool right = SeinCharacter.Read<bool>(Program, 0x0, 0x34, 0x10, 0x8);
+			bool up = SeinCharacter.Read<bool>(Program, 0x0, 0x34, 0x14, 0x8);
 			return down ? 1 : up ? 2 : left ? 3 : right ? 4 : 0;
 		}
 		public float WaterSpeed() {
-			return seinCharacter.Read<float>(0x0, 0x10, 0x3c, 0x98);
+			return SeinCharacter.Read<float>(Program, 0x0, 0x10, 0x3c, 0x98);
 		}
 		public void SetSpeed(float maxSpeed, float accGround, float accAir, float waterSpeed, float bashSpeed, float stompSpeed, float wallJumpImp, float chargeJumpSpeed, float wallChargeJumpSpeed, float jumpHeight, float climbSpeed, float dashSpeed, float chargeDashSpeed) {
-			seinCharacter.Write(accGround, 0x0, 0x48, 0x14, 0x28, 0x8, 0x8);
-			seinCharacter.Write(accGround / 2f, 0x0, 0x48, 0x14, 0x28, 0x8, 0xc);
-			seinCharacter.Write(maxSpeed, 0x0, 0x48, 0x14, 0x28, 0x8, 0x10);
+			SeinCharacter.Write(Program, accGround, 0x0, 0x48, 0x14, 0x28, 0x8, 0x8);
+			SeinCharacter.Write(Program, accGround / 2f, 0x0, 0x48, 0x14, 0x28, 0x8, 0xc);
+			SeinCharacter.Write(Program, maxSpeed, 0x0, 0x48, 0x14, 0x28, 0x8, 0x10);
 
-			seinCharacter.Write(accAir, 0x0, 0x48, 0x14, 0x28, 0xc, 0x8);
-			seinCharacter.Write(accAir, 0x0, 0x48, 0x14, 0x28, 0xc, 0xc);
-			seinCharacter.Write(maxSpeed, 0x0, 0x48, 0x14, 0x28, 0xc, 0x10);
+			SeinCharacter.Write(Program, accAir, 0x0, 0x48, 0x14, 0x28, 0xc, 0x8);
+			SeinCharacter.Write(Program, accAir, 0x0, 0x48, 0x14, 0x28, 0xc, 0xc);
+			SeinCharacter.Write(Program, maxSpeed, 0x0, 0x48, 0x14, 0x28, 0xc, 0x10);
 
-			seinCharacter.Write(waterSpeed, 0x0, 0x10, 0x3c, 0x98);
+			SeinCharacter.Write(Program, waterSpeed, 0x0, 0x10, 0x3c, 0x98);
 
-			seinCharacter.Write(bashSpeed, 0x0, 0x10, 0x50, 0x88);
+			SeinCharacter.Write(Program, bashSpeed, 0x0, 0x10, 0x50, 0x88);
 
-			seinCharacter.Write(stompSpeed, 0x0, 0x10, 0x20, 0x7c);
+			SeinCharacter.Write(Program, stompSpeed, 0x0, 0x10, 0x20, 0x7c);
 
-			seinCharacter.Write(wallJumpImp, 0x0, 0x10, 0x10, 0x44);
-			seinCharacter.Write(wallJumpImp * 2, 0x0, 0x10, 0x10, 0x48);
+			SeinCharacter.Write(Program, wallJumpImp, 0x0, 0x10, 0x10, 0x44);
+			SeinCharacter.Write(Program, wallJumpImp * 2, 0x0, 0x10, 0x10, 0x48);
 
-			seinCharacter.Write(chargeJumpSpeed, 0x0, 0x10, 0x18, 0x4c);
-			seinCharacter.Write(wallChargeJumpSpeed, 0x0, 0x10, 0x1c, 0x48);
+			SeinCharacter.Write(Program, chargeJumpSpeed, 0x0, 0x10, 0x18, 0x4c);
+			SeinCharacter.Write(Program, wallChargeJumpSpeed, 0x0, 0x10, 0x1c, 0x48);
 
 			if (jumpHeight == 3f) {
-				seinCharacter.Write(3f, 0x0, 0x10, 0xc, 0x60);
-				seinCharacter.Write(3f, 0x0, 0x10, 0xc, 0x54);
-				seinCharacter.Write(3f, 0x0, 0x10, 0xc, 0x64);
-				seinCharacter.Write(3.75f, 0x0, 0x10, 0xc, 0x70);
-				seinCharacter.Write(4.25f, 0x0, 0x10, 0xc, 0x74);
-				seinCharacter.Write(4.25f, 0x0, 0x10, 0xc, 0x58);
+				SeinCharacter.Write(Program, 3f, 0x0, 0x10, 0xc, 0x60);
+				SeinCharacter.Write(Program, 3f, 0x0, 0x10, 0xc, 0x54);
+				SeinCharacter.Write(Program, 3f, 0x0, 0x10, 0xc, 0x64);
+				SeinCharacter.Write(Program, 3.75f, 0x0, 0x10, 0xc, 0x70);
+				SeinCharacter.Write(Program, 4.25f, 0x0, 0x10, 0xc, 0x74);
+				SeinCharacter.Write(Program, 4.25f, 0x0, 0x10, 0xc, 0x58);
 			} else {
-				seinCharacter.Write(jumpHeight, 0x0, 0x10, 0xc, 0x60);
-				seinCharacter.Write(jumpHeight, 0x0, 0x10, 0xc, 0x54);
-				seinCharacter.Write(jumpHeight, 0x0, 0x10, 0xc, 0x64);
-				seinCharacter.Write(jumpHeight, 0x0, 0x10, 0xc, 0x70);
-				seinCharacter.Write(jumpHeight, 0x0, 0x10, 0xc, 0x74);
-				seinCharacter.Write(jumpHeight * 2f, 0x0, 0x10, 0xc, 0x58);
+				SeinCharacter.Write(Program, jumpHeight, 0x0, 0x10, 0xc, 0x60);
+				SeinCharacter.Write(Program, jumpHeight, 0x0, 0x10, 0xc, 0x54);
+				SeinCharacter.Write(Program, jumpHeight, 0x0, 0x10, 0xc, 0x64);
+				SeinCharacter.Write(Program, jumpHeight, 0x0, 0x10, 0xc, 0x70);
+				SeinCharacter.Write(Program, jumpHeight, 0x0, 0x10, 0xc, 0x74);
+				SeinCharacter.Write(Program, jumpHeight * 2f, 0x0, 0x10, 0xc, 0x58);
 			}
 
-			seinCharacter.Write(climbSpeed, 0x0, 0x10, 0x30, 0x5c);
-			seinCharacter.Write(climbSpeed, 0x0, 0x10, 0x30, 0x60);
+			SeinCharacter.Write(Program, climbSpeed, 0x0, 0x10, 0x30, 0x5c);
+			SeinCharacter.Write(Program, climbSpeed, 0x0, 0x10, 0x30, 0x60);
 
-			seinCharacter.Write(dashSpeed, 0x0, 0x10, 0x80, 0x20, 0x8, 0x84);
-			seinCharacter.Write(chargeDashSpeed, 0x0, 0x10, 0x80, 0x24, 0x8, 0x84);
+			SeinCharacter.Write(Program, dashSpeed, 0x0, 0x10, 0x80, 0x20, 0x8, 0x84);
+			SeinCharacter.Write(Program, chargeDashSpeed, 0x0, 0x10, 0x80, 0x24, 0x8, 0x84);
 		}
 		public PointF CurrentSpeed() {
 			if (!IsHooked) { return new PointF(0, 0); }
 
-			float px = seinCharacter.Read<float>(0x0, 0x48, 0x10, 0xbc);
-			float py = seinCharacter.Read<float>(0x0, 0x48, 0x10, 0xc0);
-			bool onGround = seinCharacter.Read<bool>(0x0, 0x48, 0x10, 0x18, 0x9);
-			float gravityAngle = seinCharacter.Read<float>(0x0, 0x48, 0x10, 0xb8);
-			float gx = seinCharacter.Read<float>(0x0, 0x48, 0x10, 0x60);
-			float gy = seinCharacter.Read<float>(0x0, 0x48, 0x10, 0x64);
+			float px = SeinCharacter.Read<float>(Program, 0x0, 0x48, 0x10, 0xbc);
+			float py = SeinCharacter.Read<float>(Program, 0x0, 0x48, 0x10, 0xc0);
+			bool onGround = SeinCharacter.Read<bool>(Program, 0x0, 0x48, 0x10, 0x18, 0x9);
+			float gravityAngle = SeinCharacter.Read<float>(Program, 0x0, 0x48, 0x10, 0xb8);
+			float gx = SeinCharacter.Read<float>(Program, 0x0, 0x48, 0x10, 0x60);
+			float gy = SeinCharacter.Read<float>(Program, 0x0, 0x48, 0x10, 0x64);
 			PointF groundNormal = new PointF(gx, gy);
 			PointF groundBinomial = new PointF(gy, -gx);
 
@@ -105,53 +106,46 @@ namespace LiveSplit.OriDE.Memory {
 			return new PointF(v.X * num - v.Y * num2, v.X * num2 + v.Y * num);
 		}
 		public PointF GetCursorPosition() {
-			if (coreInput.Value == IntPtr.Zero) { return new PointF(); }
-			float mx = coreInput.Read<float>();
-			float my = coreInput.Read<float>(0x4);
+			float mx = CoreInput.Read<float>(Program);
+			float my = CoreInput.Read<float>(Program, 0x4);
 			return new PointF(mx, my);
 		}
 		public void ActivateRainbowDash() {
-			if (GetAbility("Dash") && rainbowDash.Value != IntPtr.Zero && !rainbowDash.Read<bool>()) {
-				rainbowDash.Write(true);
+			if (GetAbility("Dash") && RainbowDash.GetPointer(Program) != IntPtr.Zero && !RainbowDash.Read<bool>(Program)) {
+				RainbowDash.Write<bool>(Program, true);
 			}
 		}
 		public PointF GetCameraTargetPosition() {
 			if (!IsHooked) { return new PointF(0, 0); }
 
-			float px = gameplayCamera.Read<float>(0x0, 0x14, 0x10);
-			float py = gameplayCamera.Read<float>(0x0, 0x14, 0x14);
+			float px = GameplayCamera.Read<float>(Program, 0x0, 0x14, 0x10);
+			float py = GameplayCamera.Read<float>(Program, 0x0, 0x14, 0x14);
 			return new PointF(px, py);
 		}
 		public Dictionary<string, bool> GetEvents() {
-			IntPtr start = worldEvents.Value + 0x40;
-
 			Dictionary<string, bool> results = new Dictionary<string, bool>();
 			foreach (var pair in events) {
-				results[pair.Key] = Program.Read<bool>(start + pair.Value);
+				results[pair.Key] = WorldEvents.Read<bool>(Program, pair.Value + 0x40);
 			}
 			return results;
 		}
 		public bool GetEvent(string name) {
-			IntPtr start = worldEvents.Value + 0x40;
-			int ev = events[name];
-			return Program.Read<bool>(start + ev);
+			int offset = events[name];
+			return WorldEvents.Read<bool>(Program, offset + 0x40);
 		}
 		public Dictionary<string, bool> GetKeys() {
-			IntPtr start = worldEvents.Value;
-
 			Dictionary<string, bool> results = new Dictionary<string, bool>();
 			foreach (var pair in keys) {
-				results[pair.Key] = Program.Read<bool>(start + pair.Value);
+				results[pair.Key] = WorldEvents.Read<bool>(Program, pair.Value);
 			}
 			return results;
 		}
 		public bool GetKey(string name) {
-			IntPtr start = worldEvents.Value;
 			int key = keys[name];
-			return Program.Read<bool>(start + key);
+			return WorldEvents.Read<bool>(Program, key);
 		}
 		public Dictionary<string, bool> GetAbilities() {
-			IntPtr start = (IntPtr)seinCharacter.Read<uint>(0x00, 0x4c);
+			IntPtr start = (IntPtr)SeinCharacter.Read<uint>(Program, 0x0, 0x4c);
 
 			Dictionary<string, bool> results = new Dictionary<string, bool>();
 			foreach (var pair in abilities) {
@@ -160,12 +154,12 @@ namespace LiveSplit.OriDE.Memory {
 			return results;
 		}
 		public bool GetAbility(string name) {
-			IntPtr start = (IntPtr)seinCharacter.Read<uint>(0x00, 0x4c);
+			IntPtr start = (IntPtr)SeinCharacter.Read<uint>(Program, 0x0, 0x4c);
 			int ability = abilities[name];
 			return Program.Read<bool>(start, ability * 4, 0x08);
 		}
 		public void SetAbility(string name, bool enable) {
-			IntPtr start = (IntPtr)seinCharacter.Read<uint>(0x00, 0x4c);
+			IntPtr start = (IntPtr)SeinCharacter.Read<uint>(Program, 0x0, 0x4c);
 			int ability = abilities[name];
 			Program.Write(start, enable, ability * 4, 0x08);
 		}
@@ -192,11 +186,11 @@ namespace LiveSplit.OriDE.Memory {
 		}
 		public List<Area> GetMapCompletion() {
 			List<Area> areas = new List<Area>();
-			if (gameWorld.Value != IntPtr.Zero) {
-				IntPtr current = (IntPtr)gameWorld.Read<uint>(0x0, 0x1c);
+			if (GameWorld.GetPointer(Program) != IntPtr.Zero) {
+				IntPtr current = (IntPtr)GameWorld.Read<uint>(Program, 0x0, 0x1c);
 				Area currentArea = GetArea(current);
-				IntPtr listHead = (IntPtr)gameWorld.Read<uint>(0x0, 0x18, 0x08);
-				int listSize = gameWorld.Read<int>(0x0, 0x18, 0x0c);
+				IntPtr listHead = (IntPtr)GameWorld.Read<uint>(Program, 0x0, 0x18, 0x08);
+				int listSize = GameWorld.Read<int>(Program, 0x0, 0x18, 0x0c);
 
 				for (var i = 0; i < listSize; i++) {
 					IntPtr gameWorldAreaHead = (IntPtr)Program.Read<uint>(listHead, 0x10 + (i * 4));
@@ -212,17 +206,17 @@ namespace LiveSplit.OriDE.Memory {
 			return areas;
 		}
 		public Area GetCurrentArea() {
-			if (gameWorld.Value != IntPtr.Zero) {
-				return GetArea((IntPtr)gameWorld.Read<uint>(0x0, 0x1c));
+			if (GameWorld.GetPointer(Program) != IntPtr.Zero) {
+				return GetArea((IntPtr)GameWorld.Read<uint>(Program, 0x0, 0x1c));
 			}
 			return default(Area);
 		}
 		public decimal GetTotalMapCompletion() {
 			decimal total = 0;
 			int listSize = 0;
-			if (gameWorld.Value != IntPtr.Zero) {
-				IntPtr listHead = (IntPtr)gameWorld.Read<uint>(0x0, 0x18, 0x08);
-				listSize = gameWorld.Read<int>(0x0, 0x18, 0x0c);
+			if (GameWorld.GetPointer(Program) != IntPtr.Zero) {
+				IntPtr listHead = (IntPtr)GameWorld.Read<uint>(Program, 0x0, 0x18, 0x08);
+				listSize = GameWorld.Read<int>(Program, 0x0, 0x18, 0x0c);
 				for (var i = 0; i < listSize; i++) {
 					IntPtr gameWorldAreaHead = (IntPtr)Program.Read<uint>(listHead, 0x10 + (i * 4));
 					Area area = GetArea(gameWorldAreaHead);
@@ -246,7 +240,7 @@ namespace LiveSplit.OriDE.Memory {
 			return area;
 		}
 		public List<Scene> GetScenes(PointF currentPos = default(PointF)) {
-			IntPtr activeScenesHead = (IntPtr)scenesManager.Read<uint>(0x0, 0x14);
+			IntPtr activeScenesHead = (IntPtr)ScenesManager.Read<uint>(Program, 0x0, 0x14);
 			int listSize = Program.Read<int>(activeScenesHead, 0x0c);
 
 			if (currentPos == default(PointF)) {
@@ -288,95 +282,91 @@ namespace LiveSplit.OriDE.Memory {
 			return scenes;
 		}
 		public bool IsEnteringGame() {
-			return gameController.Read<bool>(0x0, 0x68) || gameController.Read<bool>(0x0, 0x69) || seinCharacter.Value == IntPtr.Zero || (GetCurrentLevel() == 0 && GetCurrentENMax() == 3 && GetCurrentHPMax() == 3);
+			return GameController.Read<bool>(Program, 0x0, 0x68) || GameController.Read<bool>(Program, 0x0, 0x69) || SeinCharacter.Read<uint>(Program) == 0 || (GetCurrentLevel() == 0 && GetCurrentENMax() == 3 && GetCurrentHPMax() == 3);
 		}
 		public bool CanMove() {
-			return !gameController.Read<bool>(0x0, 0x7c) && !gameController.Read<bool>(0x0, 0x7b) && !seinCharacter.Read<bool>(0x0, 0x18, 0x38) && !seinCharacter.Read<bool>(0x0, 0x18, 0x40);
+			return !GameController.Read<bool>(Program, 0x0, 0x7c) && !GameController.Read<bool>(Program, 0x0, 0x7b) && !SeinCharacter.Read<bool>(Program, 0x0, 0x18, 0x38) && !SeinCharacter.Read<bool>(Program, 0x0, 0x18, 0x40);
 		}
 		public GameState GetGameState() {
-			return (GameState)gameStateMachine.Read<int>(0x0, 0x14);
+			return (GameState)GameStateMachine.Read<int>(Program, 0x0, 0x14);
 		}
 		public int GetKeyStones() {
-			return seinCharacter.Read<int>(0x00, 0x2c, 0x1c);
+			return SeinCharacter.Read<int>(Program, 0x0, 0x2c, 0x1c);
 		}
 		public int GetMapStones() {
-			return seinCharacter.Read<int>(0x00, 0x2c, 0x20);
+			return SeinCharacter.Read<int>(Program, 0x0, 0x2c, 0x20);
 		}
 		public int GetAbilityCells() {
-			return seinCharacter.Read<int>(0x00, 0x2c, 0x24);
+			return SeinCharacter.Read<int>(Program, 0x0, 0x2c, 0x24);
 		}
 		public int GetSkillPointsAvailable() {
-			return seinCharacter.Read<int>(0x00, 0x38, 0x24);
+			return SeinCharacter.Read<int>(Program, 0x0, 0x38, 0x24);
 		}
 		public int GetCurrentLevel() {
-			return seinCharacter.Read<int>(0x00, 0x38, 0x28);
+			return SeinCharacter.Read<int>(Program, 0x0, 0x38, 0x28);
 		}
 		public int GetExperience() {
-			return seinCharacter.Read<int>(0x00, 0x38, 0x2c);
+			return SeinCharacter.Read<int>(Program, 0x0, 0x38, 0x2c);
 		}
 		public int GetCurrentHP() {
-			return (int)seinCharacter.Read<float>(0x00, 0x40, 0x0c, 0x1c);
+			return (int)SeinCharacter.Read<float>(Program, 0x0, 0x40, 0x0c, 0x1c);
 		}
 		public int GetCurrentHPMax() {
-			return seinCharacter.Read<int>(0x00, 0x40, 0x0c, 0x20) / 4;
+			return SeinCharacter.Read<int>(Program, 0x0, 0x40, 0x0c, 0x20) / 4;
 		}
 		public float GetCurrentEN() {
-			return seinCharacter.Read<float>(0x00, 0x3c, 0x20);
+			return SeinCharacter.Read<float>(Program, 0x0, 0x3c, 0x20);
 		}
 		public float GetCurrentENMax() {
-			return seinCharacter.Read<float>(0x00, 0x3c, 0x24);
+			return SeinCharacter.Read<float>(Program, 0x0, 0x3c, 0x24);
 		}
 		public void SetTASCharacter(byte keyCode) {
-			if (tas.Value != IntPtr.Zero) {
-				tas.Write(keyCode);
+			if (TAS.GetPointer(Program) != IntPtr.Zero) {
+				TAS.Write<byte>(Program, keyCode);
 			}
 		}
 		public int GetTASState() {
-			return tas.Read<int>(-0x1c);
+			return TAS.Read<int>(Program, -0x1c);
 		}
 		public string GetTASCurrentInput() {
-			return tas.Read(0x4);
+			return TAS.Read(Program, 0x4);
 		}
 		public string GetTASNextInput() {
-			return tas.Read(0x8);
+			return TAS.Read(Program, 0x8);
 		}
 		public string GetTASExtraInfo() {
-			return tas.Read(0xc);
+			return TAS.Read(Program, 0xc);
 		}
 		public PointF GetTASOriPositon() {
 			if (!IsHooked) { return new PointF(0, 0); }
 
-			float px = tas.Read<float>(0x20);
-			float py = tas.Read<float>(0x24);
+			float px = TAS.Read<float>(Program, 0x20);
+			float py = TAS.Read<float>(Program, 0x24);
 			return new PointF(px, py);
 		}
 		public bool HasTAS() {
-			return tas.Value != IntPtr.Zero;
+			return TAS.GetPointer(Program) != IntPtr.Zero;
 		}
-
 		public bool HookProcess() {
-			if (Program == null || Program.HasExited) {
+			if ((Program == null || Program.HasExited) && DateTime.Now > lastHooked.AddSeconds(1)) {
+				lastHooked = DateTime.Now;
 				Process[] processes = Process.GetProcessesByName("OriDE");
 				Program = processes.Length == 0 ? null : processes[0];
-				if (processes.Length == 0 || Program.HasExited) {
-					IsHooked = false;
-					return IsHooked;
-				}
-
-				IsHooked = true;
 			}
+
+			IsHooked = Program != null && !Program.HasExited;
 
 			return IsHooked;
 		}
 		public string GetPointer(string name) {
 			switch (name) {
-				case "GameWorld": return gameWorld.Value.ToString("X");
-				case "GameplayCamera": return gameplayCamera.Value.ToString("X");
-				case "WorldEvents": return worldEvents.Value.ToString("X");
-				case "SeinCharacter": return seinCharacter.Value.ToString("X");
-				case "ScenesManager": return scenesManager.Value.ToString("X");
-				case "GameStateMachine": return gameStateMachine.Value.ToString("X");
-				case "RainbowDash": return rainbowDash.Value.ToString("X");
+				case "GameWorld": return GameWorld.Pointer.ToString("X");
+				case "GameplayCamera": return GameplayCamera.Pointer.ToString("X");
+				case "WorldEvents": return WorldEvents.Pointer.ToString("X");
+				case "SeinCharacter": return SeinCharacter.Pointer.ToString("X");
+				case "ScenesManager": return ScenesManager.Pointer.ToString("X");
+				case "GameStateMachine": return GameStateMachine.Pointer.ToString("X");
+				case "RainbowDash": return RainbowDash.Pointer.ToString("X");
 			}
 			return string.Empty;
 		}
@@ -459,137 +449,111 @@ namespace LiveSplit.OriDE.Memory {
 			{"Grenade Efficiency",       47}
 		};
 	}
-	public enum MemVersion {
-		None,
+	public enum PointerVersion {
 		V1
 	}
-	public enum MemPointer {
-		GameController,
-		ScenesManager,
-		GameStateMachine,
-		WorldEvents,
-		SeinCharacter,
-		GameplayCamera,
-		GameWorld,
-		RainbowDash,
-		TAS,
-		Input
+	public class ProgramSignature {
+		public PointerVersion Version { get; set; }
+		public string Signature { get; set; }
+		public int Offset { get; set; }
+		public ProgramSignature(PointerVersion version, string signature, int offset) {
+			Version = version;
+			Signature = signature;
+			Offset = offset;
+		}
+		public override string ToString() {
+			return Version.ToString() + " - " + Signature;
+		}
 	}
 	public class ProgramPointer {
-		private static Dictionary<MemVersion, Dictionary<MemPointer, string>> funcPatterns = new Dictionary<MemVersion, Dictionary<MemPointer, string>>() {
-			{MemVersion.V1, new Dictionary<MemPointer, string>() {
-					{MemPointer.GameController,   "8B05????????83EC086A0050E8????????83C41085C074208B450883EC0C50E8????????83C41083EC0C50E8????????83C410E9????????8B4D08B8????????89088B450883EC0C50|-71" },
-					{MemPointer.ScenesManager,    "558BEC5783EC148B7D08B8????????893883EC0C57E8????????83C4108B05????????8B40208B40308945EC85FF0F84????????83EC0C68????????E8????????83C4108BC88B45EC897910|-65"},
-					{MemPointer.GameStateMachine, "558BEC5783EC148B7D08B8????????8938E8????????83EC0868????????50E8????????83C41085C0741183EC0C57E8????????83C410E9????????E8????????83EC0868????????50E8????????83C41085C0740E83EC0C57|-79"},
-					{MemPointer.WorldEvents,      "558BEC83EC08B8????????C60000B8????????C60000B8????????C60000B8????????C60000B8????????C60000B8????????C60000B8????????C60000B8????????C6000083EC0C6A00E8????????83C410B8????????C60000B8????????C60000B8????????C60000C9C3|-94"},
-					{MemPointer.SeinCharacter,    "558BEC5783EC048B7D08B8????????8938B8????????893883EC0C68????????E8????????83C41083EC08578945F850E8????????83C4108B45F889473483EC0C57E8????????83C41083EC085057E8????????83C4108D65FC5FC9C3|-82"},
-					{MemPointer.GameplayCamera,   "05480000008B08894DE88B4804894DEC8B40088945F08B05|-28"},
-					{MemPointer.GameWorld,        "558BEC53575683EC0C8B7D08B8????????89388B47|-8"},
-					{MemPointer.RainbowDash,      "EC535783EC108B7D08C687????????000FB605????????85C074|-7" },
-					{MemPointer.TAS,              "558BEC53575683EC0CD9EED95DF00FB73D????????83EC0C6A02E8????????83C410D95DF083EC086AFF6A05E8????????83C4108BD883EC0C6A05E8|-43" },
-					{MemPointer.Input,            "558BEC83EC488B05????????8B40188B40108945B8B8????????8B08894DC08B40048945C48D45C883EC0483EC088B4DC0890C248B4DC4894C240450E8????????83C40C8B45B88D4DD483EC0C83EC0C8B55C88914248B55CC|-67" }
-			}},
-		};
-		private IntPtr pointer;
-		public OriMemory Memory { get; set; }
-		public MemPointer Name { get; set; }
-		public MemVersion Version { get; set; }
-		public bool AutoDeref { get; set; }
 		private int lastID;
 		private DateTime lastTry;
-		public ProgramPointer(OriMemory memory, MemPointer pointer) {
-			this.Memory = memory;
-			this.Name = pointer;
-			this.AutoDeref = true;
-			lastID = memory.Program == null ? -1 : memory.Program.Id;
+		private ProgramSignature[] signatures;
+		private int[] offsets;
+		private bool is64bit;
+		public IntPtr Pointer { get; private set; }
+		public PointerVersion Version { get; private set; }
+		public bool AutoDeref { get; private set; }
+
+		public ProgramPointer(bool autoDeref, params ProgramSignature[] signatures) {
+			AutoDeref = autoDeref;
+			this.signatures = signatures;
+			lastID = -1;
+			lastTry = DateTime.MinValue;
+		}
+		public ProgramPointer(bool autoDeref, params int[] offsets) {
+			AutoDeref = autoDeref;
+			this.offsets = offsets;
+			lastID = -1;
 			lastTry = DateTime.MinValue;
 		}
 
-		public IntPtr Value {
-			get {
-				GetPointer();
-				return pointer;
-			}
+		public T Read<T>(Process program, params int[] offsets) where T : struct {
+			GetPointer(program);
+			return program.Read<T>(Pointer, offsets);
 		}
-		public T Read<T>(params int[] offsets) where T : struct {
-			return Memory.Program.Read<T>(Value, offsets);
+		public string Read(Process program, params int[] offsets) {
+			GetPointer(program);
+			return program.Read((IntPtr)program.Read<uint>(Pointer, offsets));
 		}
-		public string Read(params int[] offsets) {
-			if (!Memory.IsHooked) { return string.Empty; }
-
-			bool is64bit = Memory.Program.Is64Bit();
-			IntPtr p = IntPtr.Zero;
-			if (is64bit) {
-				p = (IntPtr)Memory.Program.Read<ulong>(Value, offsets);
-			} else {
-				p = (IntPtr)Memory.Program.Read<uint>(Value, offsets);
-			}
-			return Memory.Program.Read(p);
+		public void Write<T>(Process program, T value, params int[] offsets) where T : struct {
+			GetPointer(program);
+			program.Write<T>(Pointer, value, offsets);
 		}
-		public void Write(int value, params int[] offsets) {
-			Memory.Program.Write(Value, value, offsets);
+		public void Write(Process program, byte[] value, params int[] offsets) {
+			GetPointer(program);
+			program.Write(Pointer, value, offsets);
 		}
-		public void Write(long value, params int[] offsets) {
-			Memory.Program.Write(Value, value, offsets);
-		}
-		public void Write(double value, params int[] offsets) {
-			Memory.Program.Write(Value, value, offsets);
-		}
-		public void Write(float value, params int[] offsets) {
-			Memory.Program.Write(Value, value, offsets);
-		}
-		public void Write(short value, params int[] offsets) {
-			Memory.Program.Write(Value, value, offsets);
-		}
-		public void Write(byte value, params int[] offsets) {
-			Memory.Program.Write(Value, value, offsets);
-		}
-		public void Write(bool value, params int[] offsets) {
-			Memory.Program.Write(Value, value, offsets);
-		}
-		private void GetPointer() {
-			if (!Memory.IsHooked) {
-				pointer = IntPtr.Zero;
-				Version = MemVersion.None;
-				return;
+		public IntPtr GetPointer(Process program) {
+			if ((program?.HasExited).GetValueOrDefault(true)) {
+				Pointer = IntPtr.Zero;
+				lastID = -1;
+				return Pointer;
+			} else if (program.Id != lastID) {
+				Pointer = IntPtr.Zero;
+				lastID = program.Id;
 			}
 
-			if (Memory.Program.Id != lastID) {
-				pointer = IntPtr.Zero;
-				Version = MemVersion.None;
-				lastID = Memory.Program.Id;
-			}
-			if (pointer == IntPtr.Zero && DateTime.Now > lastTry.AddSeconds(1)) {
+			if (Pointer == IntPtr.Zero && DateTime.Now > lastTry.AddSeconds(1)) {
 				lastTry = DateTime.Now;
-				pointer = GetVersionedFunctionPointer();
-				if (pointer != IntPtr.Zero) {
-					bool is64bit = Memory.Program.Is64Bit();
-					pointer = (IntPtr)Memory.Program.Read<uint>(pointer);
+
+				Pointer = GetVersionedFunctionPointer(program);
+				if (Pointer != IntPtr.Zero) {
+					is64bit = program.Is64Bit();
+					Pointer = (IntPtr)program.Read<uint>(Pointer);
 					if (AutoDeref) {
 						if (is64bit) {
-							pointer = (IntPtr)Memory.Program.Read<ulong>(pointer);
+							Pointer = (IntPtr)program.Read<ulong>(Pointer);
 						} else {
-							pointer = (IntPtr)Memory.Program.Read<uint>(pointer);
+							Pointer = (IntPtr)program.Read<uint>(Pointer);
 						}
 					}
 				}
 			}
+			return Pointer;
 		}
-		private IntPtr GetVersionedFunctionPointer() {
-			foreach (MemVersion version in Enum.GetValues(typeof(MemVersion))) {
-				Dictionary<MemPointer, string> patterns = null;
-				if (!funcPatterns.TryGetValue(version, out patterns)) { continue; }
+		private IntPtr GetVersionedFunctionPointer(Process program) {
+			if (signatures != null) {
+				MemorySearcher searcher = new MemorySearcher();
+				searcher.MemoryFilter = delegate (MemInfo info) {
+					return (info.State & 0x1000) != 0 && (info.Protect & 0x40) != 0 && (info.Protect & 0x100) == 0;
+				};
+				for (int i = 0; i < signatures.Length; i++) {
+					ProgramSignature signature = signatures[i];
 
-				string pattern = null;
-				if (!patterns.TryGetValue(Name, out pattern)) { continue; }
-
-				IntPtr ptr = Memory.Program.FindSignatures(pattern)[0];
+					IntPtr ptr = searcher.FindSignature(program, signature.Signature);
+					if (ptr != IntPtr.Zero) {
+						Version = signature.Version;
+						return ptr + signature.Offset;
+					}
+				}
+			} else {
+				IntPtr ptr = (IntPtr)program.Read<uint>(program.MainModule.BaseAddress, offsets);
 				if (ptr != IntPtr.Zero) {
-					Version = version;
 					return ptr;
 				}
 			}
-			Version = MemVersion.None;
+
 			return IntPtr.Zero;
 		}
 	}

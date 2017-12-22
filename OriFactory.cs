@@ -7,7 +7,7 @@ namespace LiveSplit.OriDE {
         public string ComponentName { get { return "Ori DE Autosplitter v" + this.Version.ToString(); } }
         public string Description { get { return "Autosplitter for Ori DE"; } }
         public ComponentCategory Category { get { return ComponentCategory.Control; } }
-        public IComponent Create(LiveSplitState state) { return new OriComponent(); }
+        public IComponent Create(LiveSplitState state) { return new OriComponent(state); }
         public string UpdateName { get { return this.ComponentName; } }
 		public string UpdateURL { get { return "https://raw.githubusercontent.com/ShootMe/LiveSplit.OriDE/master/"; } }
 		public string XMLURL { get { return this.UpdateURL + "Components/LiveSplit.OriDE.Updates.xml"; } }

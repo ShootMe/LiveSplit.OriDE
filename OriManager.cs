@@ -2,23 +2,23 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 namespace LiveSplit.OriDE {
 	public partial class OriManager : Form {
+		[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+		public static extern short GetAsyncKeyState(Keys vkey);
 		private const int TAS_WIDTH = 660;
 		private const int TAS_HEIGHT = 235;
 		private const int NORMAL_WIDTH = 400;
 		private const int NORMAL_HEIGHT = 175;
 		public OriMemory Memory { get; set; }
 		private bool useLivesplitColors = true, extraFast = false, goingFast = false;
-		private KeyboardHook kbHook;
 		private SaveManager saveManager;
 
 		public OriManager() {
 			this.DoubleBuffered = true;
-			kbHook = new KeyboardHook(KeyboardHook.Parameters.PassAllKeysToNextApp);
-			kbHook.KeyIntercepted += KeyhookPress;
 			InitializeComponent();
 			Memory = new OriMemory();
 			Thread t = new Thread(UpdateLoop);
@@ -26,22 +26,12 @@ namespace LiveSplit.OriDE {
 			t.Start();
 		}
 		~OriManager() {
-			kbHook.Dispose();
 			if (saveManager != null) { saveManager.Dispose(); }
 		}
 
-		private void KeyhookPress(KeyboardHook.KeyboardHookEventArgs e) {
-			if (Memory != null && Memory.Program != null) {
-				int state = Memory.GetTASState();
-				if ((state & 1) != 0) {
-					int key = e.KeyCode;
-					if (key == 222) { key = 39; }
-					key = key & 127;
-					Memory.SetTASCharacter((byte)key);
-				}
-			}
+		private static bool IsKeyDown(Keys key) {
+			return (GetAsyncKeyState(key) & 32768) == 32768;
 		}
-
 		private void OriManager_KeyDown(object sender, KeyEventArgs e) {
 			if (e.Control && e.KeyCode == Keys.L) {
 				useLivesplitColors = !useLivesplitColors;
@@ -98,7 +88,23 @@ namespace LiveSplit.OriDE {
 			if (this.InvokeRequired) {
 				this.Invoke((Action)UpdateValues);
 			} else {
-				bool tasEnabled = this.Width == TAS_WIDTH || (Memory.GetTASState() & 1) != 0;
+				int tasState = Memory.GetTASState();
+
+				if ((tasState & 1) != 0) {
+					if (IsKeyDown(Keys.OemOpenBrackets)) {
+						Memory.SetTASCharacter((byte)'[');
+					} else if (IsKeyDown(Keys.OemCloseBrackets)) {
+						Memory.SetTASCharacter((byte)']');
+					} else if (IsKeyDown(Keys.OemBackslash)) {
+						Memory.SetTASCharacter((byte)'\\');
+					} else if (IsKeyDown(Keys.Back)) {
+						Memory.SetTASCharacter((byte)'\b');
+					} else if (IsKeyDown(Keys.OemSemicolon)) {
+						Memory.SetTASCharacter((byte)';');
+					}
+				}
+
+				bool tasEnabled = this.Width == TAS_WIDTH || (tasState & 1) != 0;
 				if (this.Width < TAS_WIDTH && tasEnabled) {
 					this.Width = TAS_WIDTH;
 					this.Height = TAS_HEIGHT;

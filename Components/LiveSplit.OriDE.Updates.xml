@@ -1,13 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <updates>
+	<update version="1.9.0">
+		<files>
+			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
+		</files>
+		<changelog>
+			<change> Performance Improvements </change>
+		</changelog>
+	</update>
 	<update version="1.8.6">
 		<files>
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
 		</files>
 		<changelog>
-			<change>
-				Added Alpha Sort option for split combo
-			</change>
+			<change> Added Alpha Sort option for split combo </change>
 		</changelog>
 	</update>
 	<update version="1.8.5">
@@ -15,9 +21,7 @@
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
 		</files>
 		<changelog>
-			<change>
-				Fixed Map Display duplicating
-			</change>
+			<change> Fixed Map Display duplicating </change>
 		</changelog>
 	</update>
 	<update version="1.8.0">
@@ -25,9 +29,7 @@
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
 		</files>
 		<changelog>
-			<change>
-				Changed how the Map Display option works now that the autosplitter can be activated from your Splits now.
-			</change>
+			<change> Changed how the Map Display option works now that the autosplitter can be activated from your Splits now. </change>
 		</changelog>
 	</update>
 	<update version="1.7.0">
@@ -35,9 +37,7 @@
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
 		</files>
 		<changelog>
-			<change>
-				Made moving splits easier in layout. Removed Rando (Use Sigmas instead). Fixed Reached Spirit Tree (For Real).
-			</change>
+			<change> Made moving splits easier in layout. Removed Rando (Use Sigmas instead). Fixed Reached Spirit Tree (For Real). </change>
 		</changelog>
 	</update>
 	<update version="1.6.9">
@@ -45,9 +45,7 @@
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
 		</files>
 		<changelog>
-			<change>
-				Fixes to Randomizer giving no skill
-			</change>
+			<change> Fixes to Randomizer giving no skill </change>
 		</changelog>
 	</update>
 	<update version="1.6.8">
@@ -55,9 +53,7 @@
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
 		</files>
 		<changelog>
-			<change>
-				Fixes to Randomizer when completed a run
-			</change>
+			<change> Fixes to Randomizer when completed a run </change>
 		</changelog>
 	</update>
 	<update version="1.6.7">
@@ -65,9 +61,7 @@
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
 		</files>
 		<changelog>
-			<change>
-				Fixes to Randomizer
-			</change>
+			<change> Fixes to Randomizer </change>
 		</changelog>
 	</update>
 	<update version="1.6.6">
@@ -75,9 +69,7 @@
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
 		</files>
 		<changelog>
-			<change>
-				Fixes to Randomizer
-			</change>
+			<change> Fixes to Randomizer </change>
 		</changelog>
 	</update>
 	<update version="1.6.5">

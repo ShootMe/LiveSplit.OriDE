@@ -25,7 +25,7 @@ namespace LiveSplit.OriDE {
 		private OriSettings settings;
 		private LayoutComponent mapDisplay = null;
 
-		public OriComponent() {
+		public OriComponent(LiveSplitState state) {
 			try {
 				mem = new OriMemory();
 				settings = new OriSettings(this);
@@ -33,6 +33,17 @@ namespace LiveSplit.OriDE {
 				mapDisplay = new LayoutComponent("LiveSplit.OriDE.dll", new OriMapDisplayComponent(mem));
 				foreach (string key in keys) {
 					currentValues[key] = "";
+				}
+
+				if (state != null) {
+					Model = new TimerModel() { CurrentState = state };
+					state.OnReset += OnReset;
+					state.OnPause += OnPause;
+					state.OnResume += OnResume;
+					state.OnStart += OnStart;
+					state.OnSplit += OnSplit;
+					state.OnUndoSplit += OnUndoSplit;
+					state.OnSkipSplit += OnSkipSplit;
 				}
 			} catch (Exception ex) {
 				Console.WriteLine(ex.ToString());
@@ -312,17 +323,6 @@ namespace LiveSplit.OriDE {
 
 			if (settings.ShowMapDisplay && !hasMapDisplay) {
 				components.Add(mapDisplay);
-			}
-
-			if (Model == null) {
-				Model = new TimerModel() { CurrentState = lvstate };
-				lvstate.OnReset += OnReset;
-				lvstate.OnPause += OnPause;
-				lvstate.OnResume += OnResume;
-				lvstate.OnStart += OnStart;
-				lvstate.OnSplit += OnSplit;
-				lvstate.OnUndoSplit += OnUndoSplit;
-				lvstate.OnSkipSplit += OnSkipSplit;
 			}
 
 			GetValues();
