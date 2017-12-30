@@ -4,16 +4,16 @@ using System.Diagnostics;
 using System.Drawing;
 namespace LiveSplit.OriDE.Memory {
 	public partial class OriMemory {
-		private static ProgramPointer GameWorld = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC53575683EC0C8B7D08B8????????89388B47", 13));
-		private static ProgramPointer GameplayCamera = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "05480000008B08894DE88B4804894DEC8B40088945F08B05", -4));
-		private static ProgramPointer WorldEvents = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC5783EC048B7D0C83EC0868????????57393FE8????????83C41083EC0868", 33));
-		private static ProgramPointer SeinCharacter = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC5783EC048B7D08B8????????8938B8????????893883EC0C68", 11));
-		private static ProgramPointer ScenesManager = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC5783EC148B7D08B8????????893883EC0C57E8????????83C4108B05", 11));
-		private static ProgramPointer GameStateMachine = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC5783EC148B7D08B8????????8938E8????????83EC0868", 11));
-		private static ProgramPointer RainbowDash = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "EC535783EC108B7D08C687????????000FB605????????85C074", 19));
-		private static ProgramPointer GameController = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "8B05????????83EC086A0050E8????????83C41085C074208B450883EC0C50E8", 2));
-		private static ProgramPointer TAS = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC53575683EC0CD9EED95DF00FB73D????????83EC0C6A02E8????????83C410D95DF083EC086AFF6A05E8????????83C4108BD883EC0C6A05E8", 17));
-		private static ProgramPointer CoreInput = new ProgramPointer(false, new ProgramSignature(PointerVersion.V1, "558BEC83EC488B05????????8B40188B40108945B8B8????????8B08894DC08B400489", 22));
+		private static ProgramPointer GameWorld = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC53575683EC0C8B7D08B8????????89388B47", 13));
+		private static ProgramPointer GameplayCamera = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "05480000008B08894DE88B4804894DEC8B40088945F08B05", -4));
+		private static ProgramPointer WorldEvents = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC5783EC048B7D0C83EC0868????????57393FE8????????83C41083EC0868", 33));
+		private static ProgramPointer SeinCharacter = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC5783EC048B7D08B8????????8938B8????????893883EC0C68", 11));
+		private static ProgramPointer ScenesManager = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC5783EC148B7D08B8????????893883EC0C57E8????????83C4108B05", 11));
+		private static ProgramPointer GameStateMachine = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC5783EC148B7D08B8????????8938E8????????83EC0868", 11));
+		private static ProgramPointer RainbowDash = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "EC535783EC108B7D08C687????????000FB605????????85C074", 19));
+		private static ProgramPointer GameController = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "8B05????????83EC086A0050E8????????83C41085C074208B450883EC0C50E8", 2));
+		private static ProgramPointer TAS = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC53575683EC0CD9EED95DF00FB73D????????83EC0C6A02E8????????83C410D95DF083EC086AFF6A05E8????????83C4108BD883EC0C6A05E8", 17));
+		private static ProgramPointer CoreInput = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC83EC488B05????????8B40188B40108945B8B8????????8B08894DC08B400489", 22));
 		public Process Program { get; set; }
 		public bool IsHooked { get; set; } = false;
 		private DateTime lastHooked;
@@ -145,23 +145,19 @@ namespace LiveSplit.OriDE.Memory {
 			return WorldEvents.Read<bool>(Program, key);
 		}
 		public Dictionary<string, bool> GetAbilities() {
-			IntPtr start = (IntPtr)SeinCharacter.Read<uint>(Program, 0x0, 0x4c);
-
 			Dictionary<string, bool> results = new Dictionary<string, bool>();
 			foreach (var pair in abilities) {
-				results[pair.Key] = Program.Read<bool>(start, pair.Value * 4, 0x08);
+				results[pair.Key] = SeinCharacter.Read<bool>(Program, 0x0, 0x4c, pair.Value * 4, 0x08);
 			}
 			return results;
 		}
 		public bool GetAbility(string name) {
-			IntPtr start = (IntPtr)SeinCharacter.Read<uint>(Program, 0x0, 0x4c);
 			int ability = abilities[name];
-			return Program.Read<bool>(start, ability * 4, 0x08);
+			return SeinCharacter.Read<bool>(Program, 0x0, 0x4c, ability * 4, 0x08);
 		}
 		public void SetAbility(string name, bool enable) {
-			IntPtr start = (IntPtr)SeinCharacter.Read<uint>(Program, 0x0, 0x4c);
 			int ability = abilities[name];
-			Program.Write(start, enable, ability * 4, 0x08);
+			SeinCharacter.Write<bool>(Program, enable, 0x0, 0x4c, ability * 4, 0x08);
 		}
 		public void SetSkills(bool enable, params Skill[] skills) {
 			if (skills == null || skills.Length == 0) {
@@ -348,13 +344,16 @@ namespace LiveSplit.OriDE.Memory {
 			return TAS.GetPointer(Program) != IntPtr.Zero;
 		}
 		public bool HookProcess() {
-			if ((Program == null || Program.HasExited) && DateTime.Now > lastHooked.AddSeconds(1)) {
+			if (DateTime.Now > lastHooked.AddSeconds(1) && (Program == null || Program.HasExited)) {
 				lastHooked = DateTime.Now;
 				Process[] processes = Process.GetProcessesByName("OriDE");
 				Program = processes.Length == 0 ? null : processes[0];
+				if (Program != null) {
+					MemoryReader.Update64Bit(Program);
+				}
 			}
 
-			IsHooked = Program != null && !Program.HasExited;
+			IsHooked = Program != null;
 
 			return IsHooked;
 		}
@@ -452,6 +451,11 @@ namespace LiveSplit.OriDE.Memory {
 	public enum PointerVersion {
 		V1
 	}
+	public enum AutoDeref {
+		None,
+		Single,
+		Double
+	}
 	public class ProgramSignature {
 		public PointerVersion Version { get; set; }
 		public string Signature { get; set; }
@@ -470,18 +474,17 @@ namespace LiveSplit.OriDE.Memory {
 		private DateTime lastTry;
 		private ProgramSignature[] signatures;
 		private int[] offsets;
-		private bool is64bit;
 		public IntPtr Pointer { get; private set; }
 		public PointerVersion Version { get; private set; }
-		public bool AutoDeref { get; private set; }
+		public AutoDeref AutoDeref { get; private set; }
 
-		public ProgramPointer(bool autoDeref, params ProgramSignature[] signatures) {
+		public ProgramPointer(AutoDeref autoDeref, params ProgramSignature[] signatures) {
 			AutoDeref = autoDeref;
 			this.signatures = signatures;
 			lastID = -1;
 			lastTry = DateTime.MinValue;
 		}
-		public ProgramPointer(bool autoDeref, params int[] offsets) {
+		public ProgramPointer(AutoDeref autoDeref, params int[] offsets) {
 			AutoDeref = autoDeref;
 			this.offsets = offsets;
 			lastID = -1;
@@ -496,6 +499,10 @@ namespace LiveSplit.OriDE.Memory {
 			GetPointer(program);
 			return program.Read((IntPtr)program.Read<uint>(Pointer, offsets));
 		}
+		public byte[] ReadBytes(Process program, int length, params int[] offsets) {
+			GetPointer(program);
+			return program.Read(Pointer, length, offsets);
+		}
 		public void Write<T>(Process program, T value, params int[] offsets) where T : struct {
 			GetPointer(program);
 			program.Write<T>(Pointer, value, offsets);
@@ -505,7 +512,7 @@ namespace LiveSplit.OriDE.Memory {
 			program.Write(Pointer, value, offsets);
 		}
 		public IntPtr GetPointer(Process program) {
-			if ((program?.HasExited).GetValueOrDefault(true)) {
+			if (program == null) {
 				Pointer = IntPtr.Zero;
 				lastID = -1;
 				return Pointer;
@@ -519,13 +526,14 @@ namespace LiveSplit.OriDE.Memory {
 
 				Pointer = GetVersionedFunctionPointer(program);
 				if (Pointer != IntPtr.Zero) {
-					is64bit = program.Is64Bit();
-					Pointer = (IntPtr)program.Read<uint>(Pointer);
-					if (AutoDeref) {
-						if (is64bit) {
-							Pointer = (IntPtr)program.Read<ulong>(Pointer);
-						} else {
-							Pointer = (IntPtr)program.Read<uint>(Pointer);
+					if (AutoDeref != AutoDeref.None) {
+						Pointer = (IntPtr)program.Read<uint>(Pointer);
+						if (AutoDeref == AutoDeref.Double) {
+							if (MemoryReader.is64Bit) {
+								Pointer = (IntPtr)program.Read<ulong>(Pointer);
+							} else {
+								Pointer = (IntPtr)program.Read<uint>(Pointer);
+							}
 						}
 					}
 				}
