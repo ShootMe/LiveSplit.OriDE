@@ -88,33 +88,26 @@ namespace LiveSplit.OriDE {
 			if (this.InvokeRequired) {
 				this.Invoke((Action)UpdateValues);
 			} else {
-				int tasState = Memory.GetTASState();
-
-				if ((tasState & 1) != 0) {
-					if (IsKeyDown(Keys.OemOpenBrackets)) {
-						Memory.SetTASCharacter((byte)'[');
-					} else if (IsKeyDown(Keys.OemCloseBrackets)) {
-						Memory.SetTASCharacter((byte)']');
-					} else if (IsKeyDown(Keys.OemBackslash)) {
-						Memory.SetTASCharacter((byte)'\\');
-					} else if (IsKeyDown(Keys.Back)) {
-						Memory.SetTASCharacter((byte)'\b');
-					} else if (IsKeyDown(Keys.OemSemicolon)) {
-						Memory.SetTASCharacter((byte)';');
-					}
-				}
-
-				bool tasEnabled = this.Width == TAS_WIDTH || (tasState & 1) != 0;
-				if (this.Width < TAS_WIDTH && tasEnabled) {
-					this.Width = TAS_WIDTH;
-					this.Height = TAS_HEIGHT;
-					lblCurrentInput.Visible = true;
-					lblNextInput.Visible = true;
-					lblTASStates.Visible = true;
-				} else {
+				bool tasEnabled = this.Width == TAS_WIDTH;
+				if(tasEnabled) {
 					lblCurrentInput.Text = Memory.GetTASCurrentInput();
 					lblNextInput.Text = Memory.GetTASNextInput();
 					lblTASStates.Text = Memory.GetTASExtraInfo();
+
+					int tasState = Memory.GetTASState();
+					if ((tasState & 1) != 0) {
+						if (IsKeyDown(Keys.OemOpenBrackets)) {
+							Memory.SetTASCharacter((byte)'[');
+						} else if (IsKeyDown(Keys.OemCloseBrackets)) {
+							Memory.SetTASCharacter((byte)']');
+						} else if (IsKeyDown(Keys.OemBackslash)) {
+							Memory.SetTASCharacter((byte)'\\');
+						} else if (IsKeyDown(Keys.Back)) {
+							Memory.SetTASCharacter((byte)'\b');
+						} else if (IsKeyDown(Keys.OemSemicolon)) {
+							Memory.SetTASCharacter((byte)';');
+						}
+					}
 				}
 
 				GameState gameState = Memory.GetGameState();
