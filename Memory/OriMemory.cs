@@ -344,16 +344,16 @@ namespace LiveSplit.OriDE.Memory {
 			return TAS.GetPointer(Program) != IntPtr.Zero;
 		}
 		public bool HookProcess() {
-			if (DateTime.Now > lastHooked.AddSeconds(1) && (Program == null || Program.HasExited)) {
+			IsHooked = Program != null && !Program.HasExited;
+			if (!IsHooked && DateTime.Now > lastHooked.AddSeconds(1)) {
 				lastHooked = DateTime.Now;
 				Process[] processes = Process.GetProcessesByName("OriDE");
 				Program = processes.Length == 0 ? null : processes[0];
-				if (Program != null) {
+				if (Program != null && !Program.HasExited) {
 					MemoryReader.Update64Bit(Program);
+					IsHooked = true;
 				}
 			}
-
-			IsHooked = Program != null;
 
 			return IsHooked;
 		}

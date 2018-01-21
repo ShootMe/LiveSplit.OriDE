@@ -302,30 +302,34 @@ namespace LiveSplit.OriDE {
 		}
 
 		public void Update(IInvalidator invalidator, LiveSplitState lvstate, float width, float height, LayoutMode mode) {
-			IList<ILayoutComponent> components = lvstate.Layout.LayoutComponents;
-			bool hasMapDisplay = false;
-			for (int i = components.Count - 1; i >= 0; i--) {
-				ILayoutComponent component = components[i];
-				if (component.Component is OriMapDisplayComponent) {
-					if (!settings.ShowMapDisplay || hasMapDisplay) {
-						components.Remove(component);
-					}
-					hasMapDisplay = true;
-				} else if (component.Component is OriComponent && invalidator == null && width == 0 && height == 0) {
-					components.Remove(component);
-
-					if (!hasMapDisplay && settings.ShowMapDisplay) {
-						components.Insert(i, mapDisplay);
+			try {
+				IList<ILayoutComponent> components = lvstate.Layout.LayoutComponents;
+				bool hasMapDisplay = false;
+				for (int i = components.Count - 1; i >= 0; i--) {
+					ILayoutComponent component = components[i];
+					if (component.Component is OriMapDisplayComponent) {
+						if (!settings.ShowMapDisplay || hasMapDisplay) {
+							components.Remove(component);
+						}
 						hasMapDisplay = true;
+					} else if (component.Component is OriComponent && invalidator == null && width == 0 && height == 0) {
+						components.Remove(component);
+
+						if (!hasMapDisplay && settings.ShowMapDisplay) {
+							components.Insert(i, mapDisplay);
+							hasMapDisplay = true;
+						}
 					}
 				}
-			}
 
-			if (settings.ShowMapDisplay && !hasMapDisplay) {
-				components.Add(mapDisplay);
-			}
+				if (settings.ShowMapDisplay && !hasMapDisplay) {
+					components.Add(mapDisplay);
+				}
 
-			GetValues();
+				GetValues();
+			} catch (Exception ex) {
+				WriteLog(ex.ToString());
+			}
 		}
 
 		public void OnReset(object sender, TimerPhase e) {
