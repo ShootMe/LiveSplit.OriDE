@@ -3,6 +3,7 @@
 namespace LiveSplit.OriDE {
 	public class MasterAssets : SceneID {
 		public MasterAssets() : base() { Name = "MasterAssets"; }
+		public static SceneID SaveDescription = new SceneID("11111111111111111111111111111111");
 		public static SceneID SeinInventory = new SceneID("444B746E7F7A0AE0CC208C40DE7CD9B1");
 		public static SceneID PlatformMovement = new SceneID("4AA674A355CA54E9321AEAB78E4E5599");
 		public static SceneID ScenesManager = new SceneID("4A5B886C02AC652324FC2FDD8ED513AB");

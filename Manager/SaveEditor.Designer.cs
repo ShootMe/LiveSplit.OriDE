@@ -135,6 +135,8 @@
 			this.txtCopy = new System.Windows.Forms.TextBox();
 			this.txtFilter = new System.Windows.Forms.TextBox();
 			this.lblFilter = new System.Windows.Forms.Label();
+			this.lblDescription = new System.Windows.Forms.Label();
+			this.txtDescription = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// txtPosX
@@ -1141,9 +1143,9 @@
 			this.treeObjects.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
 			this.treeObjects.CheckBoxes = true;
-			this.treeObjects.Location = new System.Drawing.Point(69, 285);
+			this.treeObjects.Location = new System.Drawing.Point(69, 321);
 			this.treeObjects.Name = "treeObjects";
-			this.treeObjects.Size = new System.Drawing.Size(474, 290);
+			this.treeObjects.Size = new System.Drawing.Size(474, 254);
 			this.treeObjects.TabIndex = 94;
 			this.treeObjects.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeObjects_AfterCheck);
 			// 
@@ -1306,7 +1308,7 @@
 			// 
 			// txtFilter
 			// 
-			this.txtFilter.Location = new System.Drawing.Point(69, 259);
+			this.txtFilter.Location = new System.Drawing.Point(69, 295);
 			this.txtFilter.Name = "txtFilter";
 			this.txtFilter.Size = new System.Drawing.Size(473, 20);
 			this.txtFilter.TabIndex = 109;
@@ -1316,11 +1318,30 @@
 			// 
 			this.lblFilter.AutoSize = true;
 			this.lblFilter.BackColor = System.Drawing.Color.Transparent;
-			this.lblFilter.Location = new System.Drawing.Point(35, 262);
+			this.lblFilter.Location = new System.Drawing.Point(35, 298);
 			this.lblFilter.Name = "lblFilter";
 			this.lblFilter.Size = new System.Drawing.Size(29, 13);
 			this.lblFilter.TabIndex = 110;
 			this.lblFilter.Text = "Filter";
+			// 
+			// lblDescription
+			// 
+			this.lblDescription.AutoSize = true;
+			this.lblDescription.BackColor = System.Drawing.Color.Transparent;
+			this.lblDescription.Location = new System.Drawing.Point(5, 250);
+			this.lblDescription.Name = "lblDescription";
+			this.lblDescription.Size = new System.Drawing.Size(60, 13);
+			this.lblDescription.TabIndex = 112;
+			this.lblDescription.Text = "Description";
+			// 
+			// txtDescription
+			// 
+			this.txtDescription.AcceptsReturn = true;
+			this.txtDescription.Location = new System.Drawing.Point(69, 247);
+			this.txtDescription.Multiline = true;
+			this.txtDescription.Name = "txtDescription";
+			this.txtDescription.Size = new System.Drawing.Size(473, 42);
+			this.txtDescription.TabIndex = 111;
 			// 
 			// SaveEditor
 			// 
@@ -1330,6 +1351,8 @@
 			this.BackColor = System.Drawing.Color.Black;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
 			this.ClientSize = new System.Drawing.Size(856, 584);
+			this.Controls.Add(this.lblDescription);
+			this.Controls.Add(this.txtDescription);
 			this.Controls.Add(this.lblFilter);
 			this.Controls.Add(this.txtFilter);
 			this.Controls.Add(this.txtCopy);
@@ -1570,5 +1593,7 @@
 		private System.Windows.Forms.TextBox txtCopy;
 		private System.Windows.Forms.TextBox txtFilter;
 		private System.Windows.Forms.Label lblFilter;
+		private System.Windows.Forms.Label lblDescription;
+		private System.Windows.Forms.TextBox txtDescription;
 	}
 }

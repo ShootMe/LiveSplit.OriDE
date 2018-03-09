@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
 namespace LiveSplit.OriDE {
 	public partial class SaveManager : Form {
@@ -52,6 +53,7 @@ namespace LiveSplit.OriDE {
 				}
 
 				flowLayout.Controls.Clear();
+				toolTips.RemoveAll();
 
 				int count = 0;
 				for (int i = 0; i < files.Count; i++) {
@@ -78,6 +80,11 @@ namespace LiveSplit.OriDE {
 					saveImage.Click += SaveImage_Click;
 					saveImage.Tag = save;
 
+					data = save.Master[MasterAssets.SaveDescription];
+					if (data != null) {
+						toolTips.SetToolTip(saveImage, Encoding.GetEncoding(1252).GetString(data.Data));
+					}
+
 					Stream file = asm.GetManifestResourceStream("LiveSplit.OriDE.Images." + save.AreaName + ".png");
 					if (file != null) {
 						saveImage.Image = Image.FromStream(file);
@@ -93,6 +100,10 @@ namespace LiveSplit.OriDE {
 						save.Health + "/" + save.MaxHealth + " HP " + save.Energy + "/" + save.MaxEnergy + " EN\n" +
 						"Lvl" + currentLevel + " " + currentXP + " XP " + currentAP + " AP\n" +
 						(save.Hours > 0 ? save.Hours + ":" : "") + save.Minutes.ToString(save.Hours > 0 ? "00" : "0") + ":" + save.Seconds.ToString("00") + " " + save.Completion + "%";
+
+					if (data != null) {
+						toolTips.SetToolTip(saveLabel, Encoding.GetEncoding(1252).GetString(data.Data));
+					}
 
 					FlowLayoutPanel saveLayout = new FlowLayoutPanel();
 					saveLayout.SuspendLayout();

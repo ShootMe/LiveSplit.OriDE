@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
 namespace LiveSplit.OriDE {
 	public partial class SaveEditor : Form {
@@ -61,6 +62,13 @@ namespace LiveSplit.OriDE {
 				txtVelocityX.Text = trueValue.FloatVal.ToString("R");
 				trueValue.IntVal = data.GetInt((int)SaveInfo.SpeedY);
 				txtVelocityY.Text = trueValue.FloatVal.ToString("R");
+
+				data = Save.Master[MasterAssets.SaveDescription];
+				if (data != null) {
+					txtDescription.Text = Encoding.GetEncoding(1252).GetString(data.Data);
+				} else {
+					txtDescription.Text = string.Empty;
+				}
 
 				data = Save.Master[MasterAssets.PlayerAbilities];
 				if (data != null) {
@@ -385,6 +393,12 @@ namespace LiveSplit.OriDE {
 				if (Save.Difficulty == DifficultyMode.OneLife) {
 					Save.WasKilled = deaths > 0;
 				}
+
+				data = Save.Master[MasterAssets.SaveDescription];
+				if (data == null) {
+					data = Save.Master.Add(MasterAssets.SaveDescription);
+				}
+				data.Data = Encoding.GetEncoding(1252).GetBytes(txtDescription.Text);
 
 				string currentArea = string.Empty;
 				switch (cboArea.Text) {

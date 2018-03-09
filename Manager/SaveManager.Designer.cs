@@ -23,8 +23,10 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaveManager));
 			this.flowLayout = new System.Windows.Forms.FlowLayoutPanel();
+			this.toolTips = new System.Windows.Forms.ToolTip(this.components);
 			this.SuspendLayout();
 			// 
 			// flowLayout
@@ -59,5 +61,6 @@
 
 		#endregion
 		private System.Windows.Forms.FlowLayoutPanel flowLayout;
+		private System.Windows.Forms.ToolTip toolTips;
 	}
 }
