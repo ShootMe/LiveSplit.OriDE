@@ -89,7 +89,7 @@ namespace LiveSplit.OriDE {
 				this.Invoke((Action)UpdateValues);
 			} else {
 				bool tasEnabled = this.Width == TAS_WIDTH;
-				if(tasEnabled) {
+				if (tasEnabled) {
 					lblCurrentInput.Text = Memory.GetTASCurrentInput();
 					lblNextInput.Text = Memory.GetTASNextInput();
 					lblTASStates.Text = Memory.GetTASExtraInfo();

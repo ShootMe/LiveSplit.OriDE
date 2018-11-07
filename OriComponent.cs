@@ -20,7 +20,7 @@ namespace LiveSplit.OriDE {
 		private bool hasLog = false;
 		private int lastLogCheck = 0;
 		private DateTime notInGame = DateTime.MinValue;
-		internal static List<string> keys = new List<string>() { "Pos", "CurrentSplit", "SplitName", "StartingGame", "IsInGameWorld", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "CurrentEnergy", "HealthCells", "CurrentHealth", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameStateMachine", "WorldEvents", "RainbowDash" };
+		internal static List<string> keys = new List<string>() { "Pos", "CurrentSplit", "SplitName", "StartingGame", "IsInGameWorld", "Keystones", "GameState", "CurrentArea", "AbilityCells", "EnergyCells", "CurrentEnergy", "HealthCells", "CurrentHealth", "XPLevel", "GameWorld", "GameplayCamera", "SeinCharacter", "ScenesManager", "GameStateMachine", "WorldEvents", "RainbowDash" };
 		private Dictionary<string, string> currentValues = new Dictionary<string, string>();
 		private OriSettings settings;
 		private LayoutComponent mapDisplay = null;
@@ -273,6 +273,7 @@ namespace LiveSplit.OriDE {
 									case "HealthCells": curr = mem.GetCurrentHPMax().ToString(); break;
 									case "CurrentHealth": curr = mem.GetCurrentHP().ToString(); break;
 									case "XPLevel": curr = mem.GetCurrentLevel().ToString(); break;
+									case "Keystones": curr = mem.GetKeyStones().ToString(); break;
 									case "CurrentArea": curr = mem.GetCurrentArea().Name; break;
 									default:
 										if (OriMemory.abilities.ContainsKey(key)) {
