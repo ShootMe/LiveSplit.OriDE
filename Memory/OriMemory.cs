@@ -12,7 +12,7 @@ namespace LiveSplit.OriDE.Memory {
 		private static ProgramPointer GameStateMachine = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC5783EC148B7D08B8????????8938E8????????83EC0868", 11));
 		private static ProgramPointer RainbowDash = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "EC535783EC108B7D08C687????????000FB605????????85C074", 19));
 		private static ProgramPointer GameController = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "8B05????????83EC086A0050E8????????83C41085C074208B450883EC0C50E8", 2));
-		private static ProgramPointer TAS = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC53575683EC1CD9EED95DF00FB705????????668945DE83EC0C6A02E8????????83C410D95DF083EC086AFF6A05E8????????83C4108845DD83EC086AFF6A04E8", 17));
+		private static ProgramPointer TAS = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "C745D8F1DEBC9AC745DC785634128D45D8", -6));
 		private static ProgramPointer CoreInput = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC83EC488B05????????8B40188B40108945B8B8????????8B08894DC08B400489", 22));
 		public Process Program { get; set; }
 		public bool IsHooked { get; set; } = false;
@@ -318,26 +318,26 @@ namespace LiveSplit.OriDE.Memory {
 		}
 		public void SetTASCharacter(byte keyCode) {
 			if (TAS.GetPointer(Program) != IntPtr.Zero) {
-				TAS.Write<byte>(Program, keyCode);
+				TAS.Write<byte>(Program, keyCode, 0xc);
 			}
 		}
 		public int GetTASState() {
-			return TAS.Read<int>(Program, -0x1c);
+			return TAS.Read<int>(Program, -0x10);
 		}
 		public string GetTASCurrentInput() {
-			return TAS.Read(Program, 0x4);
+			return TAS.Read(Program, 0x10);
 		}
 		public string GetTASNextInput() {
-			return TAS.Read(Program, 0x8);
+			return TAS.Read(Program, 0x14);
 		}
 		public string GetTASExtraInfo() {
-			return TAS.Read(Program, 0xc);
+			return TAS.Read(Program, 0x18);
 		}
 		public PointF GetTASOriPositon() {
 			if (!IsHooked) { return new PointF(0, 0); }
 
-			float px = TAS.Read<float>(Program, 0x20);
-			float py = TAS.Read<float>(Program, 0x24);
+			float px = TAS.Read<float>(Program, 0x2c);
+			float py = TAS.Read<float>(Program, 0x30);
 			return new PointF(px, py);
 		}
 		public bool HasTAS() {
