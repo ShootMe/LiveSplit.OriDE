@@ -56,6 +56,7 @@ namespace LiveSplit.OriDE.Settings {
 			{"Key Stones",               "Value"},
 			{"Valley 100%",              "Boolean"},
 			{"Grotto 100%",              "Boolean"},
+			{"Hollow Grove 100%",        "Boolean"},
 			{"Swamp 100%",               "Boolean"},
 			{"Glades 100%",              "Boolean"},
 			{"Sorrow 100%",              "Boolean"},

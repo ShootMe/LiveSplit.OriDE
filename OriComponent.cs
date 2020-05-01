@@ -98,6 +98,7 @@ namespace LiveSplit.OriDE {
 						case "Forlorn 100%":
 						case "Horu 100%":
 						case "Glades 100%":
+						case "Hollow Grove 100%":
 						case "Sorrow 100%":
 						case "Black Root 100%":
 							string areaName = split.Field.Substring(0, split.Field.Length - 5);

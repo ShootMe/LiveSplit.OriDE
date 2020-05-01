@@ -21,10 +21,14 @@ namespace LiveSplit.OriDE {
 				new SceneID("4605C622E293847940D38CE24219D5AE")
 			}
 		};
-		//sunkenGladesSpiritCavernWalljumpB
+		//SunkenGladesSpiritCavernWalljumpB
 		public static SceneID WallJumpTimeLine = new SceneID("4478A1869C0C7012B29B6A2736B8C0A4");
-		//ginsoTreeBashRedirectArt
+		//GinsoTreeBashRedirectArt
 		public static SceneID BashTimeLine = new SceneID("4FDF95A28FD3D3BF10712444684F7A9C");
+		//ThornfeltSwampStompAbility
+		public static SceneID StompTimeLine = new SceneID("4031519A7406E601E4B59762FD1D18BB");
+		//MangroveFallsGetGrenade
+		public static SceneID GrenadeTimeLine = new SceneID("4A69E1ACE5783606029C5ECEA59CA793");
 
 		public static SceneID ForlornRuinsC = new SceneID("BAB44F6981AC324314572CF5F2F7C3E9");
 		public static SceneID ForlornRuinsEntrancePlaceholder = new SceneID("1B24B91ADBC5C18DFD4622597D4569EA");

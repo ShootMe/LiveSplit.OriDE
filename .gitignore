@@ -3,10 +3,9 @@
 ################################################################################
 
 /bin
-/.vs/LiveSplit.OriDE/v14
-/Components/LiveSplit.OriDE.exe
 /obj
+/Components/LiveSplit.OriDE.exe
 /LiveSplit.OriDE.csproj.user
 /Manager/bin
 /Manager/obj
-/.vs/LiveSplit.OriDE/v15
+/.vs
