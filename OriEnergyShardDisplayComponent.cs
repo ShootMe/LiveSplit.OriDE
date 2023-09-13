@@ -25,14 +25,15 @@ namespace LiveSplit.OriDE {
         public int TotalCount;
         private int lastCount;
         public OriEnergyShardDisplayComponent(OriMemory memory) {
-            textInfo = new InfoTextComponent("Energy Shards:", "999");
+            textInfo = new InfoTextComponent("Energy Shards:", "99");
             textInfo.NameLabel.VerticalAlignment = StringAlignment.Far;
-            textInfo.LongestString = "Energy Shards: 999";
+            textInfo.LongestString = "Energy Shards: 99";
             this.memory = memory;
         }
 
         public void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode) {
-            int currentCount = memory.CurrentEnergyShardCount();
+            bool hasWJ = memory.GetAbility("Wall Jump");
+            int currentCount = hasWJ ? 0 : memory.CurrentEnergyShardCount();
 
             if (currentCount > lastCount) {
                 TotalCount += currentCount - lastCount;

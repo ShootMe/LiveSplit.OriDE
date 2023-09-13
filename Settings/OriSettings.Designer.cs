@@ -28,12 +28,12 @@
             this.flowMain = new System.Windows.Forms.FlowLayoutPanel();
             this.flowOptions = new System.Windows.Forms.FlowLayoutPanel();
             this.chkShowMapDisplay = new System.Windows.Forms.CheckBox();
+            this.chkEnergyShardCount = new System.Windows.Forms.CheckBox();
             this.chkRainbowDash = new System.Windows.Forms.CheckBox();
             this.lblSort = new System.Windows.Forms.Label();
             this.rdSortGame = new System.Windows.Forms.RadioButton();
             this.rdSortAlpha = new System.Windows.Forms.RadioButton();
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
-            this.chkEnergyShardCount = new System.Windows.Forms.CheckBox();
             this.flowMain.SuspendLayout();
             this.flowOptions.SuspendLayout();
             this.SuspendLayout();
@@ -93,6 +93,18 @@
             this.chkShowMapDisplay.UseVisualStyleBackColor = true;
             this.chkShowMapDisplay.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
             // 
+            // chkEnergyShardCount
+            // 
+            this.chkEnergyShardCount.AutoSize = true;
+            this.chkEnergyShardCount.Location = new System.Drawing.Point(164, 3);
+            this.chkEnergyShardCount.Name = "chkEnergyShardCount";
+            this.chkEnergyShardCount.Size = new System.Drawing.Size(127, 17);
+            this.chkEnergyShardCount.TabIndex = 6;
+            this.chkEnergyShardCount.Text = "Energy Shard Display";
+            this.toolTips.SetToolTip(this.chkEnergyShardCount, "Displays the total count of energy shards dropped before wall jump");
+            this.chkEnergyShardCount.UseVisualStyleBackColor = true;
+            this.chkEnergyShardCount.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
+            // 
             // chkRainbowDash
             // 
             this.chkRainbowDash.AutoSize = true;
@@ -136,18 +148,6 @@
             this.rdSortAlpha.Text = "Alpha";
             this.rdSortAlpha.UseVisualStyleBackColor = true;
             this.rdSortAlpha.CheckedChanged += new System.EventHandler(this.rdSort_CheckedChanged);
-            // 
-            // chkEnergyShardCount
-            // 
-            this.chkEnergyShardCount.AutoSize = true;
-            this.chkEnergyShardCount.Location = new System.Drawing.Point(164, 3);
-            this.chkEnergyShardCount.Name = "chkEnergyShardCount";
-            this.chkEnergyShardCount.Size = new System.Drawing.Size(127, 17);
-            this.chkEnergyShardCount.TabIndex = 6;
-            this.chkEnergyShardCount.Text = "Energy Shard Display";
-            this.toolTips.SetToolTip(this.chkEnergyShardCount, "Displays the total count of energy shards dropped from enemies");
-            this.chkEnergyShardCount.UseVisualStyleBackColor = true;
-            this.chkEnergyShardCount.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
             // 
             // OriSettings
             // 

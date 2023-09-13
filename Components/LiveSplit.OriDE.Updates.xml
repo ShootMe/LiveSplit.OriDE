@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <updates>
+	<update version="1.9.6">
+		<files>
+			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
+		</files>
+		<changelog>
+			<change> Energy Shard Display only counts till Wall Jump now </change>
+		</changelog>
+	</update>
 	<update version="1.9.5">
 		<files>
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
