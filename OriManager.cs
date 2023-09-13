@@ -161,8 +161,8 @@ namespace LiveSplit.OriDE {
 				if (isInGameWorld) {
 					int level = Memory.GetCurrentLevel();
 					int xp = Memory.GetExperience();
-					lblLevel.Text = "Level: " + level.ToString();
-					lblHP.Text = "HP: " + ((double)Memory.GetCurrentHP() / 4).ToString("0.##") + " / " + Memory.GetCurrentHPMax().ToString();
+                    lblLevel.Text = $"Level: {level}";
+                    lblHP.Text = "HP: " + ((double)Memory.GetCurrentHP() / 4).ToString("0.##") + " / " + Memory.GetCurrentHPMax().ToString();
 					lblEN.Text = "EN: " + Memory.GetCurrentEN().ToString("0.##") + " / " + ((int)Memory.GetCurrentENMax()).ToString();
 					lblAbility.Text = "Ability: " + Memory.GetAbilityCells().ToString() + " / 33";
 					lblXP.Text = "XP: " + xp.ToString() + " / " + GetXP(level);

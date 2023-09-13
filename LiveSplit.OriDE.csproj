@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LiveSplit.OriDE</RootNamespace>
     <AssemblyName>LiveSplit.OriDE</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -40,7 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LiveSplit.Core">
-      <HintPath>..\..\LiveSplit\LiveSplit.Core.dll</HintPath>
+      <HintPath>..\..\Programs\LiveSplit\LiveSplit.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,7 +49,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="UpdateManager">
-      <HintPath>..\..\LiveSplit\UpdateManager.dll</HintPath>
+      <HintPath>..\..\Programs\LiveSplit\UpdateManager.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +70,7 @@
     <None Include="Manager\SceneIDs.cs" />
     <Compile Include="Memory\Entities.cs" />
     <Compile Include="OriComponent.cs" />
+    <Compile Include="OriEnergyShardDisplayComponent.cs" />
     <Compile Include="OriFactory.cs" />
     <Compile Include="Memory\OriMemory.cs" />
     <Compile Include="Memory\Memory.cs" />

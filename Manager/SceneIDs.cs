@@ -29,6 +29,7 @@ namespace LiveSplit.OriDE {
 		public static SceneID StompTimeLine = new SceneID("4031519A7406E601E4B59762FD1D18BB");
 		//MangroveFallsGetGrenade
 		public static SceneID GrenadeTimeLine = new SceneID("4A69E1ACE5783606029C5ECEA59CA793");
+		public static SceneID DashTimeLine = new SceneID("47C2445C28B7357A7202B8D8781E7292");
 
 		public static SceneID ForlornRuinsC = new SceneID("BAB44F6981AC324314572CF5F2F7C3E9");
 		public static SceneID ForlornRuinsEntrancePlaceholder = new SceneID("1B24B91ADBC5C18DFD4622597D4569EA");

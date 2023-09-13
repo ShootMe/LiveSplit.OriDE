@@ -8,8 +8,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
 namespace LiveSplit.OriDE {
-    public class OriMapDisplayComponent : IComponent {
-        public string ComponentName => "Ori Map Display";
+    public class OriEnergyShardDisplayComponent : IComponent {
+        public string ComponentName => "Ori Energy Shard Display";
         public float HorizontalWidth => textInfo.HorizontalWidth;
         public float MinimumHeight => textInfo.MinimumHeight;
         public float VerticalHeight => textInfo.VerticalHeight;
@@ -22,30 +22,26 @@ namespace LiveSplit.OriDE {
 
         private InfoTextComponent textInfo;
         private OriMemory memory;
-        public OriMapDisplayComponent(OriMemory memory) {
-            textInfo = new InfoTextComponent("0%", "Swamp 0.00%");
-            textInfo.LongestString = "Valley Of The Wind - 100.00%";
+        public int TotalCount;
+        private int lastCount;
+        public OriEnergyShardDisplayComponent(OriMemory memory) {
+            textInfo = new InfoTextComponent("Energy Shards:", "999");
+            textInfo.NameLabel.VerticalAlignment = StringAlignment.Far;
+            textInfo.LongestString = "Energy Shards: 999";
             this.memory = memory;
         }
 
         public void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode) {
-            List<Area> areas = memory.GetMapCompletion();
-            decimal total = 0;
-            Area currentArea = default(Area);
-            for (int i = 0; i < areas.Count; i++) {
-                Area area = areas[i];
-                total += area.Progress;
-                if (area.Current) {
-                    currentArea = area;
-                }
-            }
-            if (areas.Count > 0) {
-                total /= areas.Count;
-            }
-            textInfo.InformationName = "Total Map: " + total.ToString("0.00") + "%";
-            textInfo.InformationValue = currentArea.Name + " - " + currentArea.Progress.ToString("0.00") + "%";
-            textInfo.LongestString = "Valley Of The Wind - 100.00%";
+            int currentCount = memory.CurrentEnergyShardCount();
 
+            if (currentCount > lastCount) {
+                TotalCount += currentCount - lastCount;
+            }
+
+            lastCount = currentCount;
+
+            textInfo.InformationName = "Energy Shards:";
+            textInfo.InformationValue = $"{TotalCount}";
             textInfo.Update(invalidator, state, width, height, mode);
             if (invalidator != null) {
                 invalidator.Invalidate(0, 0, width, height);
@@ -66,7 +62,6 @@ namespace LiveSplit.OriDE {
             textInfo.DrawVertical(g, state, width, clipRegion);
         }
         private void PrepareDraw(LiveSplitState state, LayoutMode mode) {
-            textInfo.DisplayTwoRows = true;
             textInfo.NameLabel.HasShadow = textInfo.ValueLabel.HasShadow = state.LayoutSettings.DropShadows;
             textInfo.NameLabel.HorizontalAlignment = StringAlignment.Far;
             textInfo.ValueLabel.HorizontalAlignment = StringAlignment.Far;
@@ -80,10 +75,10 @@ namespace LiveSplit.OriDE {
         public void SetSettings(XmlNode settings) { }
         public void Dispose() { }
         public override bool Equals(object obj) {
-            return obj != null && obj is OriMapDisplayComponent;
+            return obj != null && obj is OriEnergyShardDisplayComponent;
         }
         public override int GetHashCode() {
-            return 123456789;
+            return 123456787;
         }
     }
 }
