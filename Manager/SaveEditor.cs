@@ -712,7 +712,9 @@ namespace LiveSplit.OriDE {
 
 			treeObjects.ExpandAll();
 			treeObjects.ResumeLayout(true);
-			treeObjects.SelectedNode = treeObjects.Nodes[0];
+			if (treeObjects.Nodes.Count != 0) {
+                treeObjects.SelectedNode = treeObjects.Nodes[0];
+            }
 			SuspendUpdate.Resume(this);
 		}
 		private void treeObjects_AfterCheck(object sender, TreeViewEventArgs e) {
