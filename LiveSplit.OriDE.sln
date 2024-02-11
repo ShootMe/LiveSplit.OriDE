@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34221.43
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveSplit.OriDE", "LiveSplit.OriDE.csproj", "{B3294E28-2BD4-4E39-92FA-E04A620C7E7F}"
 EndProject
@@ -24,8 +24,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {DEAA3893-738E-44B8-BA81-C291066EE2FB}
 	EndGlobalSection
 EndGlobal
