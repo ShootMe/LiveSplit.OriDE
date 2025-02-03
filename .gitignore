@@ -8,4 +8,6 @@
 /LiveSplit.OriDE.csproj.user
 /Manager/bin
 /Manager/obj
+/Manager/.vs
 /.vs
+LocalBuildProperties.props
