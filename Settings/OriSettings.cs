@@ -10,6 +10,7 @@ namespace LiveSplit.OriDE.Settings {
         public bool ShowMapDisplay { get; set; }
         public bool EnergyShardDisplay { get; set; }
         public bool RainbowDash { get; set; }
+        public bool HitCounter {  get; set; }
         public bool AlphaSort { get; set; }
         private OriComponent component;
         private bool isLoading;
@@ -55,6 +56,7 @@ namespace LiveSplit.OriDE.Settings {
 
             chkShowMapDisplay.Checked = ShowMapDisplay;
             chkRainbowDash.Checked = RainbowDash;
+            chkHitCounter.Checked = HitCounter;
 
             isLoading = false;
             this.flowMain.ResumeLayout(true);
@@ -109,6 +111,7 @@ namespace LiveSplit.OriDE.Settings {
             ShowMapDisplay = chkShowMapDisplay.Checked;
             EnergyShardDisplay = chkEnergyShardCount.Checked;
             RainbowDash = chkRainbowDash.Checked;
+            HitCounter = chkHitCounter.Checked;
         }
         public XmlNode UpdateSettings(XmlDocument document) {
             XmlElement xmlSettings = document.CreateElement("Settings");
@@ -124,6 +127,10 @@ namespace LiveSplit.OriDE.Settings {
             XmlElement xmlDash = document.CreateElement("RainbowDash");
             xmlDash.InnerText = RainbowDash.ToString();
             xmlSettings.AppendChild(xmlDash);
+
+            XmlElement xmlHitCounter = document.CreateElement("HitCounter");
+            xmlHitCounter.InnerText = HitCounter.ToString();
+            xmlSettings.AppendChild(xmlHitCounter);
 
             XmlElement xmlSort = document.CreateElement("AlphaSort");
             xmlSort.InnerText = AlphaSort.ToString();
@@ -168,6 +175,16 @@ namespace LiveSplit.OriDE.Settings {
                 RainbowDash = bool.Parse(showRainbow.InnerText);
             } else {
                 RainbowDash = false;
+            }
+
+            XmlNode countHits = settings.SelectSingleNode(".//HitCounter");
+            if (countHits != null && countHits.InnerText != "")
+            {
+                HitCounter = bool.Parse(countHits.InnerText);
+            }
+            else
+            {
+                HitCounter = false;
             }
 
             XmlNode alphaSort = settings.SelectSingleNode(".//AlphaSort");
