@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LiveSplit.OriDE</RootNamespace>
     <AssemblyName>LiveSplit.OriDE</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -38,9 +38,22 @@
     <StartupObject>
     </StartupObject>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <LiveSplitRefs>..\..\Programs\LiveSplit</LiveSplitRefs>
+  </PropertyGroup>
+  <Import Project="LocalBuildProperties.props" Condition="Exists('LocalBuildProperties.props')" />
+  <!--Make a file LocalBuildProperties.props in this directory with the following content
+<Project>
+  <PropertyGroup>
+    <LiveSplitRefs>Livesplit/directory/goes/here</LiveSplitRefs>
+  </PropertyGroup>
+</Project>
+  -->
+
   <ItemGroup>
     <Reference Include="LiveSplit.Core">
-      <HintPath>..\..\Programs\LiveSplit\LiveSplit.Core.dll</HintPath>
+      <HintPath>$(LiveSplitRefs)\LiveSplit.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,7 +62,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="UpdateManager">
-      <HintPath>..\..\Programs\LiveSplit\UpdateManager.dll</HintPath>
+      <HintPath>$(LiveSplitRefs)\UpdateManager.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
