@@ -33,6 +33,7 @@
             this.lblSort = new System.Windows.Forms.Label();
             this.rdSortGame = new System.Windows.Forms.RadioButton();
             this.rdSortAlpha = new System.Windows.Forms.RadioButton();
+            this.chkHitCounter = new System.Windows.Forms.CheckBox();
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.flowMain.SuspendLayout();
             this.flowOptions.SuspendLayout();
@@ -75,6 +76,7 @@
             this.flowOptions.Controls.Add(this.lblSort);
             this.flowOptions.Controls.Add(this.rdSortGame);
             this.flowOptions.Controls.Add(this.rdSortAlpha);
+            this.flowOptions.Controls.Add(this.chkHitCounter);
             this.flowOptions.Location = new System.Drawing.Point(0, 0);
             this.flowOptions.Margin = new System.Windows.Forms.Padding(0);
             this.flowOptions.Name = "flowOptions";
@@ -149,6 +151,18 @@
             this.rdSortAlpha.UseVisualStyleBackColor = true;
             this.rdSortAlpha.CheckedChanged += new System.EventHandler(this.rdSort_CheckedChanged);
             // 
+            // chkHitCounter
+            // 
+            this.chkHitCounter.AutoSize = true;
+            this.chkHitCounter.Location = new System.Drawing.Point(192, 30);
+            this.chkHitCounter.Name = "chkHitCounter";
+            this.chkHitCounter.Size = new System.Drawing.Size(79, 17);
+            this.chkHitCounter.TabIndex = 7;
+            this.chkHitCounter.Text = "Hit Counter";
+            this.toolTips.SetToolTip(this.chkHitCounter, "Counts hits with damage");
+            this.chkHitCounter.UseVisualStyleBackColor = true;
+            this.chkHitCounter.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
+            // 
             // OriSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -179,6 +193,7 @@
 		private System.Windows.Forms.Label lblSort;
 		private System.Windows.Forms.RadioButton rdSortGame;
 		private System.Windows.Forms.RadioButton rdSortAlpha;
+		private System.Windows.Forms.CheckBox chkHitCounter;
         private System.Windows.Forms.CheckBox chkEnergyShardCount;
     }
 }
