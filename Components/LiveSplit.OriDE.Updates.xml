@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <updates>
+	<update version="1.9.7">
+		<files>
+			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
+		</files>
+		<changelog>
+			<change> Alex Knauth - Add a Hit Counter that sets a Custom Variable 'hits' to the cumulative hits so far in the current run. </change>
+		</changelog>
+	</update>
 	<update version="1.9.6">
 		<files>
 			<file path="Components/LiveSplit.OriDE.dll" status="changed"/>
