@@ -25,6 +25,8 @@ namespace LiveSplit.OriDE {
         private OriSettings settings;
         private LayoutComponent mapDisplay = null;
         private LayoutComponent energyDisplay = null;
+        private int oldHP = 0;
+        private int hits = 0;
 
         public OriComponent(LiveSplitState state) {
             try {
@@ -68,6 +70,19 @@ namespace LiveSplit.OriDE {
 
             if (settings.RainbowDash && isInGameWorld) {
                 mem.ActivateRainbowDash();
+            }
+
+            if (settings.HitCounter && isInGameWorld)
+            {
+                int currHP = mem.GetCurrentHP();
+
+                if (Model != null && Model.CurrentState.CurrentPhase == TimerPhase.Running && currHP < oldHP)
+                {
+                    hits += 1;
+                    Model.CurrentState.Run.Metadata.SetCustomVariable("hits", hits.ToString());
+                }
+
+                oldHP = currHP;
             }
 
             if (Model != null && currentSplit < settings.Splits.Count) {
@@ -352,6 +367,8 @@ namespace LiveSplit.OriDE {
         public void OnReset(object sender, TimerPhase e) {
             currentSplit = 0;
             ((OriEnergyShardDisplayComponent)energyDisplay.Component).TotalCount = 0;
+            hits = 0;
+            Model.CurrentState.Run.Metadata.SetCustomVariable("hits", hits.ToString());
             WriteLog("---------Reset----------------------------------");
         }
         public void OnResume(object sender, EventArgs e) {
@@ -364,6 +381,8 @@ namespace LiveSplit.OriDE {
             currentSplit++;
             Model.CurrentState.IsGameTimePaused = true;
             ((OriEnergyShardDisplayComponent)energyDisplay.Component).TotalCount = 0;
+            hits = 0;
+            Model.CurrentState.Run.Metadata.SetCustomVariable("hits", hits.ToString());
             WriteLog("---------New Game-------------------------------");
         }
         public void OnUndoSplit(object sender, EventArgs e) {
